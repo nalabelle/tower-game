@@ -1,4 +1,4 @@
-== CSUN Comp 380 Tower Game ==
+# == CSUN Comp 380 Tower Game == #
 
 Information about our project goes in here.
 
