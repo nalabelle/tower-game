@@ -8,3 +8,5 @@ git commit -m 'Initial commit with contributors'
 git push -u origin master
 
 git pull
+
+git remote set-url origin git://new.url.here
