@@ -1,1 +1,10 @@
 "Anthony Sager" fdsgsdglsdgkjsldfkjgs;dfg
+
+git init
+git remote add origin https://snigglyfoo@bitbucket.org/csun380game/test.git
+echo "Anthony Sager" >> contributors.txt
+git add contributors.txt
+git commit -m 'Initial commit with contributors'
+git push -u origin master
+
+git pull
