@@ -1,4 +1,4 @@
-####Eclipse Ignores####
+#### Eclipse Ignores ####
 
 *.pydevproject
 .metadata
@@ -31,7 +31,7 @@ local.properties
 # TeXlipse plugin
 .texlipse
 
-####Android Ignores####
+#### Android Ignores ####
 # Built application files
 *.apk
 *.ap_
@@ -58,3 +58,13 @@ proguard/
 
 # Log Files
 *.log
+
+#### Windows Ignores ####
+Thumbs.db
+Desktop.ini
+
+#### OSX Ignores ####
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
