@@ -9,7 +9,7 @@ import android.view.View;
 
 
 public class MainActivity extends Activity {
-	//main activity to be develop further by anthony
+	//main activity to be develop further by anthony sager
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
