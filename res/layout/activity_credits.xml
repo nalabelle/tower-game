@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:text="Magic Tower\nDeveloped by:"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	    
+    <TextView
+        android:id="@+id/tvNick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/title"
+        android:paddingTop="50dp"
+        android:text="Nick Monson" />
+
+    <ImageView
+        android:id="@+id/ivNick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/tvNick"
+        android:layout_alignBottom="@+id/tvNick"
+        android:src="@drawable/nick" />
+	    
+    
+    <TextView
+        android:id="@+id/tvAnthony"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="50dp"
+        android:layout_below="@+id/tvNick"
+        android:text="Anthony Sager" />
+
+    <ImageView
+        android:id="@+id/ivAnthony"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvAnthony"
+        android:layout_toLeftOf="@+id/tvAnthony"
+        android:src="@drawable/anthony" />
+    
+        <TextView
+        android:id="@+id/tvNik"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="50dp"
+        android:layout_below="@+id/tvAnthony"
+        android:text="Nik LaBelle" />
+            <TextView
+        android:id="@+id/tvAlex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="50dp"
+        android:layout_below="@+id/tvNik"
+        android:text="Alex Swanson" />
+                <TextView
+        android:id="@+id/tvSummer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="50dp"
+        android:layout_below="@+id/tvAlex"
+        android:text="Xintong &quot;Summer&quot; Shi" />
+
+</RelativeLayout>

@@ -39,6 +39,7 @@
         android:layout_alignTop="@+id/button1"
         android:layout_marginTop="50dp"
         android:background="@drawable/transparent_button"
+        android:onClick="launch_credits"
         android:text="Credits" />
 
 </RelativeLayout>

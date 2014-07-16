@@ -53,4 +53,9 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
     }
+    
+    public void launch_credits(View view){
+    	Intent intent = new Intent(this, CreditsActivity.class);
+    	startActivity(intent);
+    }
 }
