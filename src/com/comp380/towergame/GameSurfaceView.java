@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.nfc.Tag;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -60,8 +61,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		Log.v(tag, "Location: "+curX+":"+curY);
 		andy.draw(canvas);
 		
-		//andy movement
-
+		// Andy's Movement
 		if(curX < (canvas.getWidth() - this.andy.getBoundingBoxX() - 200)) {
 			this.andy.setX(curX + 15);
 			Log.v(tag, "Moving right");
@@ -76,6 +76,35 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 			this.andy.setX(0);
 			this.andy.setY(0);
 			return;
+		}
+	}
+	
+	/**
+	 * Touch Screen event handler
+	 */
+	@Override
+    public boolean onTouchEvent(MotionEvent event) {
+		int action = event.getAction();
+		
+		switch(action) {
+			case (MotionEvent.ACTION_DOWN):
+				//Touch
+				return true;
+			case (MotionEvent.ACTION_UP):
+				//Touch end
+				andy.setY(andy.getY()+10);
+				return true;
+			case (MotionEvent.ACTION_MOVE):
+				//Contact movement
+				return true;
+			case (MotionEvent.ACTION_CANCEL):
+				//Touch Canceled
+				return true;
+			case (MotionEvent.ACTION_OUTSIDE):
+				//Movement outside screen element bounds
+				return true;
+			default: return super.onTouchEvent(event);
+			
 		}
 	}
 
