@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 /**
  * @author Group5
@@ -15,10 +17,14 @@ import android.view.View;
  */
 
 public class MainActivity extends Activity {
-	//main activity to be develop further by anthony sager
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //remove title bar from activity, must before setContentView
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
