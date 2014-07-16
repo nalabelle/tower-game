@@ -7,6 +7,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+/**
+ * @author Group5
+ * 
+ * The main activity launches the game's title screen
+ */
 
 public class MainActivity extends Activity {
 
