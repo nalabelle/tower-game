@@ -11,6 +11,7 @@ import android.view.View;
  * @author Group5
  * 
  * The main activity launches the game's title screen
+ * Start, High Score, Options, Quit
  */
 
 public class MainActivity extends Activity {
