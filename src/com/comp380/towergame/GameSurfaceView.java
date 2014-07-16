@@ -23,7 +23,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		this.thread = new GameThread(getHolder(), this);
 		setFocusable(true);
 		
-		this.andy = new Andy(BitmapFactory.decodeResource(getResources(), R.drawable.andy), 25, 25, 25, 25);
+		this.andy = new Andy(this.getContext());
 	}
 
 	@Override
@@ -62,13 +62,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		
 		//andy movement
 
-		if(curX < (canvas.getWidth() - this.andy.getSizeX() - 200)) {
+		if(curX < (canvas.getWidth() - this.andy.getBoundingBoxX() - 200)) {
 			this.andy.setX(curX + 15);
 			Log.v(tag, "Moving right");
 			return;
 		}
 			
-		if(curY < (canvas.getHeight() - this.andy.getSizeY() - 20)) {
+		if(curY < (canvas.getHeight() - this.andy.getBoundingBoxY() - 20)) {
 			this.andy.setY(curY + 5);
 			Log.v(tag, "Moving down");
 			return;
