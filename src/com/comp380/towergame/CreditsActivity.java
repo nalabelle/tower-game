@@ -24,7 +24,7 @@ public class CreditsActivity extends Activity {
 	
     //Using a custom font (IsomothPro) from assets for display
     public void setFont(){
-    	Typeface font = Typeface.createFromAsset(getAssets(), "IsomothPro.otf");
+    	Typeface font = Typeface.createFromAsset(getAssets(), "font/IsomothPro.otf");
     	
     	TextView title = (TextView) findViewById(R.id.tvCreditsTitle);
     	TextView nick = (TextView) findViewById(R.id.tvNick);

@@ -30,7 +30,7 @@
         android:paddingRight="25dp"
         android:layout_alignTop="@+id/tvNick"
         android:layout_toLeftOf="@+id/tvNick"
-        android:src="@drawable/nick" />
+        android:src="@drawable/credits_nick" />
 
     <TextView
         android:id="@+id/tvAnthony"
@@ -50,7 +50,7 @@
         android:layout_toLeftOf="@+id/tvAnthony"
         android:paddingTop="15dp"
         android:paddingRight="25dp"
-        android:src="@drawable/anthony" />
+        android:src="@drawable/credits_anthony" />
 
     <TextView
         android:id="@+id/tvNik"
