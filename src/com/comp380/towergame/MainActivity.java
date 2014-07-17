@@ -62,7 +62,10 @@ public class MainActivity extends Activity {
     public void launch_game(View view) {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
+        //finish();
     }
+    
+
     
     public void launch_credits(View view){
     	Intent intent = new Intent(this, CreditsActivity.class);
@@ -71,7 +74,7 @@ public class MainActivity extends Activity {
     
     //Using a custom font (IsomothPro) from assets for display
     public void setFont(){
-    	Typeface font = Typeface.createFromAsset(getAssets(), "IsomothPro.otf");
+    	Typeface font = Typeface.createFromAsset(getAssets(), "font/IsomothPro.otf");
     	
     	TextView version = (TextView) findViewById(R.id.tvVersion);
     	Button start = (Button) findViewById(R.id.bStart);
