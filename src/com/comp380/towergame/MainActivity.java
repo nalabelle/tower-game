@@ -10,10 +10,14 @@ import android.view.Window;
 import android.view.WindowManager;
 
 /**
- * @author Group5
+ * @author Group5: Nik
  * 
  * The main activity launches the game's title screen
- * Start, High Score, Options, Quit
+ * Start, Load, Options, Quit  (HighScore? in options?)
+ * 
+ * Question: Do we ever return here? 
+ * 		Quit from Gameplay? 
+ * 		return from interrupt (home button, call, etc.)?
  */
 
 public class MainActivity extends Activity {
