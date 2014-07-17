@@ -3,74 +3,83 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="20dp"
-            android:layout_centerHorizontal="true"
-            android:text="Magic Tower\nDeveloped by:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+    <TextView
+        android:id="@+id/tvCreditsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="20dp"
+        android:text="Magic Tower\nDeveloped by:"
+        android:textSize="75sp" />
 
-	    
     <TextView
         android:id="@+id/tvNick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tvCreditsTitle"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/title"
-        android:paddingTop="50dp"
-        android:text="Nick Monson" />
+        android:paddingTop="15dp"
+        android:text="Nick Monson"
+        android:textSize="50sp" />
 
     <ImageView
         android:id="@+id/ivNick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingRight="25dp"
+        android:layout_alignTop="@+id/tvNick"
         android:layout_toLeftOf="@+id/tvNick"
-        android:layout_alignBottom="@+id/tvNick"
         android:src="@drawable/nick" />
-	    
-    
+
     <TextView
         android:id="@+id/tvAnthony"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="50dp"
         android:layout_below="@+id/tvNick"
-        android:text="Anthony Sager" />
+        android:layout_centerHorizontal="true"
+        android:paddingTop="15dp"
+        android:text="Anthony Sager"
+        android:textSize="50sp" />
 
     <ImageView
         android:id="@+id/ivAnthony"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvAnthony"
+        android:layout_alignTop="@+id/tvAnthony"
         android:layout_toLeftOf="@+id/tvAnthony"
+        android:paddingTop="15dp"
+        android:paddingRight="25dp"
         android:src="@drawable/anthony" />
-    
-        <TextView
+
+    <TextView
         android:id="@+id/tvNik"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="50dp"
         android:layout_below="@+id/tvAnthony"
-        android:text="Nik LaBelle" />
-            <TextView
+        android:layout_centerHorizontal="true"
+        android:paddingTop="15dp"
+        android:text="Nik LaBelle"
+        android:textSize="50sp" />
+
+    <TextView
         android:id="@+id/tvAlex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="50dp"
         android:layout_below="@+id/tvNik"
-        android:text="Alex Swanson" />
-                <TextView
+        android:layout_centerHorizontal="true"
+        android:paddingTop="15dp"
+        android:text="Alex Swanson"
+        android:textSize="50sp" />
+
+    <TextView
         android:id="@+id/tvSummer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="50dp"
         android:layout_below="@+id/tvAlex"
-        android:text="Xintong &quot;Summer&quot; Shi" />
+        android:layout_centerHorizontal="true"
+        android:paddingTop="15dp"
+        android:text="Xintong &quot;Summer&quot; Shi"
+        android:textSize="50sp" />
 
 </RelativeLayout>

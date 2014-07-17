@@ -2,12 +2,15 @@ package com.comp380.towergame;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * @author Group5: Nik
@@ -30,7 +33,10 @@ public class MainActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_main);
+        setFont();
+        
     }
 
 
@@ -61,5 +67,18 @@ public class MainActivity extends Activity {
     public void launch_credits(View view){
     	Intent intent = new Intent(this, CreditsActivity.class);
     	startActivity(intent);
+    }
+    
+    //Using a custom font (IsomothPro) from assets for display
+    public void setFont(){
+    	Typeface font = Typeface.createFromAsset(getAssets(), "IsomothPro.otf");
+    	
+    	TextView version = (TextView) findViewById(R.id.tvVersion);
+    	Button start = (Button) findViewById(R.id.bStart);
+    	Button credits = (Button) findViewById(R.id.bCredits);
+    	
+    	version.setTypeface(font);
+    	start.setTypeface(font);
+    	credits.setTypeface(font);
     }
 }
