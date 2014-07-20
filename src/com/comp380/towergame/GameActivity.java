@@ -45,7 +45,7 @@ public class GameActivity extends Activity {
 	
 	//Temporary texture loader
 	public Bitmap getAndyTexture() {
-		return BitmapFactory.decodeResource(this.getResources(), R.drawable.andy);
+		return BitmapFactory.decodeResource(this.getResources(), R.drawable.player_jump);
 	}
 
 	protected void toggleGameThread(boolean b) {

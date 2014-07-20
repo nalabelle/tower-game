@@ -1,5 +1,6 @@
 package com.comp380.towergame;
 
+import com.comp380.towergame.background.*;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
+	private Background[][] backgroundArray = new Background[6][3];
 	private String tag = this.getClass().toString();
 	private boolean surfaceCreated = false;
 	
@@ -15,6 +17,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		super(context);
 		getHolder().addCallback(this);
 		setFocusable(true);
+
+		for(int i = 0; i < 6; i++) //init bg
+			for(int j = 0; j < 3; j++)
+				backgroundArray[i][j] = new Background(this.getContext(),i*400,j*400,1);
 	}
 
 	@Override
@@ -53,29 +59,24 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	
 	private void drawUpdate(Canvas canvas) {
 		canvas.drawColor(Color.BLACK);
+
+		//this needs to be written in an update() method,,, just put it here now for testing
+		for(int i = 0; i < 6; i++) 
+			for(int j = 0; j < 3; j++)
+				backgroundArray[i][j].updateBackground();
+		
+		
+		
+		for(int i = 0; i < 6; i++) //init bg
+			for(int j = 0; j < 3; j++)
+				backgroundArray[i][j].draw(canvas);
+
 		//The below here is dragons. This should be offloaded to a different area in the game thread soon.
 		int curX = ((GameActivity) this.getContext()).getAndy().getX();
 		int curY = ((GameActivity) this.getContext()).getAndy().getY();
-		
+
 		Log.v(tag, "Location: "+curX+":"+curY);
 		canvas.drawBitmap(((GameActivity) this.getContext()).getAndyTexture(), curX, curY, null);
-		
-		// Andy's Movement - this should be moved elsewhere too.
-		if(curX < (canvas.getWidth() - ((GameActivity) this.getContext()).getAndy().getBoundingBoxX() - 200)) {
-			((GameActivity) this.getContext()).getAndy().setX(curX + 15);
-			Log.v(tag, "Moving right");
-			return;
-		}
-			
-		if(curY < (canvas.getHeight() - ((GameActivity) this.getContext()).getAndy().getBoundingBoxY() - 20)) {
-			((GameActivity) this.getContext()).getAndy().setY(curY + 5);
-			Log.v(tag, "Moving down");
-			return;
-		} else {
-			((GameActivity) this.getContext()).getAndy().setX(0);
-			((GameActivity) this.getContext()).getAndy().setY(0);
-			return;
-		}
 	}
 	
 	/**
