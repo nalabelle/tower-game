@@ -28,11 +28,6 @@
             android:label="@string/title_activity_game"
             android:screenOrientation="landscape" >
         </activity>
-        <activity 
-            android:name=".CreditsActivity"
-            android:label="Credits"
-            android:screenOrientation="landscape"
-            ></activity>
     </application>
 
 </manifest>

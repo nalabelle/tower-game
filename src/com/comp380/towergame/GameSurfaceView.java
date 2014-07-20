@@ -2,6 +2,7 @@ package com.comp380.towergame;
 
 import com.comp380.towergame.entities.Andy;
 
+import com.comp380.towergame.background.*;
 import android.R.color;
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,8 @@ import android.view.SurfaceView;
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 	private GameThread thread = null;
 	private Andy andy;
+	
+	private Background[][] backgroundArray = new Background[6][3];
 	private String tag = this.getClass().toString();
 	
 	public GameSurfaceView(Context context) {
@@ -25,6 +28,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		setFocusable(true);
 		
 		this.andy = new Andy(this.getContext());
+		for(int i = 0; i < 6; i++) //init bg
+			for(int j = 0; j < 3; j++)
+				backgroundArray[i][j] = new Background(this.getContext(),i*400,j*400,1); 
+		
 	}
 
 	@Override
@@ -55,6 +62,19 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	
 	public void draw(Canvas canvas) {
 		canvas.drawColor(Color.BLACK);
+		
+		
+		//this needs to be written in an update() method,,, just put it here now for testing
+		for(int i = 0; i < 6; i++) 
+			for(int j = 0; j < 3; j++)
+				backgroundArray[i][j].updateBackground();
+		
+		
+		
+		for(int i = 0; i < 6; i++) //init bg
+			for(int j = 0; j < 3; j++)
+				backgroundArray[i][j].draw(canvas);
+		
 		int curX = this.andy.getX();
 		int curY = this.andy.getY();
 		
@@ -62,12 +82,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		andy.draw(canvas);
 		
 		// Andy's Movement
-		if(curX < (canvas.getWidth() - this.andy.getBoundingBoxX() - 200)) {
+		/*
+		if(curX < (canvas.getWidth() - this.andy.getBoundingBoxX())) {
 			this.andy.setX(curX + 15);
 			Log.v(tag, "Moving right");
 			return;
 		}
-			
+		
+
 		if(curY < (canvas.getHeight() - this.andy.getBoundingBoxY() - 20)) {
 			this.andy.setY(curY + 5);
 			Log.v(tag, "Moving down");
@@ -77,6 +99,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 			this.andy.setY(0);
 			return;
 		}
+		*/
 	}
 	
 	/**

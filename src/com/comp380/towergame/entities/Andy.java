@@ -7,6 +7,6 @@ import android.graphics.BitmapFactory;
 
 public class Andy extends BaseEntity {
 	public Andy(Context context) {
-		super(BitmapFactory.decodeResource(context.getResources(), R.drawable.andy), 25, 25, 25, 25);
+		super(BitmapFactory.decodeResource(context.getResources(), R.drawable.player_jump), 25, 25, 25, 25);
 	}
 }
