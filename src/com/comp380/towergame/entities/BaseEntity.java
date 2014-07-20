@@ -1,10 +1,6 @@
 package com.comp380.towergame.entities;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-
 abstract class BaseEntity {
-	private Bitmap bitmap;
 	
 	private int x;
 	private int y;
@@ -12,20 +8,13 @@ abstract class BaseEntity {
 	private int sizeX;
 	private int sizeY;
 	
-	public BaseEntity(Bitmap b, int x, int y, int sizeX, int sizeY) {
-		this.bitmap = b;
+	public BaseEntity(int x, int y, int sizeX, int sizeY) {
 		this.x = x;
 		this.y = y;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
 	}
 	
-	public Bitmap getBitmap() {
-		return this.bitmap;
-	}
-	public void setBitmap(Bitmap b) {
-		this.bitmap = b;
-	}
 	public int getX() {
 		return x;
 	}
@@ -55,7 +44,5 @@ abstract class BaseEntity {
 		this.sizeY = sizeY;
 	}
 	
-	public void draw(Canvas canvas) {
-		canvas.drawBitmap(this.bitmap, this.x, this.y, null);
-	}
+
 }

@@ -1,17 +1,15 @@
 package com.comp380.towergame;
 
-import android.graphics.Canvas;
-import android.view.SurfaceHolder;
+import android.util.Log;
 
 public class GameThread extends Thread {
-	private SurfaceHolder surfaceHolder;
-	private GameSurfaceView surfaceView;
+	private String tag = this.getClass().toString();
+	private GameActivity context;
 	private boolean running;
 
-	public GameThread(SurfaceHolder surfaceHolder, GameSurfaceView surfaceView) {
+	public GameThread(GameActivity context) {
 		super();
-		this.surfaceHolder = surfaceHolder;
-		this.surfaceView = surfaceView;
+		this.context = context;
 	}
 
 	public void setRunning(boolean b) {
@@ -19,19 +17,9 @@ public class GameThread extends Thread {
 	}
 	
 	public void run() {
-		Canvas canvas;
+		Log.v(tag, "starting");
 		while (this.running) {
-			canvas = null;
-			try {
-				canvas = this.surfaceHolder.lockCanvas();
-				synchronized (this.surfaceHolder) {
-					this.surfaceView.draw(canvas);		
-				}
-			} finally {
-				if (canvas != null) {
-					this.surfaceHolder.unlockCanvasAndPost(canvas);
-				}
-			}
+			this.context.gameSurfaceView.draw();
 		}
 	}
 }
