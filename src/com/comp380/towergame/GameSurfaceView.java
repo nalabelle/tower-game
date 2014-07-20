@@ -1,36 +1,26 @@
 package com.comp380.towergame;
 
-import com.comp380.towergame.entities.Andy;
-
-import android.R.color;
-import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.nfc.Tag;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
-	private GameThread thread = null;
-	private Andy andy;
 	private String tag = this.getClass().toString();
+	private boolean surfaceCreated = false;
 	
-	public GameSurfaceView(Context context) {
+	public GameSurfaceView(GameActivity context) {
 		super(context);
 		getHolder().addCallback(this);
-		this.thread = new GameThread(getHolder(), this);
 		setFocusable(true);
-		
-		this.andy = new Andy(this.getContext());
 	}
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		this.thread.setRunning(true);
-		this.thread.start();	
+		Log.v(tag, "Surface Created");
+		this.surfaceCreated = true;
 	}
 
 	@Override
@@ -42,39 +32,48 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
-		this.thread.setRunning(false);
-		while(this.thread.isAlive() == true) {
-			try {
-				this.thread.join();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 	
-	public void draw(Canvas canvas) {
+	public void draw() {
+		Canvas canvas;
+		canvas = null;
+		if(this.surfaceCreated == false) return;
+		try {
+			canvas = this.getHolder().lockCanvas();
+			synchronized (this.getHolder()) {
+				this.drawUpdate(canvas);
+			} 
+		} finally {
+				if (canvas != null) {
+					this.getHolder().unlockCanvasAndPost(canvas);
+				}
+		}
+		
+	}
+	
+	private void drawUpdate(Canvas canvas) {
 		canvas.drawColor(Color.BLACK);
-		int curX = this.andy.getX();
-		int curY = this.andy.getY();
+		//The below here is dragons. This should be offloaded to a different area in the game thread soon.
+		int curX = ((GameActivity) this.getContext()).getAndy().getX();
+		int curY = ((GameActivity) this.getContext()).getAndy().getY();
 		
 		Log.v(tag, "Location: "+curX+":"+curY);
-		andy.draw(canvas);
+		canvas.drawBitmap(((GameActivity) this.getContext()).getAndyTexture(), curX, curY, null);
 		
-		// Andy's Movement
-		if(curX < (canvas.getWidth() - this.andy.getBoundingBoxX() - 200)) {
-			this.andy.setX(curX + 15);
+		// Andy's Movement - this should be moved elsewhere too.
+		if(curX < (canvas.getWidth() - ((GameActivity) this.getContext()).getAndy().getBoundingBoxX() - 200)) {
+			((GameActivity) this.getContext()).getAndy().setX(curX + 15);
 			Log.v(tag, "Moving right");
 			return;
 		}
 			
-		if(curY < (canvas.getHeight() - this.andy.getBoundingBoxY() - 20)) {
-			this.andy.setY(curY + 5);
+		if(curY < (canvas.getHeight() - ((GameActivity) this.getContext()).getAndy().getBoundingBoxY() - 20)) {
+			((GameActivity) this.getContext()).getAndy().setY(curY + 5);
 			Log.v(tag, "Moving down");
 			return;
 		} else {
-			this.andy.setX(0);
-			this.andy.setY(0);
+			((GameActivity) this.getContext()).getAndy().setX(0);
+			((GameActivity) this.getContext()).getAndy().setY(0);
 			return;
 		}
 	}
@@ -92,7 +91,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 				return true;
 			case (MotionEvent.ACTION_UP):
 				//Touch end
-				andy.setY(andy.getY()+10);
+				((GameActivity) this.getContext()).getAndy().setY(((GameActivity) this.getContext()).getAndy().getY()+10);
 				return true;
 			case (MotionEvent.ACTION_MOVE):
 				//Contact movement
