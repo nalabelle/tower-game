@@ -1,12 +1,14 @@
 package com.comp380.towergame;
 
-import com.comp380.towergame.background.*;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.comp380.towergame.background.Background;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 	private Background[][] backgroundArray = new Background[6][3];
@@ -90,6 +92,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	@Override
     public boolean onTouchEvent(MotionEvent event) {
 		int action = event.getAction();
+		float x = event.getX();
+		float y = event.getY();
+		
 		
 		switch(action) {
 			case (MotionEvent.ACTION_DOWN):
