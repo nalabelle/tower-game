@@ -1,11 +1,10 @@
 package com.comp380.towergame;
 
-import com.comp380.towergame.entities.Andy;
+import physics.CollisionDetection;
+
 import com.comp380.towergame.entities.EntityManager;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
@@ -13,9 +12,13 @@ import android.view.WindowManager;
 
 public class GameActivity extends Activity {
 	private String tag = this.getClass().toString();
-	protected GameSurfaceView	gameSurfaceView	= null;
-	private EntityManager	entityManager	= null;
-	protected GameThread gameThread = null;
+	protected 	GameSurfaceView	gameSurfaceView	= null;
+	protected 	EntityManager	entityManager	= null;
+	protected 	GameThread 		gameThread = null;
+	protected	CollisionDetection	collisionDetection = null;
+	
+	public static int GAME_MAX_WIDTH = 1920;
+	public static int GAME_MAX_HEIGHT = 1200;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,23 +38,22 @@ public class GameActivity extends Activity {
 		this.gameThread = new GameThread(this);
 		Log.v(tag, "Starting Entity Manager");
 		this.entityManager = new EntityManager(this);
+		this.collisionDetection = new CollisionDetection(this);
 		this.toggleGameThread(true);
-	}
-	
-	//Temporary
-	public Andy getAndy() {
-		return this.entityManager.getAndy();
-	}
-	
-	//Temporary texture loader
-	public Bitmap getAndyTexture() {
-		return BitmapFactory.decodeResource(this.getResources(), R.drawable.player_jump);
 	}
 
 	protected void toggleGameThread(boolean b) {
 		Log.v(tag, "Starting Game Thread");
 		this.gameThread.setRunning(b);
 		this.gameThread.start();
+	}
+
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
+
+	public CollisionDetection getCollisionDetection() {
+		return this.collisionDetection;
 	}
 	
 }

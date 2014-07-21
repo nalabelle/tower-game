@@ -23,6 +23,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 				backgroundArray[i][j] = new Background(this.getContext(),i*400,j*400,1);
 	}
 
+	protected void onSizeChanged(int newX, int newY, int oldX, int oldY) {
+		super.onSizeChanged(newX, newY, oldX, oldY);
+		//GameActivity.GAME_MAX_HEIGHT = newY;
+		//GameActivity.GAME_MAX_HEIGHT = newX;
+	}
+	
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		Log.v(tag, "Surface Created");
@@ -70,13 +76,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		for(int i = 0; i < 6; i++) //init bg
 			for(int j = 0; j < 3; j++)
 				backgroundArray[i][j].draw(canvas);
-
-		//The below here is dragons. This should be offloaded to a different area in the game thread soon.
-		int curX = ((GameActivity) this.getContext()).getAndy().getX();
-		int curY = ((GameActivity) this.getContext()).getAndy().getY();
-
-		Log.v(tag, "Location: "+curX+":"+curY);
-		canvas.drawBitmap(((GameActivity) this.getContext()).getAndyTexture(), curX, curY, null);
+		
+		this.drawEntities(canvas);
+	}
+	
+	private void drawEntities(Canvas canvas) {
+		((GameActivity) this.getContext()).entityManager.drawAll(canvas);
 	}
 	
 	/**
@@ -89,10 +94,36 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		switch(action) {
 			case (MotionEvent.ACTION_DOWN):
 				//Touch
+				event.getX();
 				return true;
 			case (MotionEvent.ACTION_UP):
 				//Touch end
-				((GameActivity) this.getContext()).getAndy().setY(((GameActivity) this.getContext()).getAndy().getY()+10);
+				if(event.getX() < GameActivity.GAME_MAX_WIDTH/3 && 
+						(event.getY() > GameActivity.GAME_MAX_HEIGHT/3) &&
+						(event.getY() < 2*GameActivity.GAME_MAX_HEIGHT/3)) {
+					((GameActivity) this.getContext()).entityManager.getAndy().setX(
+							((GameActivity) this.getContext()).entityManager.getAndy().getX()-10);	
+				}
+				if(event.getX() > 2*GameActivity.GAME_MAX_WIDTH/3 && 
+						(event.getY() > GameActivity.GAME_MAX_HEIGHT/3) &&
+						(event.getY() < 2*GameActivity.GAME_MAX_HEIGHT/3)) {
+					((GameActivity) this.getContext()).entityManager.getAndy().setX(
+							((GameActivity) this.getContext()).entityManager.getAndy().getX()+10);						
+				}
+				
+				if(event.getY() < GameActivity.GAME_MAX_HEIGHT/3 && 
+						(event.getX() > GameActivity.GAME_MAX_WIDTH/3) &&
+						(event.getX() < 2*GameActivity.GAME_MAX_WIDTH/3)) {
+					((GameActivity) this.getContext()).entityManager.getAndy().setY(
+							((GameActivity) this.getContext()).entityManager.getAndy().getY()-10);						
+				}
+				if(event.getY() > 2*GameActivity.GAME_MAX_HEIGHT/3 && 
+						(event.getX() > GameActivity.GAME_MAX_WIDTH/3) &&
+						(event.getX() < 2*GameActivity.GAME_MAX_WIDTH/3)) {
+					((GameActivity) this.getContext()).entityManager.getAndy().setY(
+							((GameActivity) this.getContext()).entityManager.getAndy().getY()+10);						
+				}
+
 				return true;
 			case (MotionEvent.ACTION_MOVE):
 				//Contact movement
