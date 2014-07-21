@@ -14,7 +14,7 @@ public class Background
 	
 	public Background(Context context,int x, int y, int imageNum) //where imageNum is background image
 	{
-		backgroundSpeed = -5; //value should be 0
+		backgroundSpeed = +6; //value should be 0
 		backgroundX = x;
 		backgroundY = y;
 		switch(imageNum)
@@ -30,8 +30,11 @@ public class Background
 	public void updateBackground()
 	{
 		backgroundX += backgroundSpeed;
-		if (backgroundX <= -400) //-160 for screen dim
+		if (backgroundX <= -400) //-400 for screen dim
 			backgroundX += 2400;
+		if(backgroundX > 2000)
+			backgroundX -= 2400;
+		
 	}
 	
 	public Bitmap getBitmap()
