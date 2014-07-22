@@ -1,4 +1,4 @@
-package physics;
+package com.comp380.towergame.physics;
 
 import android.graphics.Rect;
 import android.media.MediaPlayer;

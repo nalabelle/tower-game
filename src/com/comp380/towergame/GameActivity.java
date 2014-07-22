@@ -1,6 +1,5 @@
 package com.comp380.towergame;
 
-import physics.CollisionDetection;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
@@ -18,6 +17,7 @@ import android.widget.ImageButton;
 
 import com.comp380.towergame.entities.EntityManager;
 import com.comp380.towergame.entities.EvilGuy;
+import com.comp380.towergame.physics.CollisionDetection;
 
 public class GameActivity extends Activity {
 	private String tag = this.getClass().toString();
