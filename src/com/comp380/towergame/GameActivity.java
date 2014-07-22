@@ -2,15 +2,20 @@ package com.comp380.towergame;
 
 import physics.CollisionDetection;
 import android.app.Activity;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import com.comp380.towergame.entities.EntityManager;
+import com.comp380.towergame.entities.EvilGuy;
 
 public class GameActivity extends Activity {
 	private String tag = this.getClass().toString();
@@ -53,6 +58,8 @@ public class GameActivity extends Activity {
 		this.entityManager = new EntityManager(this);
 		this.collisionDetection = new CollisionDetection(this);
 		this.toggleGameThread(true);
+		
+		wireButtons();
 	}
 
 	protected void toggleGameThread(boolean b) {
@@ -69,20 +76,154 @@ public class GameActivity extends Activity {
 		return this.collisionDetection;
 	}
 	
-	public void moveLeft(View view) {
-		entityManager.getAndy().setX(entityManager.getAndy().getX() - 10);
+	public void wireButtons() {
+		final int mv = 20;
+		final int sleep = 50;
+		
+		final ImageButton leftButton = (ImageButton) findViewById(R.id.leftButton);
+		leftButton.setOnTouchListener(new View.OnTouchListener() {
+			private Handler handlr;
+			@Override 
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (handlr != null) return true;
+					handlr = new Handler();
+					handlr.postDelayed(buttonAction, sleep);
+					break;
+				case MotionEvent.ACTION_UP:
+					if (handlr == null) return true;
+					handlr.removeCallbacks(buttonAction);
+					handlr = null;
+					break;
+				}
+				return false;
+			}
+			Runnable buttonAction = new Runnable() {
+				@Override 
+				public void run() {
+					entityManager.getAndy().setX(entityManager.getAndy().getX() - mv);
+					handlr.postDelayed(this, sleep);
+				}
+			};
+		});
+		
+		//Right Button 
+		final ImageButton rightButton = (ImageButton) findViewById(R.id.rightButton);
+		rightButton.setOnTouchListener(new View.OnTouchListener() {
+			private Handler handlr;
+			@Override 
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (handlr != null) return true;
+					handlr = new Handler();
+					handlr.postDelayed(buttonAction, sleep);
+					break;
+				case MotionEvent.ACTION_UP:
+					if (handlr == null) return true;
+					handlr.removeCallbacks(buttonAction);
+					handlr = null;
+					break;
+				case MotionEvent.ACTION_OUTSIDE:
+					if (handlr == null) return true;
+					handlr.removeCallbacks(buttonAction);
+					handlr = null;
+					break;
+				}
+				return false;
+			}
+			Runnable buttonAction = new Runnable() {
+				@Override 
+				public void run() {
+					entityManager.getAndy().setX(entityManager.getAndy().getX() + mv);
+					handlr.postDelayed(this, sleep);
+				}
+			};
+		});
+		
+		final ImageButton jump = (ImageButton) findViewById(R.id.jump);
+		jump.setOnTouchListener(new View.OnTouchListener() {
+			private Handler handlr;
+			@Override 
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (handlr != null) return true;
+					handlr = new Handler();
+					handlr.postDelayed(buttonAction, sleep);
+					break;
+				case MotionEvent.ACTION_UP:
+					if (handlr == null) return true;
+					handlr.removeCallbacks(buttonAction);
+					handlr = null;
+					break;
+				}
+				return false;
+			}
+			Runnable buttonAction = new Runnable() {
+				@Override 
+				public void run() {
+					entityManager.getAndy().setY(entityManager.getAndy().getY() - mv);
+					handlr.postDelayed(this, sleep);
+				}
+			};
+		});
+		
+		final ImageButton down = (ImageButton) findViewById(R.id.down);
+		down.setOnTouchListener(new View.OnTouchListener() {
+			private Handler handlr;
+			@Override 
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (handlr != null) return true;
+					handlr = new Handler();
+					handlr.postDelayed(buttonAction, sleep);
+					break;
+				case MotionEvent.ACTION_UP:
+					if (handlr == null) return true;
+					handlr.removeCallbacks(buttonAction);
+					handlr = null;
+					break;
+				}
+				return false;
+			}
+			Runnable buttonAction = new Runnable() {
+				@Override 
+				public void run() {
+					entityManager.getAndy().setY(entityManager.getAndy().getY() + mv);
+					handlr.postDelayed(this, sleep);
+				}
+			};
+		});
+		
+		final ImageButton spawn = (ImageButton) findViewById(R.id.spawn);
+		spawn.setOnTouchListener(new View.OnTouchListener() {
+			private Handler handlr;
+			@Override 
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (handlr != null) return true;
+					handlr = new Handler();
+					handlr.postDelayed(buttonAction, sleep*20);
+					break;
+				case MotionEvent.ACTION_UP:
+					if (handlr == null) return true;
+					handlr.removeCallbacks(buttonAction);
+					handlr = null;
+					break;
+				}
+				return false;
+			}
+			Runnable buttonAction = new Runnable() {
+				@Override 
+				public void run() {
+					entityManager.getAll().add(new EvilGuy(BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
+					handlr.postDelayed(this, sleep*20);
+				}
+			};
+		});
 	}
-	
-	public void moveRight(View view) {
-		entityManager.getAndy().setX(entityManager.getAndy().getX() + 10);
-	}
-	
-	public void moveUp(View view) {
-		entityManager.getAndy().setY(entityManager.getAndy().getY() - 10);
-	}
-	
-	public void moveDown(View view) {
-		entityManager.getAndy().setY(entityManager.getAndy().getY() + 10);
-	}
-	
 }

@@ -88,6 +88,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	
 	/**
 	 * Touch Screen event handler
+	 * Handler a player touching the screen
+	 * 
+	 * Uses: Capturing gestures, touching entities
 	 */
 	@Override
     public boolean onTouchEvent(MotionEvent event) {
