@@ -27,7 +27,7 @@ public class GameThread extends Thread {
 		int sleepTime = 0;
 		int frameSkip;
 		
-		while (this.running) {
+		while (this.running && !this.isInterrupted()) {
 			startTime = System.currentTimeMillis();
 			frameSkip = 0;
 			this.gameUpdate();
@@ -44,7 +44,7 @@ public class GameThread extends Thread {
 				}
 			}
 			
-			while(sleepTime < 0 && frameSkip < MAX_FRAME_SKIP) {
+			while(sleepTime < 0 && frameSkip < MAX_FRAME_SKIP && !this.isInterrupted()) {
 				//We're behind, let's do some updates without drawing
 				this.gameUpdate();
 				
