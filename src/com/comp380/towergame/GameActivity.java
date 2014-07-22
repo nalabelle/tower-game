@@ -226,4 +226,19 @@ public class GameActivity extends Activity {
 			};
 		});
 	}
+
+	@Override
+	protected void onPause() {
+		if (gameThread != null){
+			try {
+				gameThread.interrupt();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		super.onPause();
+	}
+	
+	
 }

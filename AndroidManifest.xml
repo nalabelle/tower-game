@@ -3,7 +3,9 @@
     package="com.comp380.towergame"
     android:versionCode="1"
     android:versionName="1.0" >
-
+    
+	<uses-permission android:name="android.permission.VIBRATE"/>
+	<uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-sdk
         android:minSdkVersion="19"
         android:targetSdkVersion="19" />
@@ -27,6 +29,11 @@
             android:name=".GameActivity"
             android:label="@string/title_activity_game"
             android:screenOrientation="landscape" >
+        </activity>
+        <activity 
+            android:name=".CreditsActivity"
+            android:label="Credits"
+            android:screenOrientation="landscape">
         </activity>
     </application>
 
