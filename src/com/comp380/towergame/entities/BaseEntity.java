@@ -1,5 +1,7 @@
 package com.comp380.towergame.entities;
 
+import com.comp380.towergame.physics.Velocity;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -7,6 +9,8 @@ import android.graphics.Rect;
 public class BaseEntity {
 	private int ID;
 	private Bitmap texture;
+	
+	private Velocity velocity;
 	
 	private int x;
 	private int y;
