@@ -3,8 +3,10 @@ package com.comp380.towergame;
 import physics.CollisionDetection;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore.Audio.Media;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -207,7 +209,7 @@ public class GameActivity extends Activity {
 				case MotionEvent.ACTION_DOWN:
 					if (handlr != null) return true;
 					handlr = new Handler();
-					handlr.postDelayed(buttonAction, sleep*20);
+					handlr.postDelayed(buttonAction, sleep*15);
 					break;
 				case MotionEvent.ACTION_UP:
 					if (handlr == null) return true;
@@ -221,7 +223,123 @@ public class GameActivity extends Activity {
 				@Override 
 				public void run() {
 					entityManager.getAll().add(new EvilGuy(BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
-					handlr.postDelayed(this, sleep*20);
+					handlr.postDelayed(this, sleep*15);
+				}
+			};
+		});
+		
+		final ImageButton downRight = (ImageButton) findViewById(R.id.downRight);
+		downRight.setOnTouchListener(new View.OnTouchListener() {
+			private Handler handlr;
+			@Override 
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (handlr != null) return true;
+					handlr = new Handler();
+					handlr.postDelayed(buttonAction, sleep);
+					break;
+				case MotionEvent.ACTION_UP:
+					if (handlr == null) return true;
+					handlr.removeCallbacks(buttonAction);
+					handlr = null;
+					break;
+				}
+				return false;
+			}
+			Runnable buttonAction = new Runnable() {
+				@Override 
+				public void run() {
+					entityManager.getAndy().setY(entityManager.getAndy().getY() + mv);
+					entityManager.getAndy().setX(entityManager.getAndy().getX() + mv);
+					handlr.postDelayed(this, sleep);
+				}
+			};
+		});
+		
+		final ImageButton downLeft = (ImageButton) findViewById(R.id.downLeft);
+		downLeft.setOnTouchListener(new View.OnTouchListener() {
+			private Handler handlr;
+			@Override 
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (handlr != null) return true;
+					handlr = new Handler();
+					handlr.postDelayed(buttonAction, sleep);
+					break;
+				case MotionEvent.ACTION_UP:
+					if (handlr == null) return true;
+					handlr.removeCallbacks(buttonAction);
+					handlr = null;
+					break;
+				}
+				return false;
+			}
+			Runnable buttonAction = new Runnable() {
+				@Override 
+				public void run() {
+					entityManager.getAndy().setY(entityManager.getAndy().getY() + mv);
+					entityManager.getAndy().setX(entityManager.getAndy().getX() - mv);
+					handlr.postDelayed(this, sleep);
+				}
+			};
+		});
+		
+		final ImageButton upRight = (ImageButton) findViewById(R.id.upRight);
+		upRight.setOnTouchListener(new View.OnTouchListener() {
+			private Handler handlr;
+			@Override 
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (handlr != null) return true;
+					handlr = new Handler();
+					handlr.postDelayed(buttonAction, sleep);
+					break;
+				case MotionEvent.ACTION_UP:
+					if (handlr == null) return true;
+					handlr.removeCallbacks(buttonAction);
+					handlr = null;
+					break;
+				}
+				return false;
+			}
+			Runnable buttonAction = new Runnable() {
+				@Override 
+				public void run() {
+					entityManager.getAndy().setY(entityManager.getAndy().getY() - mv);
+					entityManager.getAndy().setX(entityManager.getAndy().getX() + mv);
+					handlr.postDelayed(this, sleep);
+				}
+			};
+		});
+		
+		final ImageButton upLeft = (ImageButton) findViewById(R.id.upLeft);
+		upLeft.setOnTouchListener(new View.OnTouchListener() {
+			private Handler handlr;
+			@Override 
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (handlr != null) return true;
+					handlr = new Handler();
+					handlr.postDelayed(buttonAction, sleep);
+					break;
+				case MotionEvent.ACTION_UP:
+					if (handlr == null) return true;
+					handlr.removeCallbacks(buttonAction);
+					handlr = null;
+					break;
+				}
+				return false;
+			}
+			Runnable buttonAction = new Runnable() {
+				@Override 
+				public void run() {
+					entityManager.getAndy().setY(entityManager.getAndy().getY() - mv);
+					entityManager.getAndy().setX(entityManager.getAndy().getX() - mv);
+					handlr.postDelayed(this, sleep);
 				}
 			};
 		});
