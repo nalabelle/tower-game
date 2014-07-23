@@ -2,10 +2,9 @@ package com.comp380.towergame;
 
 import android.app.Activity;
 import android.graphics.BitmapFactory;
-import android.media.MediaPlayer;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore.Audio.Media;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,10 +14,10 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
+import com.comp380.towergame.background.Background;
 import com.comp380.towergame.entities.EntityManager;
 import com.comp380.towergame.entities.EvilGuy;
 import com.comp380.towergame.physics.CollisionDetection;
-import com.comp380.towergame.background.*;
 
 public class GameActivity extends Activity {
 	private String tag = this.getClass().toString();
@@ -94,6 +93,11 @@ public class GameActivity extends Activity {
 			private Handler handlr;
 			@Override 
 			public boolean onTouch(View v, MotionEvent event) {
+				Rect rect = new Rect();
+				leftButton.getHitRect(rect);
+				float x = event.getX() + rect.left;
+	            float y = event.getY() + rect.top;
+	            
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					if (handlr != null) return true;
@@ -105,6 +109,13 @@ public class GameActivity extends Activity {
 					handlr.removeCallbacks(buttonAction);
 					handlr = null;
 					break;
+				case MotionEvent.ACTION_MOVE:
+					if (handlr == null) return true;
+					if(!rect.contains((int) x, (int) y)) {
+						handlr.removeCallbacks(buttonAction);
+						handlr = null;
+						break;
+					}
 				}
 				return false;
 			}
@@ -121,8 +132,15 @@ public class GameActivity extends Activity {
 		final ImageButton rightButton = (ImageButton) findViewById(R.id.rightButton);
 		rightButton.setOnTouchListener(new View.OnTouchListener() {
 			private Handler handlr;
+			
+			
 			@Override 
 			public boolean onTouch(View v, MotionEvent event) {
+				Rect rect = new Rect();
+				rightButton.getHitRect(rect);
+				float x = event.getX() + rect.left;
+	            float y = event.getY() + rect.top;
+	            
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					if (handlr != null) return true;
@@ -134,11 +152,13 @@ public class GameActivity extends Activity {
 					handlr.removeCallbacks(buttonAction);
 					handlr = null;
 					break;
-				case MotionEvent.ACTION_OUTSIDE:
+				case MotionEvent.ACTION_MOVE:
 					if (handlr == null) return true;
-					handlr.removeCallbacks(buttonAction);
-					handlr = null;
-					break;
+					if(!rect.contains((int) x, (int) y)) {
+						handlr.removeCallbacks(buttonAction);
+						handlr = null;
+						break;
+					}
 				}
 				return false;
 			}
@@ -156,6 +176,11 @@ public class GameActivity extends Activity {
 			private Handler handlr;
 			@Override 
 			public boolean onTouch(View v, MotionEvent event) {
+				Rect rect = new Rect();
+				jump.getHitRect(rect);
+				float x = event.getX() + rect.left;
+	            float y = event.getY() + rect.top;
+	            
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					if (handlr != null) return true;
@@ -167,6 +192,13 @@ public class GameActivity extends Activity {
 					handlr.removeCallbacks(buttonAction);
 					handlr = null;
 					break;
+				case MotionEvent.ACTION_MOVE:
+					if (handlr == null) return true;
+					if(!rect.contains((int) x, (int) y)) {
+						handlr.removeCallbacks(buttonAction);
+						handlr = null;
+						break;
+					}
 				}
 				return false;
 			}
@@ -182,8 +214,13 @@ public class GameActivity extends Activity {
 		final ImageButton down = (ImageButton) findViewById(R.id.down);
 		down.setOnTouchListener(new View.OnTouchListener() {
 			private Handler handlr;
+			
 			@Override 
 			public boolean onTouch(View v, MotionEvent event) {
+				Rect rect = new Rect();
+				down.getHitRect(rect);
+				float x = event.getX() + rect.left;
+	            float y = event.getY() + rect.top;
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					if (handlr != null) return true;
@@ -195,6 +232,13 @@ public class GameActivity extends Activity {
 					handlr.removeCallbacks(buttonAction);
 					handlr = null;
 					break;
+				case MotionEvent.ACTION_MOVE:
+					if (handlr == null) return true;
+					if(!rect.contains((int) x, (int) y)) {
+						handlr.removeCallbacks(buttonAction);
+						handlr = null;
+						break;
+					}
 				}
 				return false;
 			}
@@ -212,6 +256,10 @@ public class GameActivity extends Activity {
 			private Handler handlr;
 			@Override 
 			public boolean onTouch(View v, MotionEvent event) {
+				Rect rect = new Rect();
+				spawn.getHitRect(rect);
+				float x = event.getX() + rect.left;
+	            float y = event.getY() + rect.top;
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					if (handlr != null) return true;
@@ -223,6 +271,13 @@ public class GameActivity extends Activity {
 					handlr.removeCallbacks(buttonAction);
 					handlr = null;
 					break;
+				case MotionEvent.ACTION_MOVE:
+					if (handlr == null) return true;
+					if(!rect.contains((int) x, (int) y)) {
+						handlr.removeCallbacks(buttonAction);
+						handlr = null;
+						break;
+					}
 				}
 				return false;
 			}
@@ -240,6 +295,10 @@ public class GameActivity extends Activity {
 			private Handler handlr;
 			@Override 
 			public boolean onTouch(View v, MotionEvent event) {
+				Rect rect = new Rect();
+				downRight.getHitRect(rect);
+				float x = event.getX() + rect.left;
+	            float y = event.getY() + rect.top;
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					if (handlr != null) return true;
@@ -251,6 +310,13 @@ public class GameActivity extends Activity {
 					handlr.removeCallbacks(buttonAction);
 					handlr = null;
 					break;
+				case MotionEvent.ACTION_MOVE:
+					if (handlr == null) return true;
+					if(!rect.contains((int) x, (int) y)) {
+						handlr.removeCallbacks(buttonAction);
+						handlr = null;
+						break;
+					}
 				}
 				return false;
 			}
@@ -269,6 +335,10 @@ public class GameActivity extends Activity {
 			private Handler handlr;
 			@Override 
 			public boolean onTouch(View v, MotionEvent event) {
+				Rect rect = new Rect();
+				downLeft.getHitRect(rect);
+				float x = event.getX() + rect.left;
+	            float y = event.getY() + rect.top;
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					if (handlr != null) return true;
@@ -280,6 +350,13 @@ public class GameActivity extends Activity {
 					handlr.removeCallbacks(buttonAction);
 					handlr = null;
 					break;
+				case MotionEvent.ACTION_MOVE:
+					if (handlr == null) return true;
+					if(!rect.contains((int) x, (int) y)) {
+						handlr.removeCallbacks(buttonAction);
+						handlr = null;
+						break;
+					}
 				}
 				return false;
 			}
@@ -298,6 +375,10 @@ public class GameActivity extends Activity {
 			private Handler handlr;
 			@Override 
 			public boolean onTouch(View v, MotionEvent event) {
+				Rect rect = new Rect();
+				upRight.getHitRect(rect);
+				float x = event.getX() + rect.left;
+	            float y = event.getY() + rect.top;
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					if (handlr != null) return true;
@@ -309,6 +390,13 @@ public class GameActivity extends Activity {
 					handlr.removeCallbacks(buttonAction);
 					handlr = null;
 					break;
+				case MotionEvent.ACTION_MOVE:
+					if (handlr == null) return true;
+					if(!rect.contains((int) x, (int) y)) {
+						handlr.removeCallbacks(buttonAction);
+						handlr = null;
+						break;
+					}
 				}
 				return false;
 			}
@@ -327,6 +415,10 @@ public class GameActivity extends Activity {
 			private Handler handlr;
 			@Override 
 			public boolean onTouch(View v, MotionEvent event) {
+				Rect rect = new Rect();
+				upLeft.getHitRect(rect);
+				float x = event.getX() + rect.left;
+	            float y = event.getY() + rect.top;
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					if (handlr != null) return true;
@@ -338,6 +430,13 @@ public class GameActivity extends Activity {
 					handlr.removeCallbacks(buttonAction);
 					handlr = null;
 					break;
+				case MotionEvent.ACTION_MOVE:
+					if (handlr == null) return true;
+					if(!rect.contains((int) x, (int) y)) {
+						handlr.removeCallbacks(buttonAction);
+						handlr = null;
+						break;
+					}
 				}
 				return false;
 			}
