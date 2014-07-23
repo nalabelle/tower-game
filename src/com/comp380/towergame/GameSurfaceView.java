@@ -11,7 +11,6 @@ import android.view.SurfaceView;
 import com.comp380.towergame.background.Background;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
-	private Background[][] backgroundArray = new Background[6][3];
 	private String tag = this.getClass().toString();
 	private boolean surfaceCreated = false;
 	
@@ -19,10 +18,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		super(context);
 		getHolder().addCallback(this);
 		setFocusable(true);
-
-		for(int i = 0; i < 6; i++) //init bg
-			for(int j = 0; j < 3; j++)
-				backgroundArray[i][j] = new Background(this.getContext(),i*400,j*400,1);
 	}
 
 	protected void onSizeChanged(int newX, int newY, int oldX, int oldY) {
@@ -67,17 +62,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	
 	private void drawUpdate(Canvas canvas) {
 		canvas.drawColor(Color.BLACK);
-
-		//this needs to be written in an update() method,,, just put it here now for testing
-		for(int i = 0; i < 6; i++) 
+		
+		for(int i = 0; i < 6; i++) //Draw background
 			for(int j = 0; j < 3; j++)
-				backgroundArray[i][j].updateBackground();
-		
-		
-		
-		for(int i = 0; i < 6; i++) //init bg
-			for(int j = 0; j < 3; j++)
-				backgroundArray[i][j].draw(canvas);
+				((GameActivity) this.getContext()).backgroundArray[i][j].draw(canvas);
 		
 		this.drawEntities(canvas);
 	}

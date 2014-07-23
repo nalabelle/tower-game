@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import com.comp380.towergame.entities.EntityManager;
 import com.comp380.towergame.entities.EvilGuy;
 import com.comp380.towergame.physics.CollisionDetection;
+import com.comp380.towergame.background.*;
 
 public class GameActivity extends Activity {
 	private String tag = this.getClass().toString();
@@ -25,7 +26,7 @@ public class GameActivity extends Activity {
 	protected 	EntityManager	entityManager	= null;
 	protected 	GameThread 		gameThread = null;
 	protected	CollisionDetection	collisionDetection = null;
-	
+	protected Background[][] backgroundArray = null;
 	public static int GAME_MAX_WIDTH = 1920;
 	public static int GAME_MAX_HEIGHT = 1200;
 
@@ -59,6 +60,12 @@ public class GameActivity extends Activity {
 		Log.v(tag, "Starting Entity Manager");
 		this.entityManager = new EntityManager(this);
 		this.collisionDetection = new CollisionDetection(this);
+		this.backgroundArray = new Background[6][3];
+		for(int i = 0; i < 6; i++) //init bg
+			for(int j = 0; j < 3; j++)
+				backgroundArray[i][j] = new Background(this,i*400,j*400,1);
+		
+		
 		this.toggleGameThread(true);
 		
 		wireButtons();

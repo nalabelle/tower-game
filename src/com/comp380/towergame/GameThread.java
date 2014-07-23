@@ -56,5 +56,9 @@ public class GameThread extends Thread {
 
 	private void gameUpdate() {
 		this.context.entityManager.updateAll();
+		
+		for(int i = 0; i < 6; i++) // Update Background
+			for(int j = 0; j < 3; j++)
+				this.context.backgroundArray[i][j].updateBackground();
 	}
 }
