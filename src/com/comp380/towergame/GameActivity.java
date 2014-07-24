@@ -284,7 +284,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAll().add(new EvilGuy(BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
+					entityManager.getAll().add(new EvilGuy(entityManager, BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
 					handlr.postDelayed(this, sleep*15);
 				}
 			};

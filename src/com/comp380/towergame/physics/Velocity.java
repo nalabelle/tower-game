@@ -9,6 +9,9 @@ public class Velocity {
 	private float xSpeed;
 	private float ySpeed;
 	
+	//Last update information for deltas
+	private long lastUpdate;
+	
 	public float getX() {
 		return x;
 	}

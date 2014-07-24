@@ -8,6 +8,7 @@ import android.graphics.Rect;
 
 public class BaseEntity {
 	private int ID;
+	private EntityManager manager;
 	private Bitmap texture;
 	
 	private Velocity velocity;
@@ -18,12 +19,15 @@ public class BaseEntity {
 	private int sizeX;
 	private int sizeY;
 	
-	public BaseEntity(Bitmap texture, int x, int y, int sizeX, int sizeY) {
+	private int health;
+	
+	public BaseEntity(EntityManager manager, Bitmap texture, int x, int y, int sizeX, int sizeY) {
 		this.texture = texture;
 		this.x = x;
 		this.y = y;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
+		this.setManager(manager);
 	}
 	
 	public int getX() {
@@ -82,6 +86,22 @@ public class BaseEntity {
 
 	public Rect getBounds() {
 		return new Rect(this.getX(), this.getY(), this.getX() + this.getBoundingBoxX(), this.getY()+this.getBoundingBoxY());
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public EntityManager getManager() {
+		return manager;
+	}
+
+	public void setManager(EntityManager manager) {
+		this.manager = manager;
 	}
 
 }
