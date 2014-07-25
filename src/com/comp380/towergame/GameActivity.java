@@ -3,6 +3,7 @@ package com.comp380.towergame;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -26,6 +27,7 @@ public class GameActivity extends Activity {
 	protected 	GameThread 		gameThread = null;
 	protected	CollisionDetection	collisionDetection = null;
 	protected Background[][] backgroundArray = null;
+	protected MediaPlayer goatBleet = null;
 	public static int GAME_MAX_WIDTH = 1920;
 	public static int GAME_MAX_HEIGHT = 1200;
 
@@ -68,6 +70,7 @@ public class GameActivity extends Activity {
 		this.toggleGameThread(true);
 		
 		wireButtons();
+		goatBleet = MediaPlayer.create(this, R.raw.bleet);
 	}
 
 	protected void toggleGameThread(boolean b) {
@@ -78,6 +81,10 @@ public class GameActivity extends Activity {
 
 	public EntityManager getEntityManager() {
 		return entityManager;
+	}
+	
+	public MediaPlayer getBleeter() {
+		return goatBleet;
 	}
 
 	public CollisionDetection getCollisionDetection() {

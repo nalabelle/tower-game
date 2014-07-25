@@ -46,7 +46,8 @@ public class EntityManager {
 
 	public void updateAll() {
 		ArrayList<BaseEntity> toRemove = new ArrayList<BaseEntity>();
-		for(BaseEntity entity : this.entityStorage){
+		ArrayList<BaseEntity> safeIter = new ArrayList<BaseEntity>(this.entityStorage);
+		for(BaseEntity entity : safeIter){
 			entity.update();
 			this.context.getCollisionDetection().checkCollisions(entity);
 			if(entity.getHealth() < 0) {
@@ -59,7 +60,8 @@ public class EntityManager {
 	}
 
 	public void drawAll(Canvas canvas) {
-		for(BaseEntity entity : this.entityStorage){
+		ArrayList<BaseEntity> safeIter = new ArrayList<BaseEntity>(this.entityStorage);
+		for(BaseEntity entity : safeIter){
 			entity.draw(canvas);
 		}
 	}
