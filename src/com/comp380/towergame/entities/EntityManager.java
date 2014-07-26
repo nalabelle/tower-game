@@ -17,11 +17,11 @@ public class EntityManager {
 		this.entityStorage = new ArrayList<BaseEntity>();
 		
 		//temporary Andy creation
-		BaseEntity andy = new Andy(BitmapFactory.decodeResource(gameActivity.getResources(), R.drawable.player_jump));
+		BaseEntity andy = new Andy(this, BitmapFactory.decodeResource(gameActivity.getResources(), R.drawable.player_jump));
 		this.entityStorage.add(andy);
 		
 		//temporary Baddie creation
-		BaseEntity badguy = new EvilGuy(BitmapFactory.decodeResource(gameActivity.getResources(), R.drawable.badguy));
+		BaseEntity badguy = new EvilGuy(this, BitmapFactory.decodeResource(gameActivity.getResources(), R.drawable.badguy));
 		this.entityStorage.add(badguy);
 	}
 	
@@ -45,14 +45,23 @@ public class EntityManager {
 	}
 
 	public void updateAll() {
-		for(BaseEntity entity : this.entityStorage){
+		ArrayList<BaseEntity> toRemove = new ArrayList<BaseEntity>();
+		ArrayList<BaseEntity> safeIter = new ArrayList<BaseEntity>(this.entityStorage);
+		for(BaseEntity entity : safeIter){
 			entity.update();
 			this.context.getCollisionDetection().checkCollisions(entity);
+			if(entity.getHealth() < 0) {
+				toRemove.add(entity);
+			}
+		}
+		for(BaseEntity removing : toRemove) {
+			this.entityStorage.remove(removing);
 		}
 	}
 
 	public void drawAll(Canvas canvas) {
-		for(BaseEntity entity : this.entityStorage){
+		ArrayList<BaseEntity> safeIter = new ArrayList<BaseEntity>(this.entityStorage);
+		for(BaseEntity entity : safeIter){
 			entity.draw(canvas);
 		}
 	}

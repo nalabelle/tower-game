@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -31,12 +32,16 @@ public class GameActivity extends Activity {
 	protected 	GameThread 		gameThread = null;
 	protected	CollisionDetection	collisionDetection = null;
 	protected Background[][] backgroundArray = null;
+
 	
 	
 	//temp
 	protected TileEngine tileEngine;
 	protected Levels levels;
 	
+
+	protected MediaPlayer goatBleet = null;
+
 	public static int GAME_MAX_WIDTH = 1920;
 	public static int GAME_MAX_HEIGHT = 1200;
 
@@ -85,6 +90,7 @@ public class GameActivity extends Activity {
 		this.toggleGameThread(true);
 		
 		wireButtons();
+		goatBleet = MediaPlayer.create(this, R.raw.bleet);
 	}
 
 	protected void toggleGameThread(boolean b) {
@@ -95,6 +101,10 @@ public class GameActivity extends Activity {
 
 	public EntityManager getEntityManager() {
 		return entityManager;
+	}
+	
+	public MediaPlayer getBleeter() {
+		return goatBleet;
 	}
 
 	public CollisionDetection getCollisionDetection() {
@@ -301,7 +311,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAll().add(new EvilGuy(BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
+					entityManager.getAll().add(new EvilGuy(entityManager, BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
 					handlr.postDelayed(this, sleep*15);
 				}
 			};

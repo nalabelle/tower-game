@@ -27,7 +27,7 @@ public class GameThread extends Thread {
 		int sleepTime = 0;
 		int frameSkip;
 		
-		while (this.running && !this.isInterrupted()) {
+		while (this.running) {
 			startTime = System.currentTimeMillis();
 			frameSkip = 0;
 			this.gameUpdate();
@@ -44,7 +44,8 @@ public class GameThread extends Thread {
 				}
 			}
 			
-			while(sleepTime < 0 && frameSkip < MAX_FRAME_SKIP && !this.isInterrupted()) {
+			while(sleepTime < 0 && frameSkip < MAX_FRAME_SKIP) {
+				if(Thread.interrupted()) break;
 				//We're behind, let's do some updates without drawing
 				this.gameUpdate();
 				
@@ -56,11 +57,13 @@ public class GameThread extends Thread {
 
 	private void gameUpdate() {
 		this.context.entityManager.updateAll();
+
 		
 		this.context.tileEngine.updateTiles();
 		
 		for(int i = 0; i < 6; i++) // Update Background
 			for(int j = 0; j < 3; j++)
 				this.context.backgroundArray[i][j].updateBackground();
+
 	}
 }
