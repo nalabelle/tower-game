@@ -1,6 +1,8 @@
 package com.comp380.towergame;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -15,9 +17,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.comp380.towergame.background.Background;
+import com.comp380.towergame.background.Tile; ////temp
 import com.comp380.towergame.entities.EntityManager;
 import com.comp380.towergame.entities.EvilGuy;
 import com.comp380.towergame.physics.CollisionDetection;
+import com.comp380.towergame.background.TileEngine;
+import com.comp380.towergame.background.Levels;
 
 public class GameActivity extends Activity {
 	private String tag = this.getClass().toString();
@@ -26,6 +31,12 @@ public class GameActivity extends Activity {
 	protected 	GameThread 		gameThread = null;
 	protected	CollisionDetection	collisionDetection = null;
 	protected Background[][] backgroundArray = null;
+	
+	
+	//temp
+	protected TileEngine tileEngine;
+	protected Levels levels;
+	
 	public static int GAME_MAX_WIDTH = 1920;
 	public static int GAME_MAX_HEIGHT = 1200;
 
@@ -60,9 +71,15 @@ public class GameActivity extends Activity {
 		this.entityManager = new EntityManager(this);
 		this.collisionDetection = new CollisionDetection(this);
 		this.backgroundArray = new Background[6][3];
-		for(int i = 0; i < 6; i++) //init bg
+		
+		
+		for(int i = 0; i < 6; i++) //init bg,, move to game thread when level manager is done
 			for(int j = 0; j < 3; j++)
 				backgroundArray[i][j] = new Background(this,i*400,j*400,1);
+		
+		
+		levels = new Levels(this, 1);
+		tileEngine = new TileEngine(this, levels.getLevel(),levels.getlevelLength());
 		
 		
 		this.toggleGameThread(true);
