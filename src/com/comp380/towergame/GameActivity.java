@@ -1,8 +1,11 @@
 package com.comp380.towergame;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -15,9 +18,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.comp380.towergame.background.Background;
+import com.comp380.towergame.background.Tile; ////temp
 import com.comp380.towergame.entities.EntityManager;
 import com.comp380.towergame.entities.EvilGuy;
+import com.comp380.towergame.entities.Flame;
 import com.comp380.towergame.physics.CollisionDetection;
+import com.comp380.towergame.background.TileEngine;
+import com.comp380.towergame.background.Levels;
 
 public class GameActivity extends Activity {
 	private String tag = this.getClass().toString();
@@ -26,6 +33,15 @@ public class GameActivity extends Activity {
 	protected 	GameThread 		gameThread = null;
 	protected	CollisionDetection	collisionDetection = null;
 	protected Background[][] backgroundArray = null;
+	
+	public final boolean DEV_MODE = false;
+	//temp
+	protected TileEngine tileEngine;
+	protected Levels levels;
+	
+
+	protected MediaPlayer goatBleet = null;
+
 	public static int GAME_MAX_WIDTH = 1920;
 	public static int GAME_MAX_HEIGHT = 1200;
 
@@ -60,14 +76,21 @@ public class GameActivity extends Activity {
 		this.entityManager = new EntityManager(this);
 		this.collisionDetection = new CollisionDetection(this);
 		this.backgroundArray = new Background[6][3];
-		for(int i = 0; i < 6; i++) //init bg
+		
+		
+		for(int i = 0; i < 6; i++) //init bg,, move to game thread when level manager is done
 			for(int j = 0; j < 3; j++)
 				backgroundArray[i][j] = new Background(this,i*400,j*400,1);
+		
+		
+		levels = new Levels(this, 1);
+		tileEngine = new TileEngine(this, levels.getLevel(),levels.getlevelLength());
 		
 		
 		this.toggleGameThread(true);
 		
 		wireButtons();
+		goatBleet = MediaPlayer.create(this, R.raw.bleet);
 	}
 
 	protected void toggleGameThread(boolean b) {
@@ -78,6 +101,10 @@ public class GameActivity extends Activity {
 
 	public EntityManager getEntityManager() {
 		return entityManager;
+	}
+	
+	public MediaPlayer getBleeter() {
+		return goatBleet;
 	}
 
 	public CollisionDetection getCollisionDetection() {
@@ -286,6 +313,47 @@ public class GameActivity extends Activity {
 				public void run() {
 					entityManager.getAll().add(new EvilGuy(entityManager, BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
 					handlr.postDelayed(this, sleep*15);
+				}
+			};
+		});
+		
+		final ImageButton fire = (ImageButton) findViewById(R.id.fire);
+		fire.setOnTouchListener(new View.OnTouchListener() {
+			private Handler handlr;
+			@Override 
+			public boolean onTouch(View v, MotionEvent event) {
+				Rect rect = new Rect();
+				fire.getHitRect(rect);
+				float x = event.getX() + rect.left;
+	            float y = event.getY() + rect.top;
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (handlr != null) return true;
+					handlr = new Handler();
+					handlr.postDelayed(buttonAction, sleep*6);
+					break;
+				case MotionEvent.ACTION_UP:
+					if (handlr == null) return true;
+					handlr.removeCallbacks(buttonAction);
+					handlr = null;
+					break;
+				case MotionEvent.ACTION_MOVE:
+					if (handlr == null) return true;
+					if(!rect.contains((int) x, (int) y)) {
+						handlr.removeCallbacks(buttonAction);
+						handlr = null;
+						break;
+					}
+				}
+				return false;
+			}
+			Runnable buttonAction = new Runnable() {
+				@Override 
+				public void run() {
+					entityManager.getAll().add(new Flame(entityManager, 
+							BitmapFactory.decodeResource(getResources(), R.drawable.flame),
+							entityManager.getAndy().getX(), entityManager.getAndy().getY()));
+					handlr.postDelayed(this, sleep*6);
 				}
 			};
 		});

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 
 import com.comp380.towergame.GameActivity;
 import com.comp380.towergame.R;
@@ -46,7 +48,8 @@ public class EntityManager {
 
 	public void updateAll() {
 		ArrayList<BaseEntity> toRemove = new ArrayList<BaseEntity>();
-		for(BaseEntity entity : this.entityStorage){
+		ArrayList<BaseEntity> safeIter = new ArrayList<BaseEntity>(this.entityStorage);
+		for(BaseEntity entity : safeIter){
 			entity.update();
 			this.context.getCollisionDetection().checkCollisions(entity);
 			if(entity.getHealth() < 0) {
@@ -59,8 +62,16 @@ public class EntityManager {
 	}
 
 	public void drawAll(Canvas canvas) {
-		for(BaseEntity entity : this.entityStorage){
+		ArrayList<BaseEntity> safeIter = new ArrayList<BaseEntity>(this.entityStorage);
+		
+		Paint myPaint = new Paint();
+		myPaint.setColor(Color.RED);
+		myPaint.setStrokeWidth(0);
+		
+		for(BaseEntity entity : safeIter){
 			entity.draw(canvas);
+			if(this.context.DEV_MODE)
+				canvas.drawRect(entity.getBounds(), myPaint);
 		}
 	}
 
