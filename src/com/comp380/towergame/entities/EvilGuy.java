@@ -34,13 +34,21 @@ public class EvilGuy extends BaseEntity {
 		}
 	}
 	
-	private void attackPlayer(int x) {
+	private void attackPlayer(int x, boolean left) {
 		this.attacking = 1;
 		int inc = 8;
-		if((x - inc) > 0) {
-			this.setX((int) (x - inc));
+		if(left) {
+			if((x - inc) > 0) {
+				this.setX((int) (x - inc));
+			} else {
+				this.xstop = true;
+			}
 		} else {
-			this.xstop = true;
+			if((x + inc) > GameActivity.GAME_MAX_WIDTH) {
+				this.setX((int) (x + inc));
+			} else {
+				this.xstop = true;
+			}			
 		}
 	}
 
@@ -62,7 +70,9 @@ public class EvilGuy extends BaseEntity {
 				this.jumpSwitch = 0;
 			}
 		} else {
-			this.attackPlayer(x);
+			boolean andyLeft = true;
+			if(this.getManager().getAndy().getX() - this.getX() > 0) andyLeft = false;
+			this.attackPlayer(x, andyLeft);
 		}
 		
 		if(this.xstop) {
@@ -71,7 +81,7 @@ public class EvilGuy extends BaseEntity {
 	}
 	
 	private boolean canSeePlayer() {
-		int andyx = this.getManager().getAndy().getX();
+		int andyx = this.getManager().getAndy().getX(); //should check for facing too?
 		int andyy = this.getManager().getAndy().getY();
 		if(Math.abs(andyy - this.getY()) < 50) {
 			return true;
