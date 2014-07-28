@@ -14,7 +14,7 @@ public class Tile
 	
 	public Tile(Context context,int x, int y, int xInG, int yInG, boolean solid, Bitmap b) //where xInG is x position in game
 	{
-		tileXSpeed = 0; //value should be 0
+		tileXSpeed = -6; //value should be 0
 		tileOnScreenX = x;
 		tileOnScreenY = y;
 		tileInGX = xInG;

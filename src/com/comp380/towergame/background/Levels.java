@@ -63,126 +63,110 @@ public class Levels
 				for(int i = 0; i < levelLength; i++) //fill entire array w/ floor
 					for(int j = 0; j < 14; j++)
 					{
-						
-						if(j == 0 && i < 49)
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
-						else if(j == 0 && i < 114)
-							level[i][j] = new Tile(this.context,0, 0, i, j, false, roofTile);
-						else if(j == 0 && i < 199)
-							level[i][j] = new Tile(this.context,0, 0, i, j, false, blackTile);
-						else if(j == 1 && i < 28)
+						if(j == 0)
 						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
+							if(i < 49 || i < 200)
+								level[i][j] = new Tile(this.context,0, 0, i, j, false, blackTile);
+							else if(i < 114)
+								level[i][j] = new Tile(this.context,0, 0, i, j, false, roofTile);
 						}
-						else if(j == 1 && i < 48)
+						else if(j == 1)
 						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, roofTile);
+							if(i < 28 || (i < 200 && i >= 122))
+								level[i][j] = new Tile(this.context,0, 0, i, j, false, blackTile);
+							else if(i <= 48 || (i > 115 && i < 122))
+								level[i][j] = new Tile(this.context,0, 0, i, j, false, roofTile);
 						}
-						else if(j == 1 && i > 115 && i < 122)
+						else if(j == 2)
 						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, roofTile);
+							if(i < 27 ||( i >= 136 && i < 168))
+								level[i][j] = new Tile(this.context,0, 0, i, j, false, blackTile);
+							else if((i > 121 && i < 136) || i == 27 || i >= 168)
+								level[i][j] = new Tile(this.context,0, 0, i, j, false, roofTile);
 						}
-						else if(j == 1 && i < 199 && i >= 122)
+						else if(j == 3)
 						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
+							if(i <= 26)
+								level[i][j] = new Tile(this.context,0,0,i,j,false,roofTile);
+							else if(i >= 136 && i < 168)
+								level[i][j] = new Tile(this.context,0, 0, i, j, false, roofTile);
 						}
-						else if(j == 2 && i < 27)
+						else if(j == 6)
 						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
+							if((i >= 61 && i < 68) || (i >= 73 && i < 76) || (i >= 78 && i < 81) || (i >= 85 && i < 102))
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, floorTile);
+							else if(i == 84)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, cornerRightTile);
+							else if(i == 199)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
 						}
-						else if(j == 2 && i > 123 && i < 136)
+						else if(j == 7)
 						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, roofTile);
+							if((i >= 51 && i < 61) || (i >= 102 && i < 108) || (i >= 170 && i < 175) || (i > 178 && i < 201))
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, floorTile);
+							else if(i == 84)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, wallRightTile);
+							else if(i >= 85 && i < 102)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
+							else if(i == 178)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, cornerRightTile);
 						}
-						else if(j == 2 && i >= 136 && i < 168)
+						else if(j == 8)
 						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
+							if((i < 5) || (i >= 44 && i < 51) || (i >= 108 && i < 122) || (i >= 161 && i < 170))
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, floorTile);
+							else if(i == 84 || i == 178)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, wallRightTile);
+							else if(i >= 85 && i < 121 || (i > 178 && i < 201))
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
+							else if(i == 122)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, cornerLeftTile);
 						}
-						else if(j == 2 && i >= 168)
+						else if(j == 9)
 						{
-							level[i][j] = new Tile(this.context,0,0,i,j,true,roofTile);
+							if(i < 5)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, brickTile);
+							else if(i == 84 || i == 178)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, wallRightTile);
+							else if(i >= 12 && i < 27)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, floorTile);
+							else if(i >= 85 && i <= 121 || (i > 178 && i < 201))
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
+							else if(i == 122)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, wallLeftTile);
 						}
-						else if(j == 3 && i <= 26)
+						else if(j == 10)
 						{
-							level[i][j] = new Tile(this.context,0,0,i,j,true,roofTile);
+							if(i < 5)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, brickTile);
+							else if(i == 84 || i == 178)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, wallRightTile);
+							else if((i >= 12 && i < 27) || (i >= 85 && i <= 121) || (i > 178 && i < 201))
+								level[i][j] = new Tile(this.context,0, 0, i, j, false, blackTile);
+							else if(i == 11 || (j == 10 && i >= 27 && i < 29))
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, floorTile);
+							else if(i == 122)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, wallLeftTile);
 						}
-						else if(j == 3 && i >= 136 && i < 168)
+						else if(j == 11)
 						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, roofTile);
-						}
-						else if((j == 6 && i >= 61 && i < 68) || (j == 6 && i >= 73 && i < 76) || (j == 6 && i >= 78 && i < 81) || (j == 6 && i >= 85 && i < 102))
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, floorTile);
-						}
-						else if(j == 6 && i == 84)
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, cornerRightTile);
-						}
-						else if((j == 7 && i >= 51 && i < 61) || (j == 7 && i >= 103 && i < 108) || (j == 7 && i >= 170 && i < 175) || (j == 7 && i >= 178 && i < 200))
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, floorTile);
-						}
-						else if(j == 7 && i == 84)
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, wallRightTile);
-						}
-						else if((j == 8 && i < 5) || (j == 8 && i >= 44 && i < 51) || (j == 8 && i >= 109 && i < 122) || (j == 8 && i >= 161 && i < 170))
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, floorTile);
-						}
-						else if(j == 8 && i == 84)
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, wallRightTile);
-						}
-						else if(j == 9 && i < 5)
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, brickTile);
-						}
-						else if(j == 9 && i == 84)
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, wallRightTile);
-						}
-
-						else if((j == 9 && i >= 12 && i < 27))
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, floorTile);
-						}
-						else if(j == 10 && i < 5)
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, brickTile);
-						}
-						else if(j == 10 && i == 84)
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, wallRightTile);
-						}
-						else if((j == 10 && i >= 12 && i < 27))
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
-						}
-						else if((j == 10 && i == 11) || (j == 10 && i >= 27 && i < 29))
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, floorTile);
-						}
-						else if((j == 11 && i < 5))
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, brickTile);
-						}
-						else if(j == 11 && i == 84)
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, wallRightTile);
-						}
-						else if((j == 11 && i >= 11 && i < 29))
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
-						}
-						else if((j == 11 && i >= 5 && i < 13) || (j == 11 && i >= 5 && i < 13) || (j == 11 && i >= 29 && i < 84) || (j == 11 && i >= 122 && i < 178))
-						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, floorTile);
+							if(i < 5)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, brickTile);
+							else if(i == 84 || i == 178)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, wallRightTile);
+							else if((i >= 11 && i < 29) || (i >= 85 && i <= 121) || (i > 178 && i < 201))
+								level[i][j] = new Tile(this.context,0, 0, i, j, false, blackTile);
+							else if((i >= 5 && i < 13) || (i >= 5 && i < 13) || (i >= 29 && i < 84) || (i > 122 && i < 178))
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, floorTile);
+							else if(i == 122)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, wallLeftTile);
 						}
 						else if(j == 12)
 						{
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
+							level[i][j] = new Tile(this.context,0, 0, i, j, false, blackTile);
 						}
+						else if(j == 5 && i == 199)
+							level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
 						
 						
 						/*
@@ -191,7 +175,7 @@ public class Levels
 						else if(i >= 100)
 							level[i][j] = new Tile(this.context,0, 0, i, j, false, roofTile); //on screen
 							*/
-						else 
+						if(level[i][j] == null) 
 							level[i][j] = new Tile(this.context,0, 0, i, j, false, transTile); //on screen
 							
 							
