@@ -65,8 +65,9 @@ public class EntityManager {
 		ArrayList<BaseEntity> safeIter = new ArrayList<BaseEntity>(this.entityStorage);
 		
 		Paint myPaint = new Paint();
+		myPaint.setStyle(Paint.Style.STROKE);
 		myPaint.setColor(Color.RED);
-		myPaint.setStrokeWidth(0);
+		myPaint.setStrokeWidth(2);
 		
 		for(BaseEntity entity : safeIter){
 			entity.draw(canvas);
