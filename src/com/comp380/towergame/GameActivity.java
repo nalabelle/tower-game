@@ -44,6 +44,8 @@ public class GameActivity extends Activity {
 
 	public static int GAME_MAX_WIDTH = 1920;
 	public static int GAME_MAX_HEIGHT = 1200;
+	public static int GRAPHIC_SCALING = 2;
+	public static int GRAVITY_SPEED = 15;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

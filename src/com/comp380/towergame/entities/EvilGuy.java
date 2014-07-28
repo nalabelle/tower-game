@@ -12,7 +12,7 @@ public class EvilGuy extends BaseEntity {
 	private int jumpSwitch = 0;
 
 	public EvilGuy(EntityManager manager, Bitmap bitmap) {
-		super(manager, bitmap, 325, 500, 108, 105);
+		super(manager, bitmap, 325, 500);
 		this.setID(2);
 	}
 	

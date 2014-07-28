@@ -1,10 +1,12 @@
 package com.comp380.towergame.entities;
 
+import com.comp380.towergame.GameActivity;
 import com.comp380.towergame.physics.Velocity;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.DisplayMetrics;
 
 public class BaseEntity {
 	private int ID;
@@ -12,6 +14,7 @@ public class BaseEntity {
 	private Bitmap texture;
 	
 	private Velocity velocity;
+	private boolean onGround = false;
 	
 	private int x;
 	private int y;
@@ -21,12 +24,13 @@ public class BaseEntity {
 	
 	private int health;
 	
-	public BaseEntity(EntityManager manager, Bitmap texture, int x, int y, int sizeX, int sizeY) {
+	public BaseEntity(EntityManager manager, Bitmap texture, int x, int y) {
 		this.texture = texture;
 		this.x = x;
 		this.y = y;
-		this.sizeX = sizeX;
-		this.sizeY = sizeY;
+		//texture.getScaledWidth(DisplayMetrics.DENSITY_XHIGH) ?
+		this.sizeX = texture.getWidth() * GameActivity.GRAPHIC_SCALING;
+		this.sizeY = texture.getHeight() * GameActivity.GRAPHIC_SCALING;
 		this.setManager(manager);
 	}
 	
@@ -81,7 +85,9 @@ public class BaseEntity {
 	}
 	
 	public void update() {
-		
+		if(!this.onGround) {
+			
+		}
 	}
 
 	public Rect getBounds() {
