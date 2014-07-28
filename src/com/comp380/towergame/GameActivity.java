@@ -59,6 +59,7 @@ public class GameActivity extends Activity {
 		//Loads the graphic box
 		Log.v(tag, "Opening Surface View");
 		this.gameSurfaceView = new GameSurfaceView(this);
+		this.gameSurfaceView.setKeepScreenOn(true);
 		
 		//Add gameSurface
 		game.addView(this.gameSurfaceView);
