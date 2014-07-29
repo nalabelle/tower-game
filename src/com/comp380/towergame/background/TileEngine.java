@@ -1,7 +1,11 @@
 package com.comp380.towergame.background;
 
+import java.util.ArrayList;
+import com.comp380.towergame.GameActivity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 
 public class TileEngine
 {
@@ -49,6 +53,15 @@ public class TileEngine
 				if(tileArray[i][j] == null)
 					continue;
 				canvas.drawBitmap(tileArray[i][j].getTileBitmap(), tileArray[i][j].getTileOnScreenX(),tileArray[i][j].getTileOnScreenY(), null);
+				
+				//debug bounding drawing.
+				if(((GameActivity) this.context).DEV_MODE && tileArray[i][j].isSolid()) {
+					Paint myPaint = new Paint();
+					myPaint.setStyle(Paint.Style.STROKE);
+					myPaint.setColor(Color.BLUE);
+					myPaint.setStrokeWidth(2);
+					canvas.drawRect(tileArray[i][j].getBounds(), myPaint);
+				}
 			}
 		}
 	}
@@ -105,6 +118,25 @@ public class TileEngine
 				
 			}
 		}
+	}
+
+	public ArrayList<Tile> getAllVisibleSolid() {
+		ArrayList<Tile> newArray = new ArrayList<Tile>();
+		for(int i = 0; i < x; i++) {
+			for(int j = 0; j < y; j++) {
+				if(tileArray[i][j] == null)
+					continue;
+				if(!tileArray[i][j].isSolid())
+					continue;
+				if(tileArray[i][j].getTileOnScreenX() > 0 &&
+					tileArray[i][j].getTileOnScreenX() < GameActivity.GAME_MAX_WIDTH &&
+					tileArray[i][j].getTileOnScreenY() > 0 &&
+					tileArray[i][j].getTileOnScreenY() < GameActivity.GAME_MAX_HEIGHT) {
+					newArray.add(tileArray[i][j]);
+				}
+			}
+		}
+		return newArray;
 	}
 	
 	

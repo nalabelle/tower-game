@@ -14,7 +14,7 @@ public class Background
 	
 	public Background(Context context,int x, int y, int imageNum) //where imageNum is background image
 	{
-		backgroundSpeed = +6; //value should be 0
+		backgroundSpeed = 0; //value should be 0
 		backgroundX = x;
 		backgroundY = y;
 		switch(imageNum)

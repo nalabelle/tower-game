@@ -54,6 +54,7 @@ public class Goat extends BaseEntity {
 	}
 
 	public void update() {
+		super.update();
 		int x = this.point.x;
 		int y = this.point.y;
 		
