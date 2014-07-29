@@ -9,6 +9,7 @@ public class Andy extends BaseEntity {
 		super(manager, bitmap, 25, 25);
 		this.setID(1);
 		this.speed = Speed.PLAYER;
+		this.health = 20;
 	}
 	
 	public int getX() {

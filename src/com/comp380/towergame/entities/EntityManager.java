@@ -2,12 +2,15 @@ package com.comp380.towergame.entities;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.util.Log;
 
+import com.comp380.towergame.CreditsActivity;
 import com.comp380.towergame.GameActivity;
 import com.comp380.towergame.R;
 import com.comp380.towergame.background.Tile;
@@ -58,12 +61,19 @@ public class EntityManager {
 			entity.update();
 			//this.context.getCollisionDetection().checkCollisions(entity);
 			//this will be done when things move, rather than every time.
-			if(entity.getHealth() < 0) {
+			if(entity.getHealth() < 0) {				
 				toRemove.add(entity);
 			}
 		}
 		for(BaseEntity removing : toRemove) {
 			this.entityStorage.remove(removing);
+			if(removing.getID() == 1) {
+				//Andy Died
+				Log.v("tag lol", "Adny died, Hp =" +removing.getHealth());
+				Intent intent = new Intent(this.context, CreditsActivity.class);
+		    	this.context.startActivity(intent);
+		    	break;
+			}
 		}
 	}
 

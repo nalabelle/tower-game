@@ -133,17 +133,20 @@ public class GameActivity extends Activity {
 					if (handlr != null) return true;
 					handlr = new Handler();
 					handlr.postDelayed(buttonAction, sleep);
+					Log.v(tag, "Left Down");
 					break;
 				case MotionEvent.ACTION_UP:
 					if (handlr == null) return true;
 					handlr.removeCallbacks(buttonAction);
 					handlr = null;
+					Log.v(tag, "Left UP");
 					break;
 				case MotionEvent.ACTION_MOVE:
 					if (handlr == null) return true;
 					if(!rect.contains((int) x, (int) y)) {
 						handlr.removeCallbacks(buttonAction);
 						handlr = null;
+						Log.v(tag, "Left Move");
 						break;
 					}
 				}

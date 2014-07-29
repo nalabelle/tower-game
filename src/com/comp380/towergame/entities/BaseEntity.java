@@ -78,10 +78,13 @@ public class BaseEntity {
 			//this.collisionAction(newPoint, direction);
 			if(!(this instanceof Andy))
 				this.health = -10;
+				if(firstCollided.getID() == 1)
+					firstCollided.setHealth(firstCollided.getHealth() -10);
 			if(this instanceof Flame)
 				this.health = -100;
 				if(firstCollided.getID() == 2)
-					this.manager.getAll().remove(firstCollided);
+					firstCollided.setHealth(-100);
+					//this.manager.getAll().remove(firstCollided);
 				
 		}
 		
