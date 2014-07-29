@@ -1,13 +1,13 @@
 package com.comp380.towergame;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * @author Group5: Nik
@@ -61,7 +62,7 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
     
-    public void launch_game(View view) {
+    public void launchGame(View view) {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
         //finish();
@@ -69,21 +70,29 @@ public class MainActivity extends Activity {
     
 
     
-    public void launch_credits(View view){
+    public void launchCredits(View view){
     	Intent intent = new Intent(this, CreditsActivity.class);
     	startActivity(intent);
+    }
+    
+    public void launchOptions(View view){
+    	Toast.makeText(this, "To be implemented...", Toast.LENGTH_LONG).show();    	
     }
     
     //Using a custom font (IsomothPro) from assets for display
     public void setFont(){
     	Typeface font = Typeface.createFromAsset(getAssets(), "font/IsomothPro.otf");
     	
+    	TextView title = (TextView) findViewById(R.id.tvTitle);
     	TextView version = (TextView) findViewById(R.id.tvVersion);
     	Button start = (Button) findViewById(R.id.bStart);
     	Button credits = (Button) findViewById(R.id.bCredits);
+    	Button options = (Button) findViewById(R.id.bOptions);
     	
+    	title.setTypeface(font);
     	version.setTypeface(font);
     	start.setTypeface(font);
     	credits.setTypeface(font);
+    	options.setTypeface(font);
     }
 }
