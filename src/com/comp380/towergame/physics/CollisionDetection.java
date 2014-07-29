@@ -35,7 +35,7 @@ public class CollisionDetection {
 	public Tile checkTileCollisions(BaseEntity entityMoved, Point newPoint, MoveDirection direction) {
 		Rect moved = entityMoved.getBounds();
 		moved.offsetTo(newPoint.x, newPoint.y);
-		ArrayList<Tile> safeIter = this.context.getTileManager().getAllVisible();
+		ArrayList<Tile> safeIter = this.context.getTileManager().getAllVisibleSolid();
 		
 		int traceX = Integer.MIN_VALUE;
 		int traceY = Integer.MIN_VALUE;
@@ -69,7 +69,7 @@ public class CollisionDetection {
 			Rect otherBound = other.getBounds();
 			if(half > 0) {
 				//top and left
-				if(traceY > Integer.MIN_VALUE && otherBound.top > traceY) {
+				if(traceY > Integer.MIN_VALUE && otherBound.top < traceY) {
 					//top
 					if(this.tileIntersection(moved, otherBound))
 						return other;
@@ -81,7 +81,7 @@ public class CollisionDetection {
 				}
 			} else {
 				//bottom and right
-				if(traceY > Integer.MIN_VALUE && otherBound.bottom < traceY) {
+				if(traceY > Integer.MIN_VALUE && otherBound.bottom > traceY) {
 					//bottom
 					if(this.tileIntersection(moved, otherBound))
 						return other;

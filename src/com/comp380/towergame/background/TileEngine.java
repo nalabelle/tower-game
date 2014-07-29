@@ -103,13 +103,14 @@ public class TileEngine
 		}
 	}
 
-	public ArrayList<Tile> getAllVisible() {
+	public ArrayList<Tile> getAllVisibleSolid() {
 		ArrayList<Tile> newArray = new ArrayList<Tile>();
 		for(int i = 0; i < x; i++) {
 			for(int j = 0; j < y; j++) {
 				if(tileArray[i][j] == null)
 					continue;
-				
+				if(!tileArray[i][j].isSolid())
+					continue;
 				if(tileArray[i][j].getTileOnScreenX() > 0 &&
 					tileArray[i][j].getTileOnScreenX() < GameActivity.GAME_MAX_WIDTH &&
 					tileArray[i][j].getTileOnScreenY() > 0 &&

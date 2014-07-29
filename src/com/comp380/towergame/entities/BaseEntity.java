@@ -1,6 +1,8 @@
 package com.comp380.towergame.entities;
 
 import com.comp380.towergame.GameActivity;
+import com.comp380.towergame.background.Tile;
+import com.comp380.towergame.physics.Gravity;
 import com.comp380.towergame.physics.MoveDirection;
 import com.comp380.towergame.physics.Speed;
 
@@ -18,6 +20,7 @@ public class BaseEntity {
 	protected Point point;
 	protected float speed = Speed.BASE;
 	protected boolean onGround = false;
+	protected boolean isJumping = false;
 	protected boolean collisionFlag = false;
 	
 	protected int health;
@@ -32,26 +35,31 @@ public class BaseEntity {
 		//create an X,Y for where we want to go based on our old one.
 		Point newPoint = new Point(this.point);
 		
+		//this is how we scale up speeds to match the dpi changes
+		float scale = this.manager.getContext().scalingFactor();
+		
 		//If we collided with something, we better make a bigger jump for now.
 		float oldSpeed = this.speed;
 		if(this.collisionFlag) {
-			this.speed = this.speed * this.speed;
+			this.speed = Speed.CHARGING;
 		}
 		
 		switch(direction) {
 		case UP:
 		case JUMP:
-			newPoint.offset(0, (int) (-1 *this.speed));
+			this.onGround = false;
+			this.isJumping = true;
+			newPoint.offset(0, (int) (-1 * Speed.JUMPING * scale));
 			break;
 		case DOWN:
 		case FALL:
-			newPoint.offset(0, (int) (1 *this.speed));
+			newPoint.offset(0, (int) (1 * Speed.GRAVITY * scale));
 			break;
 		case LEFT:
-			newPoint.offset((int) (-1 *this.speed), 0);
+			newPoint.offset((int) (-1 *this.speed * scale), 0);
 			break;
 		case RIGHT:
-			newPoint.offset((int) (1 *this.speed), 0);
+			newPoint.offset((int) (1 *this.speed * scale), 0);
 			break;
 		default:
 			break;
@@ -71,8 +79,11 @@ public class BaseEntity {
 		}
 		
 		//Check entity->tile collisions
-		if(this.manager.checkEntityToTileCollisions(this, newPoint, direction) != null) {
+		Tile block = this.manager.checkEntityToTileCollisions(this, newPoint, direction);
+		if(block != null) {
 			if(direction == MoveDirection.DOWN || direction == MoveDirection.FALL) {
+				this.point.y = block.getBounds().top - this.getBounds().height();
+				//Log.v(this.getClass().getName(), "on ground at" + this.point.y);
 				this.onGround = true;
 			}
 		}
@@ -80,9 +91,9 @@ public class BaseEntity {
 	}
 	
 	//for applying gravity
-	public void move(MoveDirection direction, float speed) {
+	public void move(MoveDirection direction, float gravity) {
 		float oldSpeed = this.speed;
-		this.speed = speed;
+		this.speed = gravity;
 		this.move(direction);
 		this.speed = oldSpeed;
 	}
@@ -133,8 +144,8 @@ public class BaseEntity {
 	}
 	
 	public void update() {
-		if(!this.onGround) {
-			
+		if(!this.onGround && !this.isJumping) {
+			Gravity.gravityAdjustment(this);
 		}
 		if(this.point.x > GameActivity.GAME_MAX_WIDTH || this.point.y > GameActivity.GAME_MAX_HEIGHT ||
 			this.point.x < 0 || this.point.y < 0) {
