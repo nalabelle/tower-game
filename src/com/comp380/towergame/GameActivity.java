@@ -530,6 +530,11 @@ public class GameActivity extends Activity {
 		}
 		super.onPause();
 	}
+
+	public TileEngine getTileManager() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

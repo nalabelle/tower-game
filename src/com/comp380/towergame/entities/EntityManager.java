@@ -10,6 +10,7 @@ import android.graphics.Point;
 
 import com.comp380.towergame.GameActivity;
 import com.comp380.towergame.R;
+import com.comp380.towergame.background.Tile;
 
 public class EntityManager {
 	private ArrayList<BaseEntity> entityStorage;
@@ -83,7 +84,12 @@ public class EntityManager {
 	public BaseEntity checkEntityToEntityCollisions(BaseEntity baseEntity, Point newPoint) {
 		return this.getContext().getCollisionDetection().checkCollisions(baseEntity, newPoint);
 	}
-
+	
+	public Tile checkEntityToTileCollisions(BaseEntity baseEntity,
+			Point newPoint) {
+		return this.getContext().getCollisionDetection().checkTileCollisions(baseEntity, newPoint);
+	}
+	
 	public GameActivity getContext() {
 		return context;
 	}

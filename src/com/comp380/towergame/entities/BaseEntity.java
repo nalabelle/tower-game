@@ -57,6 +57,7 @@ public class BaseEntity {
 			break;
 		}
 		
+		//Check entity collisions
 		BaseEntity firstCollided = this.manager.checkEntityToEntityCollisions(this, newPoint);
 		if(firstCollided == null) {
 			this.point.set(newPoint.x, newPoint.y);
@@ -69,6 +70,10 @@ public class BaseEntity {
 				this.health = -10;
 		}
 		
+		//Check entity->tile collisions
+		if(this.manager.checkEntityToTileCollisions(this, newPoint) != null) {
+			
+		}
 		this.speed = oldSpeed;
 	}
 	
