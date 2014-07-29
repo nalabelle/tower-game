@@ -179,11 +179,13 @@ public class GameActivity extends Activity {
 					handlr.postDelayed(buttonAction, sleep);
 					break;
 				case MotionEvent.ACTION_UP:
+					tileEngine.setTileSpeed(0);
 					if (handlr == null) return true;
 					handlr.removeCallbacks(buttonAction);
 					handlr = null;
 					break;
 				case MotionEvent.ACTION_MOVE:
+					tileEngine.setTileSpeed(0);
 					if (handlr == null) return true;
 					if(!rect.contains((int) x, (int) y)) {
 						handlr.removeCallbacks(buttonAction);
@@ -196,7 +198,19 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.RIGHT);
+					
+					//setTileSpeed(int s)
+					/*
+					if((entityManager.getAndy().getX() >= 600) && (tileEngine.getInGamePos() <= 180))
+					{
+						tileEngine.setTileSpeed(-6);
+					}
+					else
+					{
+					*/
+						//tileEngine.setTileSpeed(0);
+						entityManager.getAndy().move(MoveDirection.RIGHT);
+					//}
 					handlr.postDelayed(this, sleep);
 				}
 			};

@@ -32,6 +32,7 @@ public class TileEngine
 				
 				tileArray[i][j].setTileOnScreenX(i*90 - 90);
 				tileArray[i][j].setTileOnScreenY(j*90);
+				tileArray[i][j].setTileXSpeed(0);
 				
 			}
 		}
