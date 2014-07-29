@@ -98,5 +98,9 @@ public class EntityManager {
 	public void setContext(GameActivity context) {
 		this.context = context;
 	}
+	
+	public void shiftAllX(int direction) {
+		//TODO: finish
+	}
 
 }
