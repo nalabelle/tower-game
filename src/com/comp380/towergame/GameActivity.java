@@ -526,7 +526,6 @@ public class GameActivity extends Activity {
 			try {
 				gameThread.interrupt();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
