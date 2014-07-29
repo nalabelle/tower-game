@@ -58,15 +58,22 @@ public class BaseEntity {
 		}
 		
 		BaseEntity firstCollided = this.manager.checkEntityToEntityCollisions(this, newPoint);
+		
 		if(firstCollided == null) {
 			this.point.set(newPoint.x, newPoint.y);
-		} else {
+		}
+		else {
 			if(!this.collisionFlag)
 				Log.v(this.getClass().getName(), " collided with " + firstCollided.getClass());
 			this.collisionFlag = true;
 			//this.collisionAction(newPoint, direction);
 			if(!(this instanceof Andy))
 				this.health = -10;
+			if(this instanceof Flame)
+				this.health = -100;
+				if(firstCollided.getID() == 2)
+					this.manager.getAll().remove(firstCollided);
+				
 		}
 		
 		this.speed = oldSpeed;

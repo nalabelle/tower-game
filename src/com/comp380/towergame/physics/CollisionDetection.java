@@ -23,6 +23,8 @@ public class CollisionDetection {
 		for(BaseEntity other : safeIter) {
 			//entity compared with self
 			if(other == entityMoved) continue;
+			//Hot Goat on Goat Action... Or Flames.... Or ANDYS
+			if(other.getID() == entityMoved.getID()) continue;
 			
 			if(Rect.intersects(other.getBounds(), moved))
 				return other;
