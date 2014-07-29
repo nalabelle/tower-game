@@ -79,6 +79,14 @@ public class BaseEntity {
 		this.speed = oldSpeed;
 	}
 	
+	//for applying gravity
+	public void move(MoveDirection direction, float speed) {
+		float oldSpeed = this.speed;
+		this.speed = speed;
+		this.move(direction);
+		this.speed = oldSpeed;
+	}
+	
 	private void collisionAction(Point newPoint, MoveDirection direction) {
 			switch(direction) {
 			case UP:
