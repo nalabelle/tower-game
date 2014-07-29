@@ -53,6 +53,23 @@ public class TileEngine
 		}
 	}
 	
+	public void setTileSpeed(int s)
+	{
+		for(int i = 0; i < x; i++)
+		{
+			for(int j = 0; j < y; j++)
+			{
+				if(tileArray[i][j] == null)
+					continue;
+				tileArray[i][j].setTileXSpeed(s);
+			}
+		}
+	}
+	
+	public int getInGamePos()
+	{
+		return tileArray[0][0].getTileInGX();
+	}
 	
 	public void updateTiles()
 	{
