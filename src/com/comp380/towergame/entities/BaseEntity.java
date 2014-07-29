@@ -71,8 +71,10 @@ public class BaseEntity {
 		}
 		
 		//Check entity->tile collisions
-		if(this.manager.checkEntityToTileCollisions(this, newPoint) != null) {
-			
+		if(this.manager.checkEntityToTileCollisions(this, newPoint, direction) != null) {
+			if(direction == MoveDirection.DOWN || direction == MoveDirection.FALL) {
+				this.onGround = true;
+			}
 		}
 		this.speed = oldSpeed;
 	}

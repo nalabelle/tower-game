@@ -11,6 +11,7 @@ import android.graphics.Point;
 import com.comp380.towergame.GameActivity;
 import com.comp380.towergame.R;
 import com.comp380.towergame.background.Tile;
+import com.comp380.towergame.physics.MoveDirection;
 
 public class EntityManager {
 	private ArrayList<BaseEntity> entityStorage;
@@ -86,8 +87,8 @@ public class EntityManager {
 	}
 	
 	public Tile checkEntityToTileCollisions(BaseEntity baseEntity,
-			Point newPoint) {
-		return this.getContext().getCollisionDetection().checkTileCollisions(baseEntity, newPoint);
+			Point newPoint, MoveDirection direction) {
+		return this.getContext().getCollisionDetection().checkTileCollisions(baseEntity, newPoint, direction);
 	}
 	
 	public GameActivity getContext() {
