@@ -41,7 +41,8 @@ public class GameActivity extends Activity {
 	protected Levels levels;
 	
 
-	protected MediaPlayer goatBleet = null;
+	private MediaPlayer goatBleet = null;
+	private MediaPlayer goatDeath = null;
 
 	public static int GAME_MAX_WIDTH = 1920;
 	public static int GAME_MAX_HEIGHT = 1200;
@@ -89,11 +90,11 @@ public class GameActivity extends Activity {
 		levels = new Levels(this, 1);
 		tileEngine = new TileEngine(this, levels.getLevel(),levels.getlevelLength());
 		
-		
 		this.toggleGameThread(true);
 		
-		wireButtons();
 		goatBleet = MediaPlayer.create(this, R.raw.bleet);
+		goatDeath = MediaPlayer.create(this, R.raw.scream);
+		wireButtons();
 	}
 
 	protected void toggleGameThread(boolean b) {
@@ -108,6 +109,10 @@ public class GameActivity extends Activity {
 	
 	public MediaPlayer getBleeter() {
 		return goatBleet;
+	}
+	
+	public MediaPlayer getDeathCry() {
+		return goatDeath;
 	}
 
 	public CollisionDetection getCollisionDetection() {

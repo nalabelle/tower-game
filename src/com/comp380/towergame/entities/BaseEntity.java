@@ -84,6 +84,7 @@ public class BaseEntity {
 				this.health = -100;
 				if(firstCollided.getID() == 2)
 					firstCollided.setHealth(-100);
+					//getMediaPlayer();
 					//this.manager.getAll().remove(firstCollided);
 				
 		}

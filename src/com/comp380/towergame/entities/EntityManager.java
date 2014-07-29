@@ -74,6 +74,11 @@ public class EntityManager {
 		    	this.context.startActivity(intent);
 		    	break;
 			}
+			if(removing.getID() == 2) {
+				//Andy Died
+		    	this.context.getDeathCry().start();
+		    	break;
+			}
 		}
 	}
 
