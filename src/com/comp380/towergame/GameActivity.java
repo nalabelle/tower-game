@@ -532,8 +532,7 @@ public class GameActivity extends Activity {
 	}
 
 	public TileEngine getTileManager() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.tileEngine;
 	}
 	
 	

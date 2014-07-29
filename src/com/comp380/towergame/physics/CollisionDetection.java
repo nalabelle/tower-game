@@ -35,7 +35,7 @@ public class CollisionDetection {
 	public Tile checkTileCollisions(BaseEntity entityMoved, Point newPoint, MoveDirection direction) {
 		Rect moved = entityMoved.getBounds();
 		moved.offsetTo(newPoint.x, newPoint.y);
-		ArrayList<Tile> safeIter = new ArrayList<Tile>(this.context.getTileManager().getAllVisible());
+		ArrayList<Tile> safeIter = this.context.getTileManager().getAllVisible();
 		
 		int traceX = Integer.MIN_VALUE;
 		int traceY = Integer.MIN_VALUE;

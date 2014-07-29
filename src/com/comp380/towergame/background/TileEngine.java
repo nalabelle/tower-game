@@ -55,7 +55,7 @@ public class TileEngine
 				canvas.drawBitmap(tileArray[i][j].getTileBitmap(), tileArray[i][j].getTileOnScreenX(),tileArray[i][j].getTileOnScreenY(), null);
 				
 				//debug bounding drawing.
-				if(((GameActivity) this.context).DEV_MODE) {
+				if(((GameActivity) this.context).DEV_MODE && tileArray[i][j].isSolid()) {
 					Paint myPaint = new Paint();
 					myPaint.setStyle(Paint.Style.STROKE);
 					myPaint.setColor(Color.BLUE);

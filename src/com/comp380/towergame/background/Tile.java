@@ -115,7 +115,7 @@ public class Tile
 	
 	public Rect getBounds() 
 	{
-		return new Rect(this.getTileOnScreenX(), this.getTileOnScreenY(), this.getTileOnScreenX() + boxSizeX, this.getTileOnScreenY() + boxSizeY);
+		return new Rect(this.getTileOnScreenX(), this.getTileOnScreenY(), this.getTileOnScreenX() + this.bitmap.getWidth(), this.getTileOnScreenY() + this.bitmap.getHeight());
 	}
 }
 
