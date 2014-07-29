@@ -1,67 +1,100 @@
 package com.comp380.towergame.entities;
 
 import com.comp380.towergame.GameActivity;
-import com.comp380.towergame.physics.Velocity;
+import com.comp380.towergame.physics.MoveDirection;
+import com.comp380.towergame.physics.Speed;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.graphics.Rect;
-import android.util.DisplayMetrics;
+import android.util.Log;
 
 public class BaseEntity {
 	private int ID;
-	private EntityManager manager;
+	protected EntityManager manager;
 	private Bitmap texture;
 	
-	private Velocity velocity;
-	private boolean onGround = false;
+	protected Point point;
+	protected float speed = Speed.BASE;
+	protected boolean onGround = false;
+	protected boolean collisionFlag = false;
 	
-	private int x;
-	private int y;
-	
-	private int sizeX;
-	private int sizeY;
-	
-	private int health;
+	protected int health;
 	
 	public BaseEntity(EntityManager manager, Bitmap texture, int x, int y) {
+		this.point = new Point(x, y);
 		this.texture = texture;
-		this.x = x;
-		this.y = y;
-		//texture.getScaledWidth(DisplayMetrics.DENSITY_XHIGH) ?
-		this.sizeX = texture.getWidth() * GameActivity.GRAPHIC_SCALING;
-		this.sizeY = texture.getHeight() * GameActivity.GRAPHIC_SCALING;
-		this.setManager(manager);
+		this.manager = manager;
 	}
 	
-	public int getX() {
-		return x;
-	}
-	public void setX(int x) {
-		this.x = x;
+	public void move(MoveDirection direction) {
+		//create an X,Y for where we want to go based on our old one.
+		Point newPoint = new Point(this.point);
+		
+		//If we collided with something, we better make a bigger jump for now.
+		float oldSpeed = this.speed;
+		if(this.collisionFlag) {
+			this.speed = this.speed * this.speed;
+		}
+		
+		switch(direction) {
+		case UP:
+		case JUMP:
+			newPoint.offset(0, (int) (-1 *this.speed));
+			break;
+		case DOWN:
+		case FALL:
+			newPoint.offset(0, (int) (1 *this.speed));
+			break;
+		case LEFT:
+			newPoint.offset((int) (-1 *this.speed), 0);
+			break;
+		case RIGHT:
+			newPoint.offset((int) (1 *this.speed), 0);
+			break;
+		default:
+			break;
+		}
+		
+		BaseEntity firstCollided = this.manager.checkEntityToEntityCollisions(this, newPoint);
+		if(firstCollided == null) {
+			this.point.set(newPoint.x, newPoint.y);
+		} else {
+			if(!this.collisionFlag)
+				Log.v(this.getClass().getName(), " collided with " + firstCollided.getClass());
+			this.collisionFlag = true;
+			//this.collisionAction(newPoint, direction);
+			if(!(this instanceof Andy))
+				this.health = -10;
+		}
+		
+		this.speed = oldSpeed;
 	}
 	
-	public int getY() {
-		return y;
-	}
-	public void setY(int y) {
-		this.y = y;
-	}
-	
-	public int getBoundingBoxX() {
-		return sizeX;
-	}
-
-	public void setBoundingBoxX(int sizeX) {
-		this.sizeX = sizeX;
-	}
-
-	public int getBoundingBoxY() {
-		return sizeY;
-	}
-
-	public void setBoundingBoxY(int sizeY) {
-		this.sizeY = sizeY;
+	private void collisionAction(Point newPoint, MoveDirection direction) {
+			switch(direction) {
+			case UP:
+				this.move(MoveDirection.DOWN);
+				break;
+			case DOWN:
+				this.move(MoveDirection.UP);
+				break;
+			case FALL:
+				this.move(MoveDirection.JUMP);
+				break;
+			case JUMP:
+				this.move(MoveDirection.FALL);
+				break;
+			case LEFT:
+				this.move(MoveDirection.RIGHT);
+				break;
+			case RIGHT:
+				this.move(MoveDirection.LEFT);
+				break;
+			default:
+				break;
+			}
 	}
 
 	public int getID() {
@@ -81,17 +114,23 @@ public class BaseEntity {
 	}
 	
 	public void draw(Canvas canvas) {
-		canvas.drawBitmap(this.texture, this.x, this.y, null);
+		canvas.drawBitmap(this.texture, this.point.x, this.point.y, null);
 	}
 	
 	public void update() {
 		if(!this.onGround) {
 			
 		}
+		if(this.point.x > GameActivity.GAME_MAX_WIDTH || this.point.y > GameActivity.GAME_MAX_HEIGHT ||
+			this.point.x < 0 || this.point.y < 0) {
+			this.health = -100;
+		}
 	}
 
 	public Rect getBounds() {
-		return new Rect(this.getX(), this.getY(), this.getX() + this.getBoundingBoxX(), this.getY()+this.getBoundingBoxY());
+		return new Rect(this.point.x, this.point.y,
+			this.point.x + this.texture.getWidth(),
+			this.point.y + this.texture.getHeight());
 	}
 
 	public int getHealth() {
@@ -100,14 +139,6 @@ public class BaseEntity {
 
 	public void setHealth(int health) {
 		this.health = health;
-	}
-
-	public EntityManager getManager() {
-		return manager;
-	}
-
-	public void setManager(EntityManager manager) {
-		this.manager = manager;
 	}
 
 }

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 
 import com.comp380.towergame.GameActivity;
 import com.comp380.towergame.R;
@@ -15,7 +16,7 @@ public class EntityManager {
 	private GameActivity context;
 
 	public EntityManager(GameActivity gameActivity) {
-		this.context = gameActivity;
+		this.setContext(gameActivity);
 		this.entityStorage = new ArrayList<BaseEntity>();
 		
 		//temporary Andy creation
@@ -23,14 +24,16 @@ public class EntityManager {
 		this.entityStorage.add(andy);
 		
 		//temporary Baddie creation
-		BaseEntity badguy = new EvilGuy(this, BitmapFactory.decodeResource(gameActivity.getResources(), R.drawable.badguy));
+		BaseEntity badguy = new Goat(this, BitmapFactory.decodeResource(gameActivity.getResources(), R.drawable.badguy));
 		this.entityStorage.add(badguy);
 	}
 	
 	//temporary
 	public Andy getAndy() {
-		if(this.entityStorage.get(0) instanceof Andy)
-			return (Andy) this.entityStorage.get(0);
+		for(BaseEntity test : this.entityStorage) {
+			if(test instanceof Andy)
+				return (Andy) test;
+		}
 		return null;
 	}
 
@@ -51,7 +54,8 @@ public class EntityManager {
 		ArrayList<BaseEntity> safeIter = new ArrayList<BaseEntity>(this.entityStorage);
 		for(BaseEntity entity : safeIter){
 			entity.update();
-			this.context.getCollisionDetection().checkCollisions(entity);
+			//this.context.getCollisionDetection().checkCollisions(entity);
+			//this will be done when things move, rather than every time.
 			if(entity.getHealth() < 0) {
 				toRemove.add(entity);
 			}
@@ -71,9 +75,21 @@ public class EntityManager {
 		
 		for(BaseEntity entity : safeIter){
 			entity.draw(canvas);
-			if(this.context.DEV_MODE)
+			if(this.getContext().DEV_MODE)
 				canvas.drawRect(entity.getBounds(), myPaint);
 		}
+	}
+
+	public BaseEntity checkEntityToEntityCollisions(BaseEntity baseEntity, Point newPoint) {
+		return this.getContext().getCollisionDetection().checkCollisions(baseEntity, newPoint);
+	}
+
+	public GameActivity getContext() {
+		return context;
+	}
+
+	public void setContext(GameActivity context) {
+		this.context = context;
 	}
 
 }

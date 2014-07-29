@@ -1,25 +1,31 @@
 package com.comp380.towergame.entities;
 
 import com.comp380.towergame.GameActivity;
+import com.comp380.towergame.physics.MoveDirection;
+import com.comp380.towergame.physics.Speed;
 
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 
-public class EvilGuy extends BaseEntity {
+public class Goat extends BaseEntity {
 	private boolean ystop = false;
 	private boolean xstop = false;
 	
 	private int attacking = 0;
+	private boolean andyLeft = true;
 	private int jumpSwitch = 0;
 
-	public EvilGuy(EntityManager manager, Bitmap bitmap) {
-		super(manager, bitmap, 325, 500);
+	public Goat(EntityManager manager, Bitmap bitmap) {
+		super(manager, bitmap, 
+				(int) (Math.random()*GameActivity.GAME_MAX_WIDTH),
+				(int) (Math.random()*GameActivity.GAME_MAX_HEIGHT));
 		this.setID(2);
 	}
 	
 	private void jumpUp(int y) {
 		int inc = 3;
 		if((y - inc) > 0) {
-			this.setY((int) (y - inc));
+			this.move(MoveDirection.JUMP);
 		} else {
 			this.ystop = false;
 		}		
@@ -28,33 +34,28 @@ public class EvilGuy extends BaseEntity {
 	private void jumpDown(int y) {
 		int inc = 3;
 		if((y + inc) < GameActivity.GAME_MAX_HEIGHT) {
-			this.setY((int) (y + inc));
+			this.move(MoveDirection.FALL);
 		} else {
 			this.ystop = true;
 		}
 	}
 	
 	private void attackPlayer(int x, boolean left) {
+		if(this.attacking < 1)
+			this.manager.getContext().getBleeter().start();
 		this.attacking = 1;
-		int inc = 8;
+		this.speed = Speed.CHARGING;
+
 		if(left) {
-			if((x - inc) > 0) {
-				this.setX((int) (x - inc));
-			} else {
-				this.xstop = true;
-			}
+			this.move(MoveDirection.LEFT);
 		} else {
-			if((x + inc) > GameActivity.GAME_MAX_WIDTH) {
-				this.setX((int) (x + inc));
-			} else {
-				this.xstop = true;
-			}			
+			this.move(MoveDirection.RIGHT);	
 		}
 	}
 
 	public void update() {
-		int x = this.getX();
-		int y = this.getY();
+		int x = this.point.x;
+		int y = this.point.y;
 		
 		if(attacking == 0 && !this.canSeePlayer()) {
 			jumpSwitch++;
@@ -70,8 +71,10 @@ public class EvilGuy extends BaseEntity {
 				this.jumpSwitch = 0;
 			}
 		} else {
-			boolean andyLeft = true;
-			if(this.getManager().getAndy().getX() - this.getX() > 0) andyLeft = false;
+			if(this.attacking < 1) {
+				if(this.manager.getAndy().getX() - this.point.x > 0)
+					andyLeft = false;
+			}
 			this.attackPlayer(x, andyLeft);
 		}
 		
@@ -81,11 +84,15 @@ public class EvilGuy extends BaseEntity {
 	}
 	
 	private boolean canSeePlayer() {
-		int andyx = this.getManager().getAndy().getX(); //should check for facing too?
-		int andyy = this.getManager().getAndy().getY();
-		if(Math.abs(andyy - this.getY()) < 50) {
+		if(this.manager.getAndy() == null) return false;
+		int andyx = this.manager.getAndy().getX(); //should check for facing too?
+		int andyy = this.manager.getAndy().getY();
+		if(Math.abs(andyy - this.point.y) < 20) {
 			return true;
 		}
 		return false;
+	}
+	
+	protected void collisionAction() {
 	}
 } 

@@ -20,9 +20,10 @@ import android.widget.ImageButton;
 import com.comp380.towergame.background.Background;
 import com.comp380.towergame.background.Tile; ////temp
 import com.comp380.towergame.entities.EntityManager;
-import com.comp380.towergame.entities.EvilGuy;
 import com.comp380.towergame.entities.Flame;
+import com.comp380.towergame.entities.Goat;
 import com.comp380.towergame.physics.CollisionDetection;
+import com.comp380.towergame.physics.MoveDirection;
 import com.comp380.towergame.background.TileEngine;
 import com.comp380.towergame.background.Levels;
 
@@ -34,7 +35,7 @@ public class GameActivity extends Activity {
 	protected	CollisionDetection	collisionDetection = null;
 	protected Background[][] backgroundArray = null;
 	
-	public final boolean DEV_MODE = false;
+	public final boolean DEV_MODE = true;
 	//temp
 	protected TileEngine tileEngine;
 	protected Levels levels;
@@ -152,7 +153,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().setX(entityManager.getAndy().getX() - mv);
+					entityManager.getAndy().move(MoveDirection.LEFT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -195,7 +196,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().setX(entityManager.getAndy().getX() + mv);
+					entityManager.getAndy().move(MoveDirection.RIGHT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -235,7 +236,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().setY(entityManager.getAndy().getY() - mv);
+					entityManager.getAndy().move(MoveDirection.JUMP);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -275,7 +276,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().setY(entityManager.getAndy().getY() + mv);
+					entityManager.getAndy().move(MoveDirection.DOWN);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -314,7 +315,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAll().add(new EvilGuy(entityManager, BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
+					entityManager.getAll().add(new Goat(entityManager, BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
 					handlr.postDelayed(this, sleep*15);
 				}
 			};
@@ -354,8 +355,7 @@ public class GameActivity extends Activity {
 				@Override 
 				public void run() {
 					entityManager.getAll().add(new Flame(entityManager, 
-							BitmapFactory.decodeResource(getResources(), R.drawable.flame),
-							entityManager.getAndy().getX(), entityManager.getAndy().getY()));
+							BitmapFactory.decodeResource(getResources(), R.drawable.flame), MoveDirection.RIGHT));
 					handlr.postDelayed(this, sleep*6);
 				}
 			};
@@ -394,8 +394,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().setY(entityManager.getAndy().getY() + mv);
-					entityManager.getAndy().setX(entityManager.getAndy().getX() + mv);
+					entityManager.getAndy().move(MoveDirection.DIAGONAL_DOWN_RIGHT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -434,8 +433,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().setY(entityManager.getAndy().getY() + mv);
-					entityManager.getAndy().setX(entityManager.getAndy().getX() - mv);
+					entityManager.getAndy().move(MoveDirection.DIAGONAL_DOWN_LEFT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -474,8 +472,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().setY(entityManager.getAndy().getY() - mv);
-					entityManager.getAndy().setX(entityManager.getAndy().getX() + mv);
+					entityManager.getAndy().move(MoveDirection.DIAGONAL_UP_RIGHT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -514,8 +511,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().setY(entityManager.getAndy().getY() - mv);
-					entityManager.getAndy().setX(entityManager.getAndy().getX() - mv);
+					entityManager.getAndy().move(MoveDirection.DIAGONAL_UP_LEFT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
