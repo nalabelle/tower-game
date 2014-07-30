@@ -82,12 +82,12 @@ public class BaseEntity {
 					firstCollided.setHealth(firstCollided.getHealth() -10);
 			if(this instanceof Flame)
 				this.health = -100;
-				if(firstCollided.getID() == 2)
+				if(firstCollided.getID() == 2) {
 					firstCollided.setHealth(-100);
 					this.manager.getAndy().setScore(this.manager.getAndy().getScore() + 1);
 					//getMediaPlayer();
 					//this.manager.getAll().remove(firstCollided);
-				
+				}
 		}
 		
 		//Check entity->tile collisions

@@ -97,10 +97,10 @@ public class GameActivity extends Activity {
 		wireButtons();
 	}
 
-	protected void toggleGameThread(boolean b) {
+	public void toggleGameThread(boolean b) {
 		Log.v(tag, "Starting Game Thread");
 		this.gameThread.setRunning(b);
-		this.gameThread.start();
+		if(b) this.gameThread.start();
 	}
 
 	public EntityManager getEntityManager() {
@@ -160,6 +160,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
+					if (entityManager.getAndy() == null ) return;
 					entityManager.getAndy().move(MoveDirection.LEFT);
 					handlr.postDelayed(this, sleep);
 				}
@@ -244,6 +245,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
+					if (entityManager.getAndy() == null ) return;
 					entityManager.getAndy().move(MoveDirection.JUMP);
 					handlr.postDelayed(this, sleep);
 				}
@@ -284,6 +286,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
+					if (entityManager.getAndy() == null ) return;
 					entityManager.getAndy().move(MoveDirection.DOWN);
 					handlr.postDelayed(this, sleep);
 				}
@@ -402,6 +405,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
+					if (entityManager.getAndy() == null ) return;
 					entityManager.getAndy().move(MoveDirection.DIAGONAL_DOWN_RIGHT);
 					handlr.postDelayed(this, sleep);
 				}
@@ -441,6 +445,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
+					if (entityManager.getAndy() == null ) return;
 					entityManager.getAndy().move(MoveDirection.DIAGONAL_DOWN_LEFT);
 					handlr.postDelayed(this, sleep);
 				}
@@ -480,6 +485,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
+					if (entityManager.getAndy() == null ) return;
 					entityManager.getAndy().move(MoveDirection.DIAGONAL_UP_RIGHT);
 					handlr.postDelayed(this, sleep);
 				}
@@ -519,6 +525,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
+					if (entityManager.getAndy() == null ) return;
 					entityManager.getAndy().move(MoveDirection.DIAGONAL_UP_LEFT);
 					handlr.postDelayed(this, sleep);
 				}

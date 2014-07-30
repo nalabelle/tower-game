@@ -81,6 +81,7 @@ public class EntityManager {
 				Intent intent = new Intent(this.context, CreditsActivity.class);
 		    	this.context.startActivity(intent);
 		    	this.context.finish();
+		    	this.context.toggleGameThread(false);
 		    	break;
 			}
 			
