@@ -162,7 +162,7 @@ public class GameActivity extends Activity {
 		final ImageButton rightButton = (ImageButton) findViewById(R.id.rightButton);
 		rightButton.setOnTouchListener(new View.OnTouchListener() {
 			private Handler handlr;
-			
+			boolean canMove = false;
 			
 			@Override 
 			public boolean onTouch(View v, MotionEvent event) {
@@ -173,18 +173,21 @@ public class GameActivity extends Activity {
 	            
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
+					//canMove = false;
 					if (handlr != null) return true;
 					handlr = new Handler();
 					handlr.postDelayed(buttonAction, sleep);
 					break;
 				case MotionEvent.ACTION_UP:
-					tileEngine.setTileSpeed(0);
+					tileEngine.setSpeed(0);
+					//canMove = true;
 					if (handlr == null) return true;
 					handlr.removeCallbacks(buttonAction);
 					handlr = null;
 					break;
 				case MotionEvent.ACTION_MOVE:
-					tileEngine.setTileSpeed(0);
+					tileEngine.setSpeed(0);
+					//canMove = true;
 					if (handlr == null) return true;
 					if(!rect.contains((int) x, (int) y)) {
 						handlr.removeCallbacks(buttonAction);
@@ -198,18 +201,20 @@ public class GameActivity extends Activity {
 				@Override 
 				public void run() {
 					
-					//setTileSpeed(int s)
-					/*
-					if((entityManager.getAndy().getX() >= 600) && (tileEngine.getInGamePos() <= 180))
+
+					
+					if((entityManager.getAndy().getX() >= 700) && (tileEngine.getInGamePos() <= 180))
 					{
-						tileEngine.setTileSpeed(-6);
+						//if(canMove == false)
+						//{
+							tileEngine.setSpeed(-8);
+						//}
 					}
 					else
 					{
-					*/
-						//tileEngine.setTileSpeed(0);
+						tileEngine.setSpeed(0);
 						entityManager.getAndy().move(MoveDirection.RIGHT);
-					//}
+					}
 					handlr.postDelayed(this, sleep);
 				}
 			};
