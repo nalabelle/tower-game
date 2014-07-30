@@ -37,7 +37,15 @@ public class CollisionDetection {
 	public Tile checkTileCollisions(BaseEntity entityMoved, Point newPoint, float velocityX, float velocityY) {
 		//Get the current position and velocity.
 		Rect moved = entityMoved.getBounds();
+	
+		//Generate points on boundaries
 		Point point = new Point(moved.left, moved.top);
+		Point leftTopQuarter = new Point(moved.left, moved.centerY()-(moved.height()/4));
+		Point leftBottomQuarter = new Point(moved.left, moved.centerY()+(moved.height()/4));
+		Point rightTopQuarter = new Point(moved.right, moved.centerY()-(moved.height()/4));
+		Point rightBottomQuarter = new Point(moved.right, moved.centerY() + (moved.height()/4));
+		Point middleTop = new Point(moved.centerX(), moved.top);
+		Point middleBottom = new Point(moved.centerX(), moved.bottom);
 		
 		//Move the bounding box to the new position for testing.
 		moved.offsetTo(newPoint.x, newPoint.y);
