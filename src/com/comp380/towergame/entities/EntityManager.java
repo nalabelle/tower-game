@@ -19,6 +19,7 @@ import com.comp380.towergame.physics.MoveDirection;
 public class EntityManager {
 	private ArrayList<BaseEntity> entityStorage;
 	private GameActivity context;
+	private String tag = ""+ this.getClass();
 
 	public EntityManager(GameActivity gameActivity) {
 		this.setContext(gameActivity);
@@ -67,18 +68,22 @@ public class EntityManager {
 		}
 		for(BaseEntity removing : toRemove) {
 			this.entityStorage.remove(removing);
-			if(removing.getID() == 1) {
-				//Andy Died
-				Log.v("tag lol", "Adny died, Hp =" +removing.getHealth());
-				Intent intent = new Intent(this.context, CreditsActivity.class);
-		    	this.context.startActivity(intent);
-		    	break;
-			}
+			
 			if(removing.getID() == 2) {
 				//Andy Died
 		    	this.context.getDeathCry().start();
 		    	break;
 			}
+			
+			if(removing.getID() == 1) {
+				//Andy Died
+				Log.v(tag, "Adny died, Hp =" +removing.getHealth());
+				Intent intent = new Intent(this.context, CreditsActivity.class);
+		    	this.context.startActivity(intent);
+		    	this.context.finish();
+		    	break;
+			}
+			
 		}
 	}
 
