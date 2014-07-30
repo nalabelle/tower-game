@@ -570,7 +570,7 @@ public class GameActivity extends Activity {
 	}
 
 	@Override
-	protected void onPause() {
+	public void onPause() {
 		if (gameThread != null){
 			try {
 				gameThread.interrupt();
