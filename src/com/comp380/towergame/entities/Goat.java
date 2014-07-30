@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 public class Goat extends BaseEntity {
 	private int lurking = 50;
 	private int attacking = 0;
+	private int attackDirection;
 
 	public Goat(EntityManager manager, Bitmap bitmap) {
 		super(manager, bitmap, 
@@ -16,12 +17,14 @@ public class Goat extends BaseEntity {
 	}
 	
 	private void attackPlayer() {
-		if(this.attacking < 1)
+		if(this.attacking < 1) {
 			this.manager.getContext().getBleeter().start();
+			this.attackDirection = (int) Math.signum(this.manager.getAndy().getX() - this.point.x);
+		}
 		this.attacking = 1;
 		//this.isWalking = true;
 
-		this.velocityX = -1*this.manager.getAndy().getFacing() * Speed.CHARGING;
+		this.velocityX =  this.attackDirection * Speed.CHARGING;
 	}
 
 	public void update() {
