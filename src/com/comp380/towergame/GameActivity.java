@@ -23,7 +23,6 @@ import com.comp380.towergame.entities.EntityManager;
 import com.comp380.towergame.entities.Flame;
 import com.comp380.towergame.entities.Goat;
 import com.comp380.towergame.physics.CollisionDetection;
-import com.comp380.towergame.physics.MoveDirection;
 import com.comp380.towergame.background.TileEngine;
 import com.comp380.towergame.background.Levels;
 
@@ -160,7 +159,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.LEFT);
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.LEFT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -203,7 +202,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.RIGHT);
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -243,7 +242,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.JUMP);
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -283,7 +282,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.DOWN);
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.DOWN);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -362,7 +361,7 @@ public class GameActivity extends Activity {
 				@Override 
 				public void run() {
 					entityManager.getAll().add(new Flame(entityManager, 
-							BitmapFactory.decodeResource(getResources(), R.drawable.flame), MoveDirection.RIGHT));
+							BitmapFactory.decodeResource(getResources(), R.drawable.flame)));
 					handlr.postDelayed(this, sleep*6);
 				}
 			};
@@ -401,7 +400,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.DIAGONAL_DOWN_RIGHT);
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_DOWN_RIGHT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -440,7 +439,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.DIAGONAL_DOWN_LEFT);
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_DOWN_LEFT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -479,7 +478,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.DIAGONAL_UP_RIGHT);
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_UP_RIGHT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -518,7 +517,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.DIAGONAL_UP_LEFT);
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_UP_LEFT);
 					handlr.postDelayed(this, sleep);
 				}
 			};

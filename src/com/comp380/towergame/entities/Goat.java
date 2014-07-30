@@ -1,87 +1,45 @@
 package com.comp380.towergame.entities;
 
 import com.comp380.towergame.GameActivity;
-import com.comp380.towergame.physics.MoveDirection;
 import com.comp380.towergame.physics.Speed;
 
 import android.graphics.Bitmap;
-import android.media.MediaPlayer;
 
 public class Goat extends BaseEntity {
-	private boolean ystop = false;
-	private boolean xstop = false;
-	
+	private int lurking = 50;
 	private int attacking = 0;
-	private boolean andyLeft = true;
-	private int jumpSwitch = 0;
 
 	public Goat(EntityManager manager, Bitmap bitmap) {
 		super(manager, bitmap, 
 				(int) (Math.random()*GameActivity.GAME_MAX_WIDTH),
 				(int) (Math.random()*GameActivity.GAME_MAX_HEIGHT));
-		this.setID(2);
 	}
 	
-	private void jumpUp(int y) {
-		int inc = 3;
-		if((y - inc) > 0) {
-			this.move(MoveDirection.JUMP);
-		} else {
-			this.ystop = false;
-		}		
-	}
-	
-	private void jumpDown(int y) {
-		int inc = 3;
-		if((y + inc) < GameActivity.GAME_MAX_HEIGHT) {
-			this.move(MoveDirection.FALL);
-		} else {
-			this.ystop = true;
-		}
-	}
-	
-	private void attackPlayer(int x, boolean left) {
+	private void attackPlayer() {
 		if(this.attacking < 1)
 			this.manager.getContext().getBleeter().start();
 		this.attacking = 1;
-		this.speed = Speed.CHARGING;
+		//this.isWalking = true;
 
-		if(left) {
-			this.move(MoveDirection.LEFT);
-		} else {
-			this.move(MoveDirection.RIGHT);	
-		}
+		this.velocityX = -1*this.getFacing() * Speed.CHARGING;
 	}
 
 	public void update() {
-		super.update();
-		int x = this.point.x;
-		int y = this.point.y;
-		
 		if(attacking == 0 && !this.canSeePlayer()) {
-			jumpSwitch++;
-			if(jumpSwitch < 50 && jumpSwitch >= 30) {
-				//5 frames of jumping.
-				this.jumpUp(y);
+			//Jump every X updates.
+			if(this.lurking < 0) {
+				this.moveJump();
+				this.lurking = 100;
 			}
-			if(jumpSwitch < 70 && jumpSwitch >= 50) {
-				//5 frames of jumping down.
-				this.jumpDown(y);
-			}
-			if(jumpSwitch >= 100) {
-				this.jumpSwitch = 0;
-			}
+			this.lurking--;
+			
 		} else {
 			if(this.attacking < 1) {
-				if(this.manager.getAndy().getX() - this.point.x > 0)
-					andyLeft = false;
+				this.attackPlayer();
 			}
-			this.attackPlayer(x, andyLeft);
 		}
 		
-		if(this.xstop) {
-			this.setHealth(-1);
-		}
+		super.update();
 	}
 	
 	private boolean canSeePlayer() {
@@ -92,8 +50,5 @@ public class Goat extends BaseEntity {
 			return true;
 		}
 		return false;
-	}
-	
-	protected void collisionAction() {
 	}
 } 

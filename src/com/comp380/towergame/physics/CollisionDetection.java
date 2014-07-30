@@ -25,7 +25,7 @@ public class CollisionDetection {
 			//entity compared with self
 			if(other == entityMoved) continue;
 			//Hot Goat on Goat Action... Or Flames.... Or ANDYS
-			if(other.getID() == entityMoved.getID()) continue;
+			if(other.getClass() == entityMoved.getClass()) continue;
 			
 			if(Rect.intersects(other.getBounds(), moved))
 				return other;
@@ -34,73 +34,24 @@ public class CollisionDetection {
 		return null;
 	}
 	
-	public Tile checkTileCollisions(BaseEntity entityMoved, Point newPoint, MoveDirection direction) {
+	public Tile checkTileCollisions(BaseEntity entityMoved, Point newPoint) {
+		//Get the current position and velocity.
 		Rect moved = entityMoved.getBounds();
+		Point point = new Point(moved.top, moved.left);
+		//We could use these to only check one side of the box?
+		float velocityX = point.x - newPoint.x;
+		float velocityY = point.y - newPoint.y;
+		
+		//Move the bounding box to the new position for testing.
 		moved.offsetTo(newPoint.x, newPoint.y);
+		
 		ArrayList<Tile> safeIter = this.context.getTileManager().getAllVisibleSolid();
-		
-		int traceX = Integer.MIN_VALUE;
-		int traceY = Integer.MIN_VALUE;
-		//true for top or left.
-		int half = -1;
-		
-		switch(direction) {
-		case UP:
-		case JUMP:
-			traceY = moved.top;
-			half = 1;
-			break;
-		case DOWN:
-		case FALL:
-			traceY = moved.bottom;
-			half = 0;
-			break;
-		case LEFT:
-			traceX = moved.left;
-			half = 1;
-			break;
-		case RIGHT:
-			traceX = moved.right;
-			half = 0;
-			break;
-		default:
-			break;
-		}
-		
 		for(Tile other : safeIter) {
-			Rect otherBound = other.getBounds();
-			if(half > 0) {
-				//top and left
-				if(traceY > Integer.MIN_VALUE && otherBound.top < traceY) {
-					//top
-					if(this.tileIntersection(moved, otherBound))
-						return other;
-				}
-				if(traceX > Integer.MIN_VALUE && otherBound.left < traceX) {
-					//left
-					if(this.tileIntersection(moved, otherBound))
-						return other;
-				}
-			} else {
-				//bottom and right
-				if(traceY > Integer.MIN_VALUE && otherBound.bottom > traceY) {
-					//bottom
-					if(this.tileIntersection(moved, otherBound))
-						return other;
-				}
-				if(traceX > Integer.MIN_VALUE && otherBound.right > traceX) {
-					//right
-					if(this.tileIntersection(moved, otherBound))
-						return other;
-				}
+			if(Rect.intersects(moved, other.getBounds())) {
+				return other;
 			}
-			
 		}
 		
 		return null;
-	}
-	
-	private boolean tileIntersection(Rect moved, Rect tile) {
-		return Rect.intersects(moved, tile);
 	}
 }

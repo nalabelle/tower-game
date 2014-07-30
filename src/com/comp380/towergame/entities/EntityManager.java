@@ -14,7 +14,6 @@ import com.comp380.towergame.CreditsActivity;
 import com.comp380.towergame.GameActivity;
 import com.comp380.towergame.R;
 import com.comp380.towergame.background.Tile;
-import com.comp380.towergame.physics.MoveDirection;
 
 public class EntityManager {
 	private ArrayList<BaseEntity> entityStorage;
@@ -45,37 +44,27 @@ public class EntityManager {
 	public ArrayList<BaseEntity> getAll() {
 		return this.entityStorage;
 	}
-	
-	public ArrayList<Integer> getAllKeys() {
-		ArrayList<Integer> array = new ArrayList<Integer>();
-		for(BaseEntity entity : this.entityStorage){
-			array.add(entity.getID());
-		}
-		return array;
-	}
 
 	public void updateAll() {
 		ArrayList<BaseEntity> toRemove = new ArrayList<BaseEntity>();
 		ArrayList<BaseEntity> safeIter = new ArrayList<BaseEntity>(this.entityStorage);
 		for(BaseEntity entity : safeIter){
 			entity.update();
-			//this.context.getCollisionDetection().checkCollisions(entity);
-			//this will be done when things move, rather than every time.
 			if(entity.getHealth() < 0) {				
 				toRemove.add(entity);
 			}
 		}
 		for(BaseEntity removing : toRemove) {
 			this.entityStorage.remove(removing);
-			if(removing.getID() == 1) {
+			if(removing instanceof Andy) {
 				//Andy Died
 				Log.v("tag lol", "Adny died, Hp =" +removing.getHealth());
 				Intent intent = new Intent(this.context, CreditsActivity.class);
 		    	this.context.startActivity(intent);
 		    	break;
 			}
-			if(removing.getID() == 2) {
-				//Andy Died
+			if(removing instanceof Goat) {
+				//Goat Died poor goat
 		    	this.context.getDeathCry().start();
 		    	break;
 			}
@@ -102,8 +91,8 @@ public class EntityManager {
 	}
 	
 	public Tile checkEntityToTileCollisions(BaseEntity baseEntity,
-			Point newPoint, MoveDirection direction) {
-		return this.getContext().getCollisionDetection().checkTileCollisions(baseEntity, newPoint, direction);
+			Point newPoint) {
+		return this.getContext().getCollisionDetection().checkTileCollisions(baseEntity, newPoint);
 	}
 	
 	public GameActivity getContext() {

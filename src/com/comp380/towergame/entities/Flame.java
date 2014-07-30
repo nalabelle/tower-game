@@ -1,29 +1,20 @@
 package com.comp380.towergame.entities;
 
-import com.comp380.towergame.physics.MoveDirection;
 import com.comp380.towergame.physics.Speed;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 public class Flame extends BaseEntity {
-	private boolean ystop = false;
-	private boolean xstop = false;
-	private MoveDirection angle;
 	private float speed = Speed.PROJECTILE;
 
-	public Flame(EntityManager manager, Bitmap bitmap, MoveDirection direct) {
-		super(manager, bitmap, manager.getAndy().getBounds().right+5, manager.getAndy().getY());
-		this.angle = direct;
-		this.setID(3);
-	}
-	
-	public Flame(EntityManager manager, Bitmap bitmap, int x, int y, MoveDirection direct) {
-		super(manager, bitmap, x, y);
-		this.angle = direct;
-		this.setID(3);
-	}
-
-	public void update() {
-		this.move(this.angle);
+	public Flame(EntityManager manager, Bitmap bitmap) {
+		super(manager, bitmap, 
+				//This takes the center and adds half an andy in a positive or negative direction depending on which way we're looking.
+				(int) (manager.getAndy().getBounds().centerX() 
+				+ ((manager.getAndy().getBounds().width()/2)*Math.signum(manager.getAndy().getFacing()))),
+				manager.getAndy().getY());
+		this.velocityX = Math.signum(manager.getAndy().getFacing())*this.speed;
+		Log.v(this.getClass().toString(), "Fireball Velocity" + this.velocityX);
 	}
 }
