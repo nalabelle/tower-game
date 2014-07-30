@@ -21,7 +21,7 @@ public class Goat extends BaseEntity {
 		this.attacking = 1;
 		//this.isWalking = true;
 
-		this.velocityX = -1*this.getFacing() * Speed.CHARGING;
+		this.velocityX = -1*this.manager.getAndy().getFacing() * Speed.CHARGING;
 	}
 
 	public void update() {
@@ -42,7 +42,6 @@ public class Goat extends BaseEntity {
 	
 	private boolean canSeePlayer() {
 		if(this.manager.getAndy() == null) return false;
-		int andyx = this.manager.getAndy().getX(); //should check for facing too?
 		int andyy = this.manager.getAndy().getY();
 		if(Math.abs(andyy - this.point.y) < 20) {
 			return true;
