@@ -1,7 +1,6 @@
 package com.comp380.towergame;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -18,13 +17,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.comp380.towergame.background.Background;
-import com.comp380.towergame.background.Tile; ////temp
+import com.comp380.towergame.background.Levels;
+import com.comp380.towergame.background.TileEngine;
+import com.comp380.towergame.entities.Andy.MoveDirection;
 import com.comp380.towergame.entities.EntityManager;
 import com.comp380.towergame.entities.Flame;
 import com.comp380.towergame.entities.Goat;
 import com.comp380.towergame.physics.CollisionDetection;
-import com.comp380.towergame.background.TileEngine;
-import com.comp380.towergame.background.Levels;
+////temp
 
 public class GameActivity extends Activity {
 	private String tag = this.getClass().toString();
@@ -170,7 +170,7 @@ public class GameActivity extends Activity {
 		final ImageButton rightButton = (ImageButton) findViewById(R.id.rightButton);
 		rightButton.setOnTouchListener(new View.OnTouchListener() {
 			private Handler handlr;
-			
+			boolean canMove = false;
 			
 			@Override 
 			public boolean onTouch(View v, MotionEvent event) {
@@ -181,16 +181,21 @@ public class GameActivity extends Activity {
 	            
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
+					//canMove = false;
 					if (handlr != null) return true;
 					handlr = new Handler();
 					handlr.postDelayed(buttonAction, sleep);
 					break;
 				case MotionEvent.ACTION_UP:
+					tileEngine.setSpeed(0);
+					//canMove = true;
 					if (handlr == null) return true;
 					handlr.removeCallbacks(buttonAction);
 					handlr = null;
 					break;
 				case MotionEvent.ACTION_MOVE:
+					tileEngine.setSpeed(0);
+					//canMove = true;
 					if (handlr == null) return true;
 					if(!rect.contains((int) x, (int) y)) {
 						handlr.removeCallbacks(buttonAction);
@@ -203,8 +208,23 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
+					
+
+					
+					if((entityManager.getAndy().getX() >= 700) && (tileEngine.getInGamePos() <= 180))
+					{
+						//if(canMove == false)
+						//{
+							tileEngine.setSpeed(-8);
+						//}
+					}
+					else
+					{
+						tileEngine.setSpeed(0);
+						entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
+					}
 					if (entityManager.getAndy() == null ) return;
-					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
+					//entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -246,7 +266,7 @@ public class GameActivity extends Activity {
 				public void run() {
 					if (entityManager.getAndy() == null ) return;
 					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
-					handlr.postDelayed(this, sleep);
+					handlr.postDelayed(this, sleep*10);
 				}
 			};
 		});
