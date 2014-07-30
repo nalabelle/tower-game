@@ -27,4 +27,9 @@ public class Andy extends BaseEntity {
 		return score;
 		
 	}
+	
+	public void setScore(int x) {
+		score = x;
+		
+	}
 }

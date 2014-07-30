@@ -203,6 +203,7 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
+					if (entityManager.getAndy() == null ) return;
 					entityManager.getAndy().move(MoveDirection.RIGHT);
 					handlr.postDelayed(this, sleep);
 				}
