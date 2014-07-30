@@ -1,6 +1,10 @@
 package com.comp380.towergame.physics;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -37,27 +41,14 @@ public class CollisionDetection {
 	public Tile checkTileCollisions(BaseEntity entityMoved, Point newPoint, float velocityX, float velocityY) {
 		//Get the current position and velocity.
 		Rect moved = entityMoved.getBounds();
-	
-		//Generate points on boundaries
-		Point point = new Point(moved.left, moved.top);
-		Point leftTopQuarter = new Point(moved.left, moved.centerY()-(moved.height()/4));
-		Point leftBottomQuarter = new Point(moved.left, moved.centerY()+(moved.height()/4));
-		Point rightTopQuarter = new Point(moved.right, moved.centerY()-(moved.height()/4));
-		Point rightBottomQuarter = new Point(moved.right, moved.centerY() + (moved.height()/4));
-		Point middleTop = new Point(moved.centerX(), moved.top);
-		Point middleBottom = new Point(moved.centerX(), moved.bottom);
 		
 		//Move the bounding box to the new position for testing.
 		moved.offsetTo(newPoint.x, newPoint.y);
 		
-		ArrayList<Tile> safeIter = this.context.getTileManager().getAllVisibleSolid();
-		ArrayList<Tile> intersections = new ArrayList<Tile>();
-		for(Tile other : safeIter) {
-			if(other.getBounds().intersect(moved)) {
-				intersections.add(other);
-			}
-		}
+		HashMap<CollisionDetection.PointMap, Point> checkPoints = this.generateBoundingPoints(moved);
+		HashMap<PointMap, Tile> tilesTouched = this.getTilesTouched(checkPoints);
 		
+		//Intelligently return a tile being touched based on our direction.
 		Tile returnTile = null;
 		if(Math.abs(velocityX) > Math.abs(velocityY)) {
 			//more lateral motion
@@ -65,52 +56,64 @@ public class CollisionDetection {
 				//Both are zero? this shouldn't get hit.
 			} else if(velocityX > 0) {
 				//moving right
-				returnTile = this.findNearest(intersections, moved, RectangleEdge.LEFT);
+				returnTile = tilesTouched.get(PointMap.RIGHT_TOP_QUARTER);
+				if(returnTile == null) {
+					returnTile = tilesTouched.get(PointMap.RIGHT_BOTTOM_QUARTER);
+				}
 			} else {
-				returnTile = this.findNearest(intersections, moved, RectangleEdge.RIGHT);
+				returnTile = tilesTouched.get(PointMap.LEFT_TOP_QUARTER);
+				if(returnTile == null) {
+					returnTile = tilesTouched.get(PointMap.LEFT_BOTTOM_QUARTER);
+				}
 			}
 		} else {
 			//vertical motion
 			if(velocityY == 0) {
 				//both are zero.
 			} else if(velocityY > 0) {
-				returnTile = this.findNearest(intersections, moved, RectangleEdge.TOP);
+				returnTile = tilesTouched.get(PointMap.MIDDLE_BOTTOM);
 			} else {
-				returnTile = this.findNearest(intersections, moved, RectangleEdge.BOTTOM);
+				returnTile = tilesTouched.get(PointMap.MIDDLE_TOP);
 			}
 		}
 		
 		return returnTile;
 	}
 	
-	private enum RectangleEdge {
-		TOP, RIGHT, BOTTOM, LEFT;
-	}
-	
-	private Tile findNearest(ArrayList<Tile> tiles, Rect entity, RectangleEdge edge) {
-		Tile nearest = null;
-		int nearness = Integer.MAX_VALUE;
-		for(Tile check : tiles) {
-			int test = Integer.MAX_VALUE;
-			switch(edge) {
-			case TOP:
-				test = entity.top - check.getBounds().bottom;
-				break;
-			case RIGHT:
-				test = check.getBounds().left - entity.right;
-				break;
-			case BOTTOM:
-				test = check.getBounds().bottom - entity.bottom;
-				break;
-			case LEFT:
-				test = entity.left - check.getBounds().right;
-				break;
-			}
-			if(test < nearness) {
-				nearest = check;
-				nearness = test;
+	private HashMap<PointMap, Tile> getTilesTouched(HashMap<PointMap, Point> checkPoints) {
+		HashMap<PointMap, Tile> map = new HashMap<PointMap, Tile>();
+		//Gather all visible tiles and check the bound intersections.
+		ArrayList<Tile> safeIter = this.context.getTileManager().getAllVisibleSolid();
+		for(Tile other : safeIter) {
+			for(Entry<PointMap, Point> entry : checkPoints.entrySet()) {
+				if(other.getBounds().contains(entry.getValue().x, entry.getValue().y)) {
+					map.put(entry.getKey(), other);
+				}
 			}
 		}
-		return nearest;
+		return map;
+	}
+
+	private HashMap<PointMap, Point> generateBoundingPoints(Rect moved) {
+		HashMap<PointMap, Point> map = new HashMap<PointMap, Point>();
+		
+		//Generate points on boundaries
+		map.put(PointMap.LEFT_TOP_QUARTER, new Point(moved.left, moved.centerY()-(moved.height()/4)));
+		map.put(PointMap.LEFT_BOTTOM_QUARTER, new Point(moved.left, moved.centerY()+(moved.height()/4)));
+		map.put(PointMap.RIGHT_TOP_QUARTER, new Point(moved.right, moved.centerY()-(moved.height()/4)));
+		map.put(PointMap.RIGHT_BOTTOM_QUARTER, new Point(moved.right, moved.centerY() + (moved.height()/4)));
+		map.put(PointMap.MIDDLE_TOP, new Point(moved.centerX(), moved.top));
+		map.put(PointMap.MIDDLE_BOTTOM, new Point(moved.centerX(), moved.bottom));
+		
+		return map;
+	}
+	
+	private enum PointMap {
+		LEFT_TOP_QUARTER,
+		LEFT_BOTTOM_QUARTER,
+		RIGHT_TOP_QUARTER,
+		RIGHT_BOTTOM_QUARTER,
+		MIDDLE_TOP,
+		MIDDLE_BOTTOM
 	}
 }
