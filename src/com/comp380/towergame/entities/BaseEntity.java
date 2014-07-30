@@ -1,8 +1,11 @@
 package com.comp380.towergame.entities;
 
+import java.util.HashMap;
+
 import com.comp380.towergame.GameActivity;
 import com.comp380.towergame.background.Tile;
 import com.comp380.towergame.physics.Speed;
+import com.comp380.towergame.physics.CollisionDetection.PointMap;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -104,25 +107,28 @@ public class BaseEntity {
 		}
 		
 		//Check entity->tile collisions
-		Tile block = this.manager.checkEntityToTileCollisions(this, newPoint, this.velocityX, this.velocityY);
-		if(block != null) {
-			if(this.velocityY > 0) {
-				this.point.y = block.getBounds().top - this.getBounds().height();
-				Log.v(this.getClass().getName(), "on ground at" + this.point.y);
-				this.onGround = true;
-				this.velocityY = 0;
+		HashMap<PointMap, Tile> blocks = this.manager.checkEntityToTileCollisions(this, newPoint, this.velocityX, this.velocityY);
+		if(blocks != null) {
+			//FEET
+			if(blocks.get(PointMap.MIDDLE_BOTTOM_LEFT) == null && blocks.get(PointMap.MIDDLE_BOTTOM_RIGHT) == null) {
+				//we lost tile collision on both feet, we're probably falling now.
+				this.onGround = false;
 			} else {
-				if(this.velocityX > 0) {
-					this.point.x = block.getBounds().left - this.getBounds().width();
-					//Log.v(this.getClass().getName(), "hit right at" + this.point.x);
-				} else {
-					this.point.x = block.getBounds().right + 1;
-					//Log.v(this.getClass().getName(), "hit left at" + this.point.x);
+				//we have a collision on at least one of our feet.
+				Tile higher = blocks.get(PointMap.MIDDLE_BOTTOM_LEFT);
+				if(higher == null || ( blocks.get(PointMap.MIDDLE_BOTTOM_RIGHT) != null) &&
+					(blocks.get(PointMap.MIDDLE_BOTTOM_RIGHT).getBounds().top > higher.getBounds().top))
+						higher = blocks.get(PointMap.MIDDLE_BOTTOM_RIGHT);
+				
+				if(this.velocityY > 0) {
+					this.onGround = true;
+					this.velocityY = 0;
+					this.point.y = higher.getBounds().top - this.getBounds().height();
+					Log.v(this.getClass().getName(), "on ground at" + this.point.y);
 				}
-				this.velocityY = 0;
 			}
 		} else {
-			//we lost tile collision, we're probably falling now.
+			//we lost ALL tile collision, we're free-falling now.
 			this.onGround = false;
 		}
 		

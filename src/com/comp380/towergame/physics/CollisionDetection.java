@@ -36,7 +36,7 @@ public class CollisionDetection {
 		return null;
 	}
 	
-	public Tile checkTileCollisions(BaseEntity entityMoved, Point newPoint, float velocityX, float velocityY) {
+	public HashMap<PointMap, Tile> checkTileCollisions(BaseEntity entityMoved, Point newPoint, float velocityX, float velocityY) {
 		//Get the current position and velocity.
 		Rect moved = entityMoved.getBounds();
 		
@@ -69,13 +69,18 @@ public class CollisionDetection {
 			if(velocityY == 0) {
 				//both are zero.
 			} else if(velocityY > 0) {
-				returnTile = tilesTouched.get(PointMap.MIDDLE_BOTTOM);
+				returnTile = tilesTouched.get(PointMap.MIDDLE_BOTTOM_RIGHT);
+				Tile otherTile = tilesTouched.get(PointMap.MIDDLE_BOTTOM_LEFT);
+				if(returnTile == null || (otherTile != null && (otherTile.getBounds().top > returnTile.getBounds().top)))
+					returnTile = tilesTouched.get(PointMap.MIDDLE_BOTTOM_LEFT);
+				
 			} else {
 				returnTile = tilesTouched.get(PointMap.MIDDLE_TOP);
 			}
 		}
 		
-		return returnTile;
+		//return returnTile;
+		return tilesTouched;
 	}
 	
 	private HashMap<PointMap, Tile> getTilesTouched(HashMap<PointMap, Point> checkPoints) {
@@ -101,17 +106,19 @@ public class CollisionDetection {
 		map.put(PointMap.RIGHT_TOP_QUARTER, new Point(moved.right, moved.centerY()-(moved.height()/4)));
 		map.put(PointMap.RIGHT_BOTTOM_QUARTER, new Point(moved.right, moved.centerY() + (moved.height()/4)));
 		map.put(PointMap.MIDDLE_TOP, new Point(moved.centerX(), moved.top));
-		map.put(PointMap.MIDDLE_BOTTOM, new Point(moved.centerX(), moved.bottom));
+		map.put(PointMap.MIDDLE_BOTTOM_LEFT, new Point(moved.left, moved.bottom));
+		map.put(PointMap.MIDDLE_BOTTOM_RIGHT, new Point(moved.right, moved.bottom));
 		
 		return map;
 	}
 	
-	private enum PointMap {
+	public enum PointMap {
 		LEFT_TOP_QUARTER,
 		LEFT_BOTTOM_QUARTER,
 		RIGHT_TOP_QUARTER,
 		RIGHT_BOTTOM_QUARTER,
 		MIDDLE_TOP,
-		MIDDLE_BOTTOM
+		MIDDLE_BOTTOM_LEFT,
+		MIDDLE_BOTTOM_RIGHT
 	}
 }
