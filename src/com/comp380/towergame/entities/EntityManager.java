@@ -2,20 +2,23 @@ package com.comp380.towergame.entities;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.util.Log;
 
+import com.comp380.towergame.CreditsActivity;
 import com.comp380.towergame.GameActivity;
 import com.comp380.towergame.R;
 import com.comp380.towergame.background.Tile;
-import com.comp380.towergame.physics.MoveDirection;
 
 public class EntityManager {
 	private ArrayList<BaseEntity> entityStorage;
 	private GameActivity context;
+	private String tag = ""+ this.getClass();
 
 	public EntityManager(GameActivity gameActivity) {
 		this.setContext(gameActivity);
@@ -42,28 +45,34 @@ public class EntityManager {
 	public ArrayList<BaseEntity> getAll() {
 		return this.entityStorage;
 	}
-	
-	public ArrayList<Integer> getAllKeys() {
-		ArrayList<Integer> array = new ArrayList<Integer>();
-		for(BaseEntity entity : this.entityStorage){
-			array.add(entity.getID());
-		}
-		return array;
-	}
 
 	public void updateAll() {
 		ArrayList<BaseEntity> toRemove = new ArrayList<BaseEntity>();
 		ArrayList<BaseEntity> safeIter = new ArrayList<BaseEntity>(this.entityStorage);
 		for(BaseEntity entity : safeIter){
 			entity.update();
-			//this.context.getCollisionDetection().checkCollisions(entity);
-			//this will be done when things move, rather than every time.
-			if(entity.getHealth() < 0) {
+			if(entity.getHealth() < 0) {				
 				toRemove.add(entity);
 			}
 		}
 		for(BaseEntity removing : toRemove) {
 			this.entityStorage.remove(removing);
+
+			if(removing instanceof Andy) {
+				//Andy Died
+				Log.v(tag, "Adny died, Hp =" +removing.getHealth());
+				Intent intent = new Intent(this.context, CreditsActivity.class);
+		    	this.context.startActivity(intent);
+		    	this.context.finish();
+		    	this.context.toggleGameThread(false);
+		    	break;
+			}
+			if(removing instanceof Goat) {
+				//Goat Died poor goat
+				if(this.context.getDeathCry() != null)
+					this.context.getDeathCry().start();
+		    	break;
+			}
 		}
 	}
 
@@ -87,8 +96,8 @@ public class EntityManager {
 	}
 	
 	public Tile checkEntityToTileCollisions(BaseEntity baseEntity,
-			Point newPoint, MoveDirection direction) {
-		return this.getContext().getCollisionDetection().checkTileCollisions(baseEntity, newPoint, direction);
+			Point newPoint) {
+		return this.getContext().getCollisionDetection().checkTileCollisions(baseEntity, newPoint);
 	}
 	
 	public GameActivity getContext() {

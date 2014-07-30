@@ -1,7 +1,6 @@
 package com.comp380.towergame;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -18,14 +17,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.comp380.towergame.background.Background;
-import com.comp380.towergame.background.Tile; ////temp
+import com.comp380.towergame.background.Levels;
+import com.comp380.towergame.background.TileEngine;
+import com.comp380.towergame.entities.Andy.MoveDirection;
 import com.comp380.towergame.entities.EntityManager;
 import com.comp380.towergame.entities.Flame;
 import com.comp380.towergame.entities.Goat;
 import com.comp380.towergame.physics.CollisionDetection;
-import com.comp380.towergame.physics.MoveDirection;
-import com.comp380.towergame.background.TileEngine;
-import com.comp380.towergame.background.Levels;
+////temp
 
 public class GameActivity extends Activity {
 	private String tag = this.getClass().toString();
@@ -41,7 +40,8 @@ public class GameActivity extends Activity {
 	protected Levels levels;
 	
 
-	protected MediaPlayer goatBleet = null;
+	private MediaPlayer goatBleet = null;
+	private MediaPlayer goatDeath = null;
 
 	public static int GAME_MAX_WIDTH = 1920;
 	public static int GAME_MAX_HEIGHT = 1200;
@@ -89,17 +89,17 @@ public class GameActivity extends Activity {
 		levels = new Levels(this, 1);
 		tileEngine = new TileEngine(this, levels.getLevel(),levels.getlevelLength());
 		
-		
 		this.toggleGameThread(true);
 		
-		wireButtons();
 		goatBleet = MediaPlayer.create(this, R.raw.bleet);
+		goatDeath = MediaPlayer.create(this, R.raw.scream);
+		wireButtons();
 	}
 
-	protected void toggleGameThread(boolean b) {
+	public void toggleGameThread(boolean b) {
 		Log.v(tag, "Starting Game Thread");
 		this.gameThread.setRunning(b);
-		this.gameThread.start();
+		if(b) this.gameThread.start();
 	}
 
 	public EntityManager getEntityManager() {
@@ -108,6 +108,10 @@ public class GameActivity extends Activity {
 	
 	public MediaPlayer getBleeter() {
 		return goatBleet;
+	}
+	
+	public MediaPlayer getDeathCry() {
+		return goatDeath;
 	}
 
 	public CollisionDetection getCollisionDetection() {
@@ -133,17 +137,20 @@ public class GameActivity extends Activity {
 					if (handlr != null) return true;
 					handlr = new Handler();
 					handlr.postDelayed(buttonAction, sleep);
+					Log.v(tag, "Left Down");
 					break;
 				case MotionEvent.ACTION_UP:
 					if (handlr == null) return true;
 					handlr.removeCallbacks(buttonAction);
 					handlr = null;
+					Log.v(tag, "Left UP");
 					break;
 				case MotionEvent.ACTION_MOVE:
 					if (handlr == null) return true;
 					if(!rect.contains((int) x, (int) y)) {
 						handlr.removeCallbacks(buttonAction);
 						handlr = null;
+						Log.v(tag, "Left Move");
 						break;
 					}
 				}
@@ -152,7 +159,8 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.LEFT);
+					if (entityManager.getAndy() == null ) return;
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.LEFT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -213,8 +221,10 @@ public class GameActivity extends Activity {
 					else
 					{
 						tileEngine.setSpeed(0);
-						entityManager.getAndy().move(MoveDirection.RIGHT);
+						entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
 					}
+					if (entityManager.getAndy() == null ) return;
+					//entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -254,7 +264,8 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.JUMP);
+					if (entityManager.getAndy() == null ) return;
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -294,7 +305,8 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.DOWN);
+					if (entityManager.getAndy() == null ) return;
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.DOWN);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -373,7 +385,7 @@ public class GameActivity extends Activity {
 				@Override 
 				public void run() {
 					entityManager.getAll().add(new Flame(entityManager, 
-							BitmapFactory.decodeResource(getResources(), R.drawable.flame), MoveDirection.RIGHT));
+							BitmapFactory.decodeResource(getResources(), R.drawable.flame)));
 					handlr.postDelayed(this, sleep*6);
 				}
 			};
@@ -412,7 +424,8 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.DIAGONAL_DOWN_RIGHT);
+					if (entityManager.getAndy() == null ) return;
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_DOWN_RIGHT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -451,7 +464,9 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.DIAGONAL_DOWN_LEFT);
+
+					if (entityManager.getAndy() == null ) return;
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_DOWN_LEFT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -490,7 +505,9 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.DIAGONAL_UP_RIGHT);
+
+					if (entityManager.getAndy() == null ) return;
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_UP_RIGHT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -529,7 +546,9 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					entityManager.getAndy().move(MoveDirection.DIAGONAL_UP_LEFT);
+
+					if (entityManager.getAndy() == null ) return;
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_UP_LEFT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -542,7 +561,6 @@ public class GameActivity extends Activity {
 			try {
 				gameThread.interrupt();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

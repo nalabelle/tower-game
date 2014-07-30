@@ -6,5 +6,7 @@
     <string name="version">prototype 1.0</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_game">GameActivity</string>
+    <string name="main_screen_text_color">#907D50</string>
+    <string name="title">MAGIC TOWER</string>
 
 </resources>
