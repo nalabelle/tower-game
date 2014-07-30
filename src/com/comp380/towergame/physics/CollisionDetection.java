@@ -34,13 +34,10 @@ public class CollisionDetection {
 		return null;
 	}
 	
-	public Tile checkTileCollisions(BaseEntity entityMoved, Point newPoint) {
+	public Tile checkTileCollisions(BaseEntity entityMoved, Point newPoint, float velocityX, float velocityY) {
 		//Get the current position and velocity.
 		Rect moved = entityMoved.getBounds();
 		Point point = new Point(moved.left, moved.top);
-		//We could use these to only check one side of the box?
-		float velocityX = point.x - newPoint.x;
-		float velocityY = point.y - newPoint.y;
 		
 		//Move the bounding box to the new position for testing.
 		moved.offsetTo(newPoint.x, newPoint.y);
@@ -56,7 +53,9 @@ public class CollisionDetection {
 		Tile returnTile = null;
 		if(Math.abs(velocityX) > Math.abs(velocityY)) {
 			//more lateral motion
-			if(velocityX > 0) {
+			if(velocityX == 0) {
+				//Both are zero? this shouldn't get hit.
+			} else if(velocityX > 0) {
 				//moving right
 				returnTile = this.findNearest(intersections, moved, RectangleEdge.LEFT);
 			} else {
@@ -64,7 +63,9 @@ public class CollisionDetection {
 			}
 		} else {
 			//vertical motion
-			if(velocityY > 0) {
+			if(velocityY == 0) {
+				//both are zero.
+			} else if(velocityY > 0) {
 				returnTile = this.findNearest(intersections, moved, RectangleEdge.TOP);
 			} else {
 				returnTile = this.findNearest(intersections, moved, RectangleEdge.BOTTOM);

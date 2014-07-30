@@ -43,7 +43,8 @@ public class BaseEntity {
 	}
 	
 	private Point updatePosition() {
-		float td = 1;//this.lastUpdate - System.currentTimeMillis();
+		float td = this.lastUpdate - System.currentTimeMillis();
+		td = 1; //for testing
 		Point newPoint = new Point(this.point);
 		if(!this.onGround) {
 			newPoint.y += this.velocityY * td;
@@ -62,24 +63,6 @@ public class BaseEntity {
 		//damn you gravity
 		if(this.isFlying)
 			newPoint.y = this.point.y;
-		return newPoint;
-	}
-	
-	private Point movePoint() {
-		float td = this.lastUpdate - System.currentTimeMillis();
-		Point newPoint = new Point(this.point);
-		if(this.isJumping) {
-			if(!this.onGround) {
-				newPoint.y += this.velocityY * td;
-				this.velocityY += Speed.GRAVITY;
-			} else {
-				this.isJumping = false;
-			}
-		}
-		if(this.isWalking) {
-			newPoint.x += this.velocityX * td;
-			this.isWalking = false;
-		}
 		return newPoint;
 	}
 	
@@ -121,7 +104,7 @@ public class BaseEntity {
 		}
 		
 		//Check entity->tile collisions
-		Tile block = this.manager.checkEntityToTileCollisions(this, newPoint);
+		Tile block = this.manager.checkEntityToTileCollisions(this, newPoint, this.velocityX, this.velocityY);
 		if(block != null) {
 			if(this.velocityY > 0) {
 				this.point.y = block.getBounds().top - this.getBounds().height();

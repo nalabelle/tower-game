@@ -96,8 +96,8 @@ public class EntityManager {
 	}
 	
 	public Tile checkEntityToTileCollisions(BaseEntity baseEntity,
-			Point newPoint) {
-		return this.getContext().getCollisionDetection().checkTileCollisions(baseEntity, newPoint);
+			Point newPoint, float velocityX, float velocityY) {
+		return this.getContext().getCollisionDetection().checkTileCollisions(baseEntity, newPoint, velocityX, velocityY);
 	}
 	
 	public GameActivity getContext() {
