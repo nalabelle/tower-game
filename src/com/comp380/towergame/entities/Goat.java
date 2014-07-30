@@ -34,9 +34,7 @@ public class Goat extends BaseEntity {
 			this.lurking--;
 			
 		} else {
-			if(this.attacking < 1) {
 				this.attackPlayer();
-			}
 		}
 		
 		super.update();

@@ -69,7 +69,8 @@ public class EntityManager {
 			}
 			if(removing instanceof Goat) {
 				//Goat Died poor goat
-		    	this.context.getDeathCry().start();
+				if(this.context.getDeathCry() != null)
+					this.context.getDeathCry().start();
 		    	break;
 			}
 		}

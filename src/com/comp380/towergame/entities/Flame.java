@@ -16,5 +16,7 @@ public class Flame extends BaseEntity {
 				manager.getAndy().getY());
 		this.velocityX = Math.signum(manager.getAndy().getFacing())*this.speed;
 		Log.v(this.getClass().toString(), "Fireball Velocity" + this.velocityX);
+		
+		this.isFlying = true;
 	}
 }

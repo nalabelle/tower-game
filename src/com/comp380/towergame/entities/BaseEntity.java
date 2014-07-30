@@ -21,6 +21,7 @@ public class BaseEntity {
 	protected float speed = Speed.BASE;
 	protected boolean facingRight = true;
 	protected boolean onGround = false;
+	protected boolean isFlying = false;
 	protected boolean isJumping = false;
 	protected boolean isWalking = false;
 	protected boolean collisionFlag = false;
@@ -44,11 +45,23 @@ public class BaseEntity {
 	private Point updatePosition() {
 		float td = 1;//this.lastUpdate - System.currentTimeMillis();
 		Point newPoint = new Point(this.point);
-		if(Math.abs(this.velocityY) > 1) {
+		if(!this.onGround) {
 			newPoint.y += this.velocityY * td;
 			this.velocityY += Speed.GRAVITY * td;
 		}
-		newPoint.x += this.velocityX * td;
+		if(Math.abs(this.velocityX) > 1) {
+			newPoint.x += this.velocityX * td;
+			if(!(this instanceof Flame)) {
+				if(this.onGround) {
+					this.velocityX -= Math.signum(this.velocityX)*Speed.GROUND_FRICTION * td;
+				} else {
+					this.velocityX -= Math.signum(this.velocityX)*Speed.AIR_FRICTION * td;
+				}
+			}
+		}
+		//damn you gravity
+		if(this.isFlying)
+			newPoint.y = this.point.y;
 		return newPoint;
 	}
 	
@@ -112,9 +125,22 @@ public class BaseEntity {
 		if(block != null) {
 			if(this.velocityY > 0) {
 				this.point.y = block.getBounds().top - this.getBounds().height();
-				//Log.v(this.getClass().getName(), "on ground at" + this.point.y);
+				Log.v(this.getClass().getName(), "on ground at" + this.point.y);
 				this.onGround = true;
+				this.velocityY = 0;
+			} else {
+				if(this.velocityX > 0) {
+					this.point.x = block.getBounds().left - this.getBounds().width();
+					//Log.v(this.getClass().getName(), "hit right at" + this.point.x);
+				} else {
+					this.point.x = block.getBounds().right + 1;
+					//Log.v(this.getClass().getName(), "hit left at" + this.point.x);
+				}
+				this.velocityY = 0;
 			}
+		} else {
+			//we lost tile collision, we're probably falling now.
+			this.onGround = false;
 		}
 		
 		//revert somewhere before here if you need to back up from a collision.
