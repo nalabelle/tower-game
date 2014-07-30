@@ -15,6 +15,7 @@ public class TileEngine
 	private int levelLength;
 	private Tile tileArray[][];
 	private Tile sourceArray[][];
+	private int speed;
 	
 	Context context;
 	
@@ -36,6 +37,7 @@ public class TileEngine
 				
 				tileArray[i][j].setTileOnScreenX(i*90 - 90);
 				tileArray[i][j].setTileOnScreenY(j*90);
+				tileArray[i][j].setTileXSpeed(0);
 				
 			}
 		}
@@ -66,14 +68,25 @@ public class TileEngine
 		}
 	}
 	
-	public void setTileSpeed(int s)
+	
+	public void setSpeed(int speed)
+	{
+		this.speed = speed;
+	}
+	
+	public int getSpeed()
+	{
+		return speed;
+	}
+	
+	public void setTileSpeed(int s)//delete
 	{
 		for(int i = 0; i < x; i++)
 		{
 			for(int j = 0; j < y; j++)
 			{
-				if(tileArray[i][j] == null)
-					continue;
+				//if(tileArray[i][j] == null)
+					//continue;
 				tileArray[i][j].setTileXSpeed(s);
 			}
 		}
@@ -92,6 +105,7 @@ public class TileEngine
 			{
 				if(tileArray[i][j] == null)
 					continue;
+				tileArray[i][j].setTileXSpeed(speed);
 				tileArray[i][j].updateTile();
 				
 				/*
