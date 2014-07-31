@@ -721,7 +721,7 @@ public class GameActivity extends Activity {
                         Runnable buttonAction = new Runnable() {
                                 @Override
                                 public void run() {
-                                	if(type == 1)  {                              
+                                	if(type == 2)  {                              
                                 		entityManager.getAll().add(new Goat(entityManager, 
                 							BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
                                 	}
