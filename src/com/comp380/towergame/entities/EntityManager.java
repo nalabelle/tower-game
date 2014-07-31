@@ -65,7 +65,8 @@ public class EntityManager {
 				Log.v(tag, "Adny died, Hp =" +removing.getHealth());
 				Intent intent = new Intent(this.context, CreditsActivity.class);
 		    	this.context.startActivity(intent);
-		    	this.context.finish();
+		    	context.onPause();
+		    	context.finish();
 		    	this.context.toggleGameThread(false);
 		    	break;
 			}
