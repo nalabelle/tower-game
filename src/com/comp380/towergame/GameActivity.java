@@ -271,7 +271,7 @@ public class GameActivity extends Activity {
 				public void run() {
 					if (entityManager.getAndy() == null ) return;
 					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
-					handlr.postDelayed(this, sleep*10);
+					handlr.postDelayed(this, sleep);
 				}
 			};
 		});
