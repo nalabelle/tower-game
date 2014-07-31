@@ -9,7 +9,7 @@ import android.graphics.Paint;
 
 public class TileEngine
 {
-	private int x = 30;//22
+	private int x = 30;//22 
 	private int y = 13; //y port on screen
 	private int screenC = 30; //screen Constant
 	private int levelLength;
