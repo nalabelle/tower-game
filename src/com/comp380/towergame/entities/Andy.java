@@ -45,10 +45,14 @@ public class Andy extends BaseEntity {
 		case DOWN:
 			break;
 		case LEFT:
+			if(this.facingRight)
+				this.reverseBitmap();
 			this.facingRight = false;
 			super.moveWalk(-1);
 			break;
 		case RIGHT:
+			if(!this.facingRight)
+				this.reverseBitmap();
 			this.facingRight = true;
 			super.moveWalk(1);
 			break;

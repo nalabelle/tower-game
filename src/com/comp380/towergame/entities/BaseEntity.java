@@ -9,6 +9,7 @@ import com.comp380.towergame.physics.CollisionDetection.PointMap;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.Log;
@@ -170,6 +171,17 @@ public class BaseEntity {
 	
 	public int getFacing() {
 		return ((this.facingRight) ? 1 : -1);
+	}
+	
+	protected void reverseBitmap() {
+		if(this.texture != this.originalTexture) {
+			this.texture = this.originalTexture;
+		} else {
+			Matrix matrix = new Matrix();
+			matrix.setScale(-1, 1);
+			matrix.postTranslate(texture.getWidth(), 0);
+			this.texture = Bitmap.createBitmap(this.texture, 0, 0, this.texture.getWidth(), this.texture.getHeight(), matrix, true);
+		}
 	}
 
 }
