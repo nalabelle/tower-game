@@ -41,7 +41,8 @@ public class Andy extends BaseEntity {
 		switch(direction) {
 		case UP:
 		case JUMP:
-			super.moveJump();
+			if(this.onGround)
+				super.moveJump();
 			break;
 		case DOWN:
 			break;

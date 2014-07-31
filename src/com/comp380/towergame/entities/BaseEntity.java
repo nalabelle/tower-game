@@ -180,8 +180,7 @@ public class BaseEntity {
 		//Kill them at the edges.
 		if(this.point.x > GameActivity.GAME_MAX_WIDTH ||
 			this.point.y > GameActivity.GAME_MAX_HEIGHT ||
-			(this.point.x + this.getBounds().width()) < 0 ||
-			(this.point.y + this.getBounds().height()) < 0) {
+			(this.point.x + this.getBounds().width()) < 0 ) {
 				this.health = -100;
 		}
 		this.lastUpdate = System.currentTimeMillis();
