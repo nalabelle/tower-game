@@ -130,6 +130,36 @@ public class BaseEntity {
 					newPoint.y = higher.getBounds().top - this.getBounds().height();
 				}
 			}
+			
+			//FACE
+			if(blocks.get(PointMap.LEFT_TOP_QUARTER) != null || blocks.get(PointMap.LEFT_BOTTOM_QUARTER) != null) {
+				//one or more of our points on the left has hit something.
+				//we have a collision on at least one of our feet. Pick the higher one.
+				Tile righter = blocks.get(PointMap.LEFT_TOP_QUARTER);
+				if(righter == null || ( blocks.get(PointMap.LEFT_BOTTOM_QUARTER) != null) &&
+					(blocks.get(PointMap.LEFT_BOTTOM_QUARTER).getBounds().right > righter.getBounds().right))
+						righter = blocks.get(PointMap.LEFT_BOTTOM_QUARTER);
+				
+				if(this.velocityX < 0) {
+					this.velocityX = 0;
+					newPoint.x = righter.getBounds().right + 1;
+				}
+			}
+			
+			//OTHER FACE
+			if(blocks.get(PointMap.RIGHT_TOP_QUARTER) != null || blocks.get(PointMap.RIGHT_BOTTOM_QUARTER) != null) {
+				//one or more of our points on the left has hit something.
+				//we have a collision on at least one of our feet. Pick the higher one.
+				Tile lefter = blocks.get(PointMap.RIGHT_TOP_QUARTER);
+				if(lefter == null || ( blocks.get(PointMap.RIGHT_BOTTOM_QUARTER) != null) &&
+					(blocks.get(PointMap.RIGHT_BOTTOM_QUARTER).getBounds().left < lefter.getBounds().left))
+						lefter = blocks.get(PointMap.RIGHT_BOTTOM_QUARTER);
+				
+				if(this.velocityX > 0) {
+					this.velocityX = 0;
+					newPoint.x = lefter.getBounds().left -this.getBounds().width()- 1;
+				}
+			}
 		} else {
 			//we lost ALL tile collision, we're free-falling now.
 			this.onGround = false;
