@@ -83,7 +83,7 @@ public class BaseEntity {
 		this.velocityX = direction * this.speed;
 	}
 	
-	private void moveUpdate() {
+	protected void moveUpdate() {
 		Point newPoint = this.updatePosition();
 		if(!this.point.equals(newPoint))
 			Log.v(this.getClass().getName(), "New " + this.point.toString() + "Velocity: ("+this.velocityX+","+this.velocityY+")");
@@ -180,8 +180,7 @@ public class BaseEntity {
 		//Kill them at the edges.
 		if(this.point.x > GameActivity.GAME_MAX_WIDTH ||
 			this.point.y > GameActivity.GAME_MAX_HEIGHT ||
-			(this.point.x + this.getBounds().width()) < 0 ||
-			(this.point.y + this.getBounds().height()) < 0) {
+			(this.point.x + this.getBounds().width()) < 0 ) {
 				this.health = -100;
 		}
 		this.lastUpdate = System.currentTimeMillis();

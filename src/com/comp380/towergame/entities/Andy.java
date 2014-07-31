@@ -3,6 +3,7 @@ package com.comp380.towergame.entities;
 import com.comp380.towergame.physics.Speed;
 
 import android.graphics.Bitmap;
+import android.graphics.Point;
 
 public class Andy extends BaseEntity {
 	int score;
@@ -40,7 +41,8 @@ public class Andy extends BaseEntity {
 		switch(direction) {
 		case UP:
 		case JUMP:
-			super.moveJump();
+			if(this.onGround)
+				super.moveJump();
 			break;
 		case DOWN:
 			break;
@@ -58,6 +60,26 @@ public class Andy extends BaseEntity {
 			break;
 		default:
 			break;
+		}
+	}
+	
+
+	public int getVelocityX() {
+		return (int) this.velocityX;
+	}
+	
+	protected void moveUpdate() {
+		Point oldPoint = this.point;
+		super.moveUpdate();
+		if(this.getX() >= 700) {
+			this.manager.getContext().getTileEngine().setSpeed((int) (this.velocityX * -1));
+			this.point.x = oldPoint.x;
+		} else {
+			this.manager.getContext().getTileEngine().setSpeed(0);
+		}
+		if(this.getX() < 90 && this.velocityX < 0) {
+			this.velocityX = 0;
+			this.point.x = oldPoint.x;
 		}
 	}
 }
