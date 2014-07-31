@@ -68,7 +68,8 @@ public class GameActivity extends Activity {
 		
 		//Add Buttons
 		LayoutInflater factory = LayoutInflater.from(this);
-		View myView = factory.inflate(R.layout.activity_gameview, null);
+		//View myView = factory.inflate(R.layout.activity_gameview, null);
+		View myView = factory.inflate(R.layout.defaultcontrols, null);
 		game.addView(myView);
 		
 		setContentView(game);
@@ -95,19 +96,24 @@ public class GameActivity extends Activity {
 		goatDeath = MediaPlayer.create(this, R.raw.scream);
 		
 		
-		wireButtons();
+		//wireButtons();
 	    
-		/*
-		 * Not Ready quite yet, will do soon.
+		
+		 //* Not Ready quite yet, will do soon.
 		ImageButton left = (ImageButton) findViewById(R.id.leftButton);
 	    touchButton(left.getId(), com.comp380.towergame.entities.Andy.MoveDirection.LEFT);
 	    
 	    ImageButton right = (ImageButton) findViewById(R.id.rightButton);
-	    touchButton(right.getId(), com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
+	    moveButtonR(right.getId(), com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
 	    
 	    ImageButton jump = (ImageButton) findViewById(R.id.jump);
 	    touchButton(jump.getId(), com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
-	    */
+	    
+	    ImageButton spawn = (ImageButton) findViewById(R.id.spawn);
+	    spawnButton(spawn.getId(), 2);
+	    
+	    ImageButton fire = (ImageButton) findViewById(R.id.fire);
+	    spawnButton(fire.getId(), 1);
 	}
 
 	public void toggleGameThread(boolean b) {
@@ -265,7 +271,7 @@ public class GameActivity extends Activity {
 				public void run() {
 					if (entityManager.getAndy() == null ) return;
 					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
-					handlr.postDelayed(this, sleep*10);
+					handlr.postDelayed(this, sleep);
 				}
 			};
 		});
@@ -618,6 +624,118 @@ public class GameActivity extends Activity {
                         }
                 };
         });
+	}
+        
+        private void moveButtonR(int id, final com.comp380.towergame.entities.Andy.MoveDirection direction) {
+            Log.v(tag, "touchy");
+    		final int sleep = 50;
+    		final ImageButton left = (ImageButton) findViewById(id);
+            left.setOnTouchListener(new View.OnTouchListener() {
+                    private Handler handlr;
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                            Rect rect = new Rect();
+                            left.getHitRect(rect);
+                            float x = event.getX() + rect.left;
+                            float y = event.getY() + rect.top;
+               
+                            switch(event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                    if (handlr != null) return true;
+                                    handlr = new Handler();
+                                    handlr.postDelayed(buttonAction, sleep);
+                                    break;
+                            case MotionEvent.ACTION_UP:
+                                    if (handlr == null) return true;
+                                    handlr.removeCallbacks(buttonAction);
+                                    handlr = null;
+                                    break;
+                            case MotionEvent.ACTION_MOVE:
+                                    if (handlr == null) return true;
+                                    if(!rect.contains((int) x, (int) y)) {
+                                            handlr.removeCallbacks(buttonAction);
+                                            handlr = null;
+                                            break;
+                                    }
+                            }
+                            return false;
+                    }
+                    Runnable buttonAction = new Runnable() {
+                            @Override
+                            public void run() {
+                                    if (entityManager.getAndy() == null ) return;
+                                    if((entityManager.getAndy().getX() >= 700) && (tileEngine.getInGamePos() <= 180) && (tileEngine.getSpeed() != -8))
+                            		{
+                            			//if(canMove == false)
+                            			//{
+                            				tileEngine.setSpeed(-8);
+                            			//}
+                            		}
+                            		else
+                            		{
+                            			tileEngine.setSpeed(0);
+                            			entityManager.getAndy().onMoveEvent(direction);
+                            		}
+                            		if (entityManager.getAndy() == null ) return;
+                            		//entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
+                            		handlr.postDelayed(this, sleep);
+                            }
+                    };
+            });
+        }
+            
+            private void spawnButton(int id, final int type) {
+                Log.v(tag, "touchy");
+        		final int sleep = 50;
+        		final ImageButton left = (ImageButton) findViewById(id);
+                left.setOnTouchListener(new View.OnTouchListener() {
+                        private Handler handlr;
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                                Rect rect = new Rect();
+                                left.getHitRect(rect);
+                                float x = event.getX() + rect.left;
+                                float y = event.getY() + rect.top;
+                   
+                                switch(event.getAction()) {
+                                case MotionEvent.ACTION_DOWN:
+                                        if (handlr != null) return true;
+                                        handlr = new Handler();
+                                        handlr.postDelayed(buttonAction, sleep);
+                                        break;
+                                case MotionEvent.ACTION_UP:
+                                        if (handlr == null) return true;
+                                        handlr.removeCallbacks(buttonAction);
+                                        handlr = null;
+                                        break;
+                                case MotionEvent.ACTION_MOVE:
+                                        if (handlr == null) return true;
+                                        if(!rect.contains((int) x, (int) y)) {
+                                                handlr.removeCallbacks(buttonAction);
+                                                handlr = null;
+                                                break;
+                                        }
+                                }
+                                return false;
+                        }
+                        Runnable buttonAction = new Runnable() {
+                                @Override
+                                public void run() {
+                                	if(type == 1)  {                              
+                                		entityManager.getAll().add(new Goat(entityManager, 
+                							BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
+                                	}
+                                	else
+                                	{
+                                        entityManager.getAll().add(new Flame(entityManager, 
+                    							BitmapFactory.decodeResource(getResources(), R.drawable.flame)));
+                    					handlr.postDelayed(this, sleep*6);
+                                	}
+                                }
+                        };
+                });
+        
+    	
 }
 
 	public TileEngine getTileEngine() {
