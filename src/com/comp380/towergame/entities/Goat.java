@@ -14,6 +14,7 @@ public class Goat extends BaseEntity {
 		super(manager, bitmap, 
 				(int) (Math.random()*GameActivity.GAME_MAX_WIDTH),
 				(int) (Math.random()*GameActivity.GAME_MAX_HEIGHT));
+		this.facingRight = false;
 	}
 	
 	private void attackPlayer() {

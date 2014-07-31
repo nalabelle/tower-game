@@ -53,6 +53,8 @@ public class BaseEntity {
 		if(!this.onGround) {
 			newPoint.y += this.velocityY * td;
 			this.velocityY += Speed.GRAVITY * td;
+		} else {
+			newPoint.y = this.point.y;
 		}
 		if(Math.abs(this.velocityX) > 1) {
 			newPoint.x += this.velocityX * td;
@@ -115,17 +117,17 @@ public class BaseEntity {
 				//we lost tile collision on both feet, we're probably falling now.
 				this.onGround = false;
 			} else {
-				//we have a collision on at least one of our feet.
+				//we have a collision on at least one of our feet. Pick the higher one.
 				Tile higher = blocks.get(PointMap.MIDDLE_BOTTOM_LEFT);
 				if(higher == null || ( blocks.get(PointMap.MIDDLE_BOTTOM_RIGHT) != null) &&
 					(blocks.get(PointMap.MIDDLE_BOTTOM_RIGHT).getBounds().top > higher.getBounds().top))
 						higher = blocks.get(PointMap.MIDDLE_BOTTOM_RIGHT);
 				
+				//put us on the higher block.
 				if(this.velocityY > 0) {
 					this.onGround = true;
 					this.velocityY = 0;
-					this.point.y = higher.getBounds().top - this.getBounds().height();
-					Log.v(this.getClass().getName(), "on ground at" + this.point.y);
+					newPoint.y = higher.getBounds().top - this.getBounds().height();
 				}
 			}
 		} else {
@@ -170,7 +172,7 @@ public class BaseEntity {
 	}
 	
 	public int getFacing() {
-		return ((this.facingRight) ? 1 : -1);
+		return (this.facingRight) ? 1 : -1;
 	}
 	
 	protected void reverseBitmap() {
