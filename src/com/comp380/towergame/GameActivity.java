@@ -68,7 +68,8 @@ public class GameActivity extends Activity {
 		
 		//Add Buttons
 		LayoutInflater factory = LayoutInflater.from(this);
-		View myView = factory.inflate(R.layout.activity_gameview, null);
+		//View myView = factory.inflate(R.layout.activity_gameview, null);
+		View myView = factory.inflate(R.layout.defaultcontrols, null);
 		game.addView(myView);
 		
 		setContentView(game);
@@ -95,19 +96,19 @@ public class GameActivity extends Activity {
 		goatDeath = MediaPlayer.create(this, R.raw.scream);
 		
 		
-		wireButtons();
+		//wireButtons();
 	    
-		/*
-		 * Not Ready quite yet, will do soon.
+		
+		 //* Not Ready quite yet, will do soon.
 		ImageButton left = (ImageButton) findViewById(R.id.leftButton);
 	    touchButton(left.getId(), com.comp380.towergame.entities.Andy.MoveDirection.LEFT);
 	    
 	    ImageButton right = (ImageButton) findViewById(R.id.rightButton);
-	    touchButton(right.getId(), com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
+	    touchButtonR(right.getId(), com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
 	    
 	    ImageButton jump = (ImageButton) findViewById(R.id.jump);
 	    touchButton(jump.getId(), com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
-	    */
+	    
 	}
 
 	public void toggleGameThread(boolean b) {
@@ -633,6 +634,66 @@ public class GameActivity extends Activity {
                         }
                 };
         });
+	}
+        
+        private void touchButtonR(int id, final com.comp380.towergame.entities.Andy.MoveDirection direction) {
+            Log.v(tag, "touchy");
+    		final int sleep = 50;
+    		final ImageButton left = (ImageButton) findViewById(id);
+            left.setOnTouchListener(new View.OnTouchListener() {
+                    private Handler handlr;
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                            Rect rect = new Rect();
+                            left.getHitRect(rect);
+                            float x = event.getX() + rect.left;
+                            float y = event.getY() + rect.top;
+               
+                            switch(event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                    if (handlr != null) return true;
+                                    handlr = new Handler();
+                                    handlr.postDelayed(buttonAction, sleep);
+                                    break;
+                            case MotionEvent.ACTION_UP:
+                                    if (handlr == null) return true;
+                                    handlr.removeCallbacks(buttonAction);
+                                    handlr = null;
+                                    break;
+                            case MotionEvent.ACTION_MOVE:
+                                    if (handlr == null) return true;
+                                    if(!rect.contains((int) x, (int) y)) {
+                                            handlr.removeCallbacks(buttonAction);
+                                            handlr = null;
+                                            break;
+                                    }
+                            }
+                            return false;
+                    }
+                    Runnable buttonAction = new Runnable() {
+                            @Override
+                            public void run() {
+                                    if (entityManager.getAndy() == null ) return;
+                                    if((entityManager.getAndy().getX() >= 700) && (tileEngine.getInGamePos() <= 180) && (tileEngine.getSpeed() != -8))
+                            		{
+                            			//if(canMove == false)
+                            			//{
+                            				tileEngine.setSpeed(-8);
+                            			//}
+                            		}
+                            		else
+                            		{
+                            			tileEngine.setSpeed(0);
+                            			entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
+                            		}
+                            		if (entityManager.getAndy() == null ) return;
+                            		//entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
+                            		handlr.postDelayed(this, sleep);
+                            }
+                    };
+            });
+        
+    	
 }
 	
 }
