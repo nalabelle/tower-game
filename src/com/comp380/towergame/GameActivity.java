@@ -87,7 +87,7 @@ public class GameActivity extends Activity {
 		
 		
 		levels = new Levels(this, 1);
-		tileEngine = new TileEngine(this, levels.getLevel(),levels.getlevelLength());
+		this.tileEngine = new TileEngine(this, levels.getLevel(),levels.getlevelLength());
 		
 		this.toggleGameThread(true);
 		
@@ -201,14 +201,14 @@ public class GameActivity extends Activity {
 					handlr.postDelayed(buttonAction, sleep);
 					break;
 				case MotionEvent.ACTION_UP:
-					tileEngine.setSpeed(0);
+					getTileEngine().setSpeed(0);
 					//canMove = true;
 					if (handlr == null) return true;
 					handlr.removeCallbacks(buttonAction);
 					handlr = null;
 					break;
 				case MotionEvent.ACTION_MOVE:
-					tileEngine.setSpeed(0);
+					getTileEngine().setSpeed(0);
 					//canMove = true;
 					if (handlr == null) return true;
 					if(!rect.contains((int) x, (int) y)) {
@@ -222,23 +222,8 @@ public class GameActivity extends Activity {
 			Runnable buttonAction = new Runnable() {
 				@Override 
 				public void run() {
-					
-
-					
-					if((entityManager.getAndy().getX() >= 700) && (tileEngine.getInGamePos() <= 180))
-					{
-						//if(canMove == false)
-						//{
-							tileEngine.setSpeed(-8);
-						//}
-					}
-					else
-					{
-						tileEngine.setSpeed(0);
-						entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
-					}
 					if (entityManager.getAndy() == null ) return;
-					//entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
+					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
 					handlr.postDelayed(this, sleep);
 				}
 			};
@@ -582,7 +567,7 @@ public class GameActivity extends Activity {
 	}
 
 	public TileEngine getTileManager() {
-		return this.tileEngine;
+		return this.getTileEngine();
 	}
 	
 	public int scalingFactor() {
@@ -634,5 +619,9 @@ public class GameActivity extends Activity {
                 };
         });
 }
+
+	public TileEngine getTileEngine() {
+		return tileEngine;
+	}
 	
 }

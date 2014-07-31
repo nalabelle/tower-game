@@ -83,7 +83,7 @@ public class BaseEntity {
 		this.velocityX = direction * this.speed;
 	}
 	
-	private void moveUpdate() {
+	protected void moveUpdate() {
 		Point newPoint = this.updatePosition();
 		if(!this.point.equals(newPoint))
 			Log.v(this.getClass().getName(), "New " + this.point.toString() + "Velocity: ("+this.velocityX+","+this.velocityY+")");
