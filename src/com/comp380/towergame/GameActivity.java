@@ -104,11 +104,16 @@ public class GameActivity extends Activity {
 	    touchButton(left.getId(), com.comp380.towergame.entities.Andy.MoveDirection.LEFT);
 	    
 	    ImageButton right = (ImageButton) findViewById(R.id.rightButton);
-	    touchButtonR(right.getId(), com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
+	    moveButtonR(right.getId(), com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
 	    
 	    ImageButton jump = (ImageButton) findViewById(R.id.jump);
 	    touchButton(jump.getId(), com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
 	    
+	    ImageButton spawn = (ImageButton) findViewById(R.id.spawn);
+	    spawnButton(spawn.getId(), 2);
+	    
+	    ImageButton fire = (ImageButton) findViewById(R.id.fire);
+	    spawnButton(fire.getId(), 1);
 	}
 
 	public void toggleGameThread(boolean b) {
@@ -621,7 +626,7 @@ public class GameActivity extends Activity {
         });
 	}
         
-        private void touchButtonR(int id, final com.comp380.towergame.entities.Andy.MoveDirection direction) {
+        private void moveButtonR(int id, final com.comp380.towergame.entities.Andy.MoveDirection direction) {
             Log.v(tag, "touchy");
     		final int sleep = 50;
     		final ImageButton left = (ImageButton) findViewById(id);
@@ -669,7 +674,7 @@ public class GameActivity extends Activity {
                             		else
                             		{
                             			tileEngine.setSpeed(0);
-                            			entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
+                            			entityManager.getAndy().onMoveEvent(direction);
                             		}
                             		if (entityManager.getAndy() == null ) return;
                             		//entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
@@ -677,6 +682,58 @@ public class GameActivity extends Activity {
                             }
                     };
             });
+        }
+            
+            private void spawnButton(int id, final int type) {
+                Log.v(tag, "touchy");
+        		final int sleep = 50;
+        		final ImageButton left = (ImageButton) findViewById(id);
+                left.setOnTouchListener(new View.OnTouchListener() {
+                        private Handler handlr;
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                                Rect rect = new Rect();
+                                left.getHitRect(rect);
+                                float x = event.getX() + rect.left;
+                                float y = event.getY() + rect.top;
+                   
+                                switch(event.getAction()) {
+                                case MotionEvent.ACTION_DOWN:
+                                        if (handlr != null) return true;
+                                        handlr = new Handler();
+                                        handlr.postDelayed(buttonAction, sleep);
+                                        break;
+                                case MotionEvent.ACTION_UP:
+                                        if (handlr == null) return true;
+                                        handlr.removeCallbacks(buttonAction);
+                                        handlr = null;
+                                        break;
+                                case MotionEvent.ACTION_MOVE:
+                                        if (handlr == null) return true;
+                                        if(!rect.contains((int) x, (int) y)) {
+                                                handlr.removeCallbacks(buttonAction);
+                                                handlr = null;
+                                                break;
+                                        }
+                                }
+                                return false;
+                        }
+                        Runnable buttonAction = new Runnable() {
+                                @Override
+                                public void run() {
+                                	if(type == 1)  {                              
+                                		entityManager.getAll().add(new Goat(entityManager, 
+                							BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
+                                	}
+                                	else
+                                	{
+                                        entityManager.getAll().add(new Flame(entityManager, 
+                    							BitmapFactory.decodeResource(getResources(), R.drawable.flame)));
+                    					handlr.postDelayed(this, sleep*6);
+                                	}
+                                }
+                        };
+                });
         
     	
 }
