@@ -9,9 +9,9 @@ import android.graphics.Paint;
 
 public class TileEngine
 {
-	private int x = 23;//22
+	private int x = 30;//22 
 	private int y = 13; //y port on screen
-	private int screenC = 23; //screen Constant
+	private int screenC = 30; //screen Constant
 	private int levelLength;
 	private Tile tileArray[][];
 	private Tile sourceArray[][];
@@ -119,7 +119,7 @@ public class TileEngine
 					int scrY = tileArray[i][j].getTileOnScreenY(); // store on screen values
 					int inGX = tileArray[i][j].getTileInGX();
 					int inGY = tileArray[i][j].getTileInGY(); // store array location
-					scrX += 2070; //screen width in block dim (note how 2070 is multiple of 90)
+					scrX += 2700; //screen width in block dim (note how 2070 is multiple of 90)
 					
 					if(inGX+screenC >= levelLength)//array out of bounds checking
 						break;
