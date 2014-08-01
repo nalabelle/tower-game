@@ -8,7 +8,7 @@
     <string name="title_activity_game">GameActivity</string>
     <string name="main_screen_text_color">#907D50</string>
     <string name="title">MAGIC TOWER</string>
-    <string name="title_activity_game_over">GameOverActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="defaultButt">Default Buttons</string>
+    <string name="oldButt">Old Buttons</string>
 
 </resources>
