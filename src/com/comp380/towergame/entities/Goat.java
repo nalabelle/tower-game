@@ -1,6 +1,7 @@
 package com.comp380.towergame.entities;
 
 import com.comp380.towergame.GameActivity;
+import com.comp380.towergame.SoundManager;
 import com.comp380.towergame.physics.Speed;
 
 import android.graphics.Bitmap;
@@ -17,7 +18,7 @@ public class Goat extends BaseEntity {
 	
 	private void attackPlayer() {
 		if(this.attacking < 1)
-			this.manager.getContext().getBleeter().start();
+			this.manager.getContext().getSoundEffects().play(SoundManager.bleetID, 1, 1, 1, 0, 1);
 		this.attacking = 1;
 		//this.isWalking = true;
 

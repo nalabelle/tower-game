@@ -39,9 +39,8 @@ public class GameActivity extends Activity {
 	protected TileEngine tileEngine;
 	protected Levels levels;
 	
-
-	private MediaPlayer goatBleet = null;
-	private MediaPlayer goatDeath = null;
+	private SoundManager soundEffects = null;
+	private MediaPlayer gameMusic = null;
 
 	public static int GAME_MAX_WIDTH = 1920;
 	public static int GAME_MAX_HEIGHT = 1200;
@@ -91,9 +90,10 @@ public class GameActivity extends Activity {
 		
 		this.toggleGameThread(true);
 		
-		goatBleet = MediaPlayer.create(this, R.raw.bleet);
-		goatDeath = MediaPlayer.create(this, R.raw.scream);
-		
+		soundEffects = new SoundManager(this, 1);
+		gameMusic = MediaPlayer.create(this, R.raw.music1);
+		gameMusic.setLooping(true);
+		gameMusic.start();
 		
 		wireButtons();
 	    
@@ -120,12 +120,8 @@ public class GameActivity extends Activity {
 		return entityManager;
 	}
 	
-	public MediaPlayer getBleeter() {
-		return goatBleet;
-	}
-	
-	public MediaPlayer getDeathCry() {
-		return goatDeath;
+	public SoundManager getSoundEffects(){
+		return soundEffects;
 	}
 
 	public CollisionDetection getCollisionDetection() {
@@ -400,6 +396,7 @@ public class GameActivity extends Activity {
 				public void run() {
 					entityManager.getAll().add(new Flame(entityManager, 
 							BitmapFactory.decodeResource(getResources(), R.drawable.flame)));
+							soundEffects.play(SoundManager.fireballID, 1, 1, 1, 0, 1);
 					handlr.postDelayed(this, sleep*6);
 				}
 			};
@@ -574,6 +571,11 @@ public class GameActivity extends Activity {
 		if (gameThread != null){
 			try {
 				gameThread.interrupt();
+				if (gameMusic != null){
+					gameMusic.release();
+					soundEffects.autoPause();
+					soundEffects.release();
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

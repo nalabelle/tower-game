@@ -1,12 +1,9 @@
 package com.comp380.towergame;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,18 +26,19 @@ import android.widget.Toast;
  */
 
 public class MainActivity extends Activity {
+    MediaPlayer music = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //remove title bar from activity, must before setContentView
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);        
         
-        super.onCreate(savedInstanceState);
-        
+        super.onCreate(savedInstanceState);        
         setContentView(R.layout.activity_main);
-        setFont();      
-    }
+        setFont();        
+        playMusic();
+	}
 
 
     @Override
@@ -63,20 +61,44 @@ public class MainActivity extends Activity {
     }
     
     public void launchGame(View view) {
+    	endMusic();
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
         //finish();
     }
     
-
-    
     public void launchCredits(View view){
+    	endMusic();
     	Intent intent = new Intent(this, CreditsActivity.class);
     	startActivity(intent);
     }
     
-    public void launchOptions(View view){
-    	Toast.makeText(this, "To be implemented...", Toast.LENGTH_LONG).show();    	
+    public void endMusic(){
+    	if (music != null){
+    		music.release();
+    	}
+    }
+    
+    public void playMusic(){
+    	//music.setAudioStreamType(AudioManager)
+		music = MediaPlayer.create(this, R.raw.music_main);
+		music.start();
+    }
+        
+//    @Override
+//	protected void onResume() {
+//		super.onResume();
+//    	music.start();
+//	}
+//
+//	@Override
+//	protected void onPause() {
+//		music.pause();
+//		super.onPause();
+//	}
+
+	public void launchOptions(View view){
+    	Toast.makeText(this, "To be implemented...", Toast.LENGTH_LONG).show();
     }
     
     //Using a custom font (IsomothPro) from assets for display

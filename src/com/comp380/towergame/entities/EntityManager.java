@@ -13,6 +13,7 @@ import android.util.Log;
 import com.comp380.towergame.CreditsActivity;
 import com.comp380.towergame.GameActivity;
 import com.comp380.towergame.R;
+import com.comp380.towergame.SoundManager;
 import com.comp380.towergame.background.Tile;
 
 public class EntityManager {
@@ -61,7 +62,9 @@ public class EntityManager {
 			if(removing instanceof Andy) {
 				//Andy Died
 				Log.v(tag, "Adny died, Hp =" +removing.getHealth());
+				this.context.getSoundEffects().play(SoundManager.screamID, 1, 1, 1, 0, 1);
 				Intent intent = new Intent(this.context, CreditsActivity.class);
+				intent.putExtra("death", true);
 		    	this.context.startActivity(intent);
 		    	context.onPause();
 		    	context.finish();
@@ -69,9 +72,8 @@ public class EntityManager {
 		    	break;
 			}
 			if(removing instanceof Goat) {
-				//Goat Died poor goat
-				if(this.context.getDeathCry() != null)
-					this.context.getDeathCry().start();
+				//Goat Died poor goat.  NO SCREW THE GOAT, IT HAD IT COMING!!!
+				this.context.getSoundEffects().play(SoundManager.goatHowlID, 1, 1, 1, 0, 1);
 		    	break;
 			}
 		}
