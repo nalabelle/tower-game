@@ -77,6 +77,13 @@ public class MainActivity extends Activity {
     	startActivity(intent);
     }
     
+    public void launchOptions(View view){
+    	//Toast.makeText(this, "To be implemented...", Toast.LENGTH_LONG).show();
+    	endMusic();
+    	Intent intent = new Intent(this, OptionsActivity.class);
+    	startActivity(intent);
+    }
+    
     public void endMusic(){
     	if (music != null){
     		music.release();
@@ -101,9 +108,7 @@ public class MainActivity extends Activity {
 //		super.onPause();
 //	}
 
-	public void launchOptions(View view){
-    	Toast.makeText(this, "To be implemented...", Toast.LENGTH_LONG).show();
-    }
+	
     
     //Using a custom font (IsomothPro) from assets for display
     public void setFont(){
