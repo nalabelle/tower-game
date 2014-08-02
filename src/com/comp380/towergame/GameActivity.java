@@ -73,7 +73,6 @@ public class GameActivity extends Activity {
 		setContentView(game);
 		Log.v(tag, "Waiting for Surface View");
 		Log.v(tag, "Starting Game Thread");
-		this.gameThread = new GameThread(this);
 		Log.v(tag, "Starting Entity Manager");
 		this.entityManager = new EntityManager(this);
 		this.collisionDetection = new CollisionDetection(this);
@@ -88,12 +87,9 @@ public class GameActivity extends Activity {
 		levels = new Levels(this, 1);
 		tileEngine = new TileEngine(this, levels.getLevel(),levels.getlevelLength());
 		
-		this.toggleGameThread(true);
-		
 		soundEffects = new SoundManager(this, 1);
-		gameMusic = MediaPlayer.create(this, R.raw.music1);
+		gameMusic = MediaPlayer.create(this, R.raw.music_level_1);
 		gameMusic.setLooping(true);
-		gameMusic.start();
 		
 		wireButtons();
 	    
@@ -108,12 +104,6 @@ public class GameActivity extends Activity {
 	    ImageButton jump = (ImageButton) findViewById(R.id.jump);
 	    touchButton(jump.getId(), com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
 	    */
-	}
-
-	public void toggleGameThread(boolean b) {
-		Log.v(tag, "Starting Game Thread");
-		this.gameThread.setRunning(b);
-		if(b) this.gameThread.start();
 	}
 
 	public EntityManager getEntityManager() {
@@ -566,21 +556,48 @@ public class GameActivity extends Activity {
 		});
 	}
 
+	public void toggleGameThread(boolean b) {
+		this.gameThread = new GameThread(this);
+		gameThread.setName("Game Thread");
+		Log.v(tag, "Game Thread created");
+		if(b){
+			Log.v(tag, "Starting Game Thread");
+			this.gameThread.start();
+			this.gameThread.setRunning(b);
+		}
+	}
+	
 	@Override
 	public void onPause() {
 		if (gameThread != null){
 			try {
-				gameThread.interrupt();
-				if (gameMusic != null){
-					gameMusic.release();
-					soundEffects.autoPause();
-					soundEffects.release();
-				}
+				gameThread.setRunning(false);
+				gameThread.interrupt();				
+				soundEffects.autoPause();
+				Log.v(tag, "Game Thread Interrupted");
 			} catch (Exception e) {
-				e.printStackTrace();
+				Log.v(tag, "Thread interrupt failed");
 			}
 		}
+		gameMusic.pause();
 		super.onPause();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		this.toggleGameThread(true);
+		soundEffects.autoResume();
+		gameMusic.start();		
+	}
+
+	@Override
+	protected void onDestroy() {
+		if (gameMusic != null){
+			gameMusic.release();
+		}
+		soundEffects.release();
+		super.onDestroy();
 	}
 
 	public TileEngine getTileManager() {

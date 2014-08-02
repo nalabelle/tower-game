@@ -1,5 +1,6 @@
 package com.comp380.towergame;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -12,6 +13,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+// Credits activity can be launched from andy's death or from main menu.
+// Music and text color changes depending source. "Death" key set from the 
+// intent that started activity. The text of the credits loops on another
+// thread which uses a handler to update the main UI TextView
+
 public class CreditsActivity extends Activity {
 	MediaPlayer music;
 	TextView window;
@@ -19,10 +25,6 @@ public class CreditsActivity extends Activity {
 	public int cycle = 1;
 	Handler handler = null;
 	boolean andyDied = false;
-	
-	 // TO DO: find another song instead of gameover for viewing credits
-	// from main menu instead of death
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,6 @@ public class CreditsActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
-		music = MediaPlayer.create(this, R.raw.gameover);
 
 		setContentView(R.layout.activity_credits);
 		window = (TextView)findViewById(R.id.tvWindow);
@@ -40,13 +41,18 @@ public class CreditsActivity extends Activity {
 		try {
 			andyDied = getIntent().getExtras().getBoolean("death");
 			if (andyDied){
+				music = MediaPlayer.create(this, R.raw.music_gameover);
 				window.setTextColor(Color.RED);
 				window.setText("GAME OVER");
 			}
 		} catch (Exception e) {
 			Log.v(this.getClass().toString(), "Getting death info from intent failed");
 			e.printStackTrace();
-		}		
+		}
+		
+		if (!andyDied){
+			music = MediaPlayer.create(this, R.raw.music_credits);
+		}
 		
 		setFont();
 		handler = new Handler(){
@@ -55,10 +61,8 @@ public class CreditsActivity extends Activity {
 				  Bundle b = msg.getData();
 				  window.setText(b.getString("data"));
 			     }
-			 };
-			
-		startTextSwap();
-		
+			 };			
+		startTextSwap();		
 	}	
 	
 	public void startTextSwap(){
@@ -124,6 +128,7 @@ public class CreditsActivity extends Activity {
 				}
 			}
 		};
+		textThread.setName("Text Rotation");
 		textThread.start();
 	}
 	

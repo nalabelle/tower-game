@@ -14,16 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * @author Group5: Nik
- * 
- * The main activity launches the game's title screen
- * Start, Load, Options, Quit  (HighScore? in options?)
- * 
- * Question: Do we ever return here? 
- * 		Quit from Gameplay? 
- * 		return from interrupt (home button, call, etc.)?
- */
+
 
 public class MainActivity extends Activity {
     MediaPlayer music = null;
@@ -80,22 +71,11 @@ public class MainActivity extends Activity {
     }
     
     public void playMusic(){
-    	//music.setAudioStreamType(AudioManager)
+    	//music.setAudioStreamType(AudioManager))
 		music = MediaPlayer.create(this, R.raw.music_main);
 		music.start();
     }
-        
-//    @Override
-//	protected void onResume() {
-//		super.onResume();
-//    	music.start();
-//	}
-//
-//	@Override
-//	protected void onPause() {
-//		music.pause();
-//		super.onPause();
-//	}
+        ///    @Override///	protected void onResume() {///		super.onResume();///    	music.start();///	}//////	@Override///	protected void onPause() {///		music.pause();///		super.onPause();///	}
 
 	public void launchOptions(View view){
     	Toast.makeText(this, "To be implemented...", Toast.LENGTH_LONG).show();
