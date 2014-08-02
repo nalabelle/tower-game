@@ -1,11 +1,15 @@
 package com.comp380.towergame.entities;
 
+import java.util.HashMap;
+
 import com.comp380.towergame.GameActivity;
 import com.comp380.towergame.background.Tile;
 import com.comp380.towergame.physics.Speed;
+import com.comp380.towergame.physics.CollisionDetection.PointMap;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.Log;
@@ -49,6 +53,8 @@ public class BaseEntity {
 		if(!this.onGround) {
 			newPoint.y += this.velocityY * td;
 			this.velocityY += Speed.GRAVITY * td;
+		} else {
+			newPoint.y = this.point.y;
 		}
 		if(Math.abs(this.velocityX) > 1) {
 			newPoint.x += this.velocityX * td;
@@ -77,7 +83,7 @@ public class BaseEntity {
 		this.velocityX = direction * this.speed;
 	}
 	
-	private void moveUpdate() {
+	protected void moveUpdate() {
 		Point newPoint = this.updatePosition();
 		if(!this.point.equals(newPoint))
 			Log.v(this.getClass().getName(), "New " + this.point.toString() + "Velocity: ("+this.velocityX+","+this.velocityY+")");
@@ -104,25 +110,58 @@ public class BaseEntity {
 		}
 		
 		//Check entity->tile collisions
-		Tile block = this.manager.checkEntityToTileCollisions(this, newPoint, this.velocityX, this.velocityY);
-		if(block != null) {
-			if(this.velocityY > 0) {
-				this.point.y = block.getBounds().top - this.getBounds().height();
-				Log.v(this.getClass().getName(), "on ground at" + this.point.y);
-				this.onGround = true;
-				this.velocityY = 0;
+		HashMap<PointMap, Tile> blocks = this.manager.checkEntityToTileCollisions(this, newPoint, this.velocityX, this.velocityY);
+		if(blocks != null) {
+			//FEET
+			if(blocks.get(PointMap.MIDDLE_BOTTOM_LEFT) == null && blocks.get(PointMap.MIDDLE_BOTTOM_RIGHT) == null) {
+				//we lost tile collision on both feet, we're probably falling now.
+				this.onGround = false;
 			} else {
-				if(this.velocityX > 0) {
-					this.point.x = block.getBounds().left - this.getBounds().width();
-					//Log.v(this.getClass().getName(), "hit right at" + this.point.x);
-				} else {
-					this.point.x = block.getBounds().right + 1;
-					//Log.v(this.getClass().getName(), "hit left at" + this.point.x);
+				//we have a collision on at least one of our feet. Pick the higher one.
+				Tile higher = blocks.get(PointMap.MIDDLE_BOTTOM_LEFT);
+				if(higher == null || ( blocks.get(PointMap.MIDDLE_BOTTOM_RIGHT) != null) &&
+					(blocks.get(PointMap.MIDDLE_BOTTOM_RIGHT).getBounds().top > higher.getBounds().top))
+						higher = blocks.get(PointMap.MIDDLE_BOTTOM_RIGHT);
+				
+				//put us on the higher block.
+				if(this.velocityY > 0) {
+					this.onGround = true;
+					this.velocityY = 0;
+					newPoint.y = higher.getBounds().top - this.getBounds().height();
 				}
-				this.velocityY = 0;
+			}
+			
+			//FACE
+			if(blocks.get(PointMap.LEFT_TOP_QUARTER) != null || blocks.get(PointMap.LEFT_BOTTOM_QUARTER) != null) {
+				//one or more of our points on the left has hit something.
+				//we have a collision on at least one of our feet. Pick the higher one.
+				Tile righter = blocks.get(PointMap.LEFT_TOP_QUARTER);
+				if(righter == null || ( blocks.get(PointMap.LEFT_BOTTOM_QUARTER) != null) &&
+					(blocks.get(PointMap.LEFT_BOTTOM_QUARTER).getBounds().right > righter.getBounds().right))
+						righter = blocks.get(PointMap.LEFT_BOTTOM_QUARTER);
+				
+				if(this.velocityX < 0) {
+					this.velocityX = 0;
+					newPoint.x = righter.getBounds().right + 1;
+				}
+			}
+			
+			//OTHER FACE
+			if(blocks.get(PointMap.RIGHT_TOP_QUARTER) != null || blocks.get(PointMap.RIGHT_BOTTOM_QUARTER) != null) {
+				//one or more of our points on the left has hit something.
+				//we have a collision on at least one of our feet. Pick the higher one.
+				Tile lefter = blocks.get(PointMap.RIGHT_TOP_QUARTER);
+				if(lefter == null || ( blocks.get(PointMap.RIGHT_BOTTOM_QUARTER) != null) &&
+					(blocks.get(PointMap.RIGHT_BOTTOM_QUARTER).getBounds().left < lefter.getBounds().left))
+						lefter = blocks.get(PointMap.RIGHT_BOTTOM_QUARTER);
+				
+				if(this.velocityX > 0) {
+					this.velocityX = 0;
+					newPoint.x = lefter.getBounds().left -this.getBounds().width()- 1;
+				}
 			}
 		} else {
-			//we lost tile collision, we're probably falling now.
+			//we lost ALL tile collision, we're free-falling now.
 			this.onGround = false;
 		}
 		
@@ -141,8 +180,7 @@ public class BaseEntity {
 		//Kill them at the edges.
 		if(this.point.x > GameActivity.GAME_MAX_WIDTH ||
 			this.point.y > GameActivity.GAME_MAX_HEIGHT ||
-			(this.point.x + this.getBounds().width()) < 0 ||
-			(this.point.y + this.getBounds().height()) < 0) {
+			(this.point.x + this.getBounds().width()) < 0 ) {
 				this.health = -100;
 		}
 		this.lastUpdate = System.currentTimeMillis();
@@ -163,7 +201,18 @@ public class BaseEntity {
 	}
 	
 	public int getFacing() {
-		return ((this.facingRight) ? 1 : -1);
+		return (this.facingRight) ? 1 : -1;
+	}
+	
+	protected void reverseBitmap() {
+		if(this.texture != this.originalTexture) {
+			this.texture = this.originalTexture;
+		} else {
+			Matrix matrix = new Matrix();
+			matrix.setScale(-1, 1);
+			matrix.postTranslate(texture.getWidth(), 0);
+			this.texture = Bitmap.createBitmap(this.texture, 0, 0, this.texture.getWidth(), this.texture.getHeight(), matrix, true);
+		}
 	}
 
 }

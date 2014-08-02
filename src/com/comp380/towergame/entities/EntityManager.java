@@ -1,6 +1,7 @@
 package com.comp380.towergame.entities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,7 @@ import com.comp380.towergame.GameActivity;
 import com.comp380.towergame.R;
 import com.comp380.towergame.SoundManager;
 import com.comp380.towergame.background.Tile;
+import com.comp380.towergame.physics.CollisionDetection.PointMap;
 
 public class EntityManager {
 	private ArrayList<BaseEntity> entityStorage;
@@ -98,7 +100,7 @@ public class EntityManager {
 		return this.getContext().getCollisionDetection().checkCollisions(baseEntity, newPoint);
 	}
 	
-	public Tile checkEntityToTileCollisions(BaseEntity baseEntity,
+	public HashMap<PointMap, Tile> checkEntityToTileCollisions(BaseEntity baseEntity,
 			Point newPoint, float velocityX, float velocityY) {
 		return this.getContext().getCollisionDetection().checkTileCollisions(baseEntity, newPoint, velocityX, velocityY);
 	}
