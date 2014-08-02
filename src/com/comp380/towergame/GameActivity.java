@@ -647,20 +647,22 @@ public class GameActivity extends Activity {
                                 	if (id == R.id.fire){
                                 		entityManager.getAll().add(new Flame(entityManager, 
                     							BitmapFactory.decodeResource(getResources(), R.drawable.flame)));
-                    					handlr.postDelayed(this, sleep*6);
+                    					handlr.postDelayed(this, sleep*10);
                     					break;
                                 	}
                                 	
                                 	if (id == R.id.spawn) {
                                 		entityManager.getAll().add(new Goat(entityManager, 
                     							BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
-                    					handlr.postDelayed(this, sleep*6);
+                    					handlr.postDelayed(this, sleep*10);
                     					break;
                                 	}
-                                		
-                                	entityManager.getAndy().onMoveEvent(direction);
-                                	handlr.postDelayed(this, sleep);
-                                	break;
+                                	else
+                                	{	
+                                		entityManager.getAndy().onMoveEvent(direction);
+                                		handlr.postDelayed(this, sleep);
+                                		break;
+                                	}
                                 }
                         }
                 };
