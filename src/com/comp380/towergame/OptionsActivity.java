@@ -98,7 +98,7 @@ public class OptionsActivity extends Activity {
         switch(view.getId()) {
             case R.id.checkbox_defaultButt:
                 if (checked) {
-                	//Load defaultButts
+                	//Load defaultButtsg
                 }
                 else
                 {
