@@ -9,20 +9,23 @@ import android.graphics.Bitmap;
 public class Goat extends BaseEntity {
 	private int lurking = 50;
 	private int attacking = 0;
+	private int attackDirection;
 
 	public Goat(EntityManager manager, Bitmap bitmap) {
 		super(manager, bitmap, 
 				(int) (Math.random()*GameActivity.GAME_MAX_WIDTH),
 				(int) (Math.random()*GameActivity.GAME_MAX_HEIGHT));
+		this.facingRight = false;
 	}
 	
 	private void attackPlayer() {
 		if(this.attacking < 1)
 			this.manager.getContext().getSoundEffects().play(SoundManager.bleetID, 1, 1, 1, 0, 1);
+			this.attackDirection = (int) Math.signum(this.manager.getAndy().getX() - this.point.x);
 		this.attacking = 1;
 		//this.isWalking = true;
 
-		this.velocityX = -1*this.manager.getAndy().getFacing() * Speed.CHARGING;
+		this.velocityX =  this.attackDirection * Speed.CHARGING;
 	}
 
 	public void update() {
