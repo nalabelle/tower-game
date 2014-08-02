@@ -659,6 +659,10 @@ public class GameActivity extends Activity {
                                 	}
                                 	handlr.postDelayed(this, sleep);
                                 	break;
+                                case JUMP:
+                                	entityManager.getAndy().onMoveEvent(direction);
+                            		handlr.postDelayed(this, sleep*10);
+                            		break;
                                 default: 
                                 	
                                 	if (id == R.id.fire){
