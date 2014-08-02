@@ -40,6 +40,8 @@ public class OptionsActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_options);
+        CheckBox defaultButt = (CheckBox) findViewById(R.id.checkbox_defaultButt);
+        defaultButt.setChecked(true);
         setFont();      
     }
 
@@ -96,7 +98,7 @@ public class OptionsActivity extends Activity {
         switch(view.getId()) {
             case R.id.checkbox_defaultButt:
                 if (checked) {
-                	
+                	//Load defaultButts
                 }
                 else
                 {
@@ -105,7 +107,7 @@ public class OptionsActivity extends Activity {
                 break;
             case R.id.checkbox_old:
                 if (checked) {
-                    // Cheese me
+                    //Load 
                 }
                 else {
                     // I'm lactose intolerant
