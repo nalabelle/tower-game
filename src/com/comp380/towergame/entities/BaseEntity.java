@@ -90,15 +90,15 @@ public class BaseEntity {
 		
 		//Check entity collisions
 		BaseEntity firstCollided = this.manager.checkEntityToEntityCollisions(this, newPoint);
-		
+		//Catch null pointers
 		if(firstCollided != null) {
 			if(!this.collisionFlag)
 				Log.v(this.getClass().getName(), " collided with " + firstCollided.getClass());
 			this.collisionFlag = true;
-			if(!(this instanceof Andy))
-				this.health = -10;
+			if(this instanceof Goat)
+				this.health = -20;
 				if(firstCollided instanceof Andy)
-					firstCollided.setHealth(firstCollided.getHealth() -10);
+					firstCollided.setHealth(firstCollided.getHealth() -20);
 			if(this instanceof Flame)
 				this.health = -100;
 				if(firstCollided instanceof Goat) {

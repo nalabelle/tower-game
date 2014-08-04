@@ -95,7 +95,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		myPaint.setColor(Color.WHITE);
 		myPaint.setTextSize(160);
 		
-		canvas.drawText("HP    "+hp, 1200, 100, myPaint);
+		canvas.drawText("HP    "+hp+"%", 1200, 100, myPaint);
 		canvas.drawText("Score   "+score, 200, 100, myPaint);
 	}
 }

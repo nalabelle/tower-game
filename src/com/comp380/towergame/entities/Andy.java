@@ -11,7 +11,7 @@ public class Andy extends BaseEntity {
 	public Andy(EntityManager manager, Bitmap bitmap) {
 		super(manager, bitmap, 25, 25);
 		this.speed = Speed.PLAYER;
-		this.health = 20;
+		this.health = 100;
 		this.score = 0;
 	}
 	
