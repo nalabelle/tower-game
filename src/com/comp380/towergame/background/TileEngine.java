@@ -116,7 +116,7 @@ public class TileEngine
 				}	
 
 				scX1 -= scX1 - scX2 - 90;
-				//System.out.println("x size is: " + scX1);//
+				//System.out.println("x size is: " + scX1);
 				tileArray[i][j].setTileOnScreenX(scX1);
 			}
 		}

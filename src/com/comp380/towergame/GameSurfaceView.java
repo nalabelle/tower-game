@@ -67,7 +67,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 			for(int j = 0; j < 3; j++)
 				((GameActivity) this.getContext()).backgroundArray[i][j].draw(canvas);
 		
-		((GameActivity) this.getContext()).tileEngine.check();
+		((GameActivity) this.getContext()).tileEngine.check();//
 		((GameActivity) this.getContext()).tileEngine.drawTiles(canvas);
 		
 		this.drawEntities(canvas);
