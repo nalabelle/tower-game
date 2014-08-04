@@ -1,85 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/credits_background"
+    android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/tvCreditsTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="20dp"
-        android:text="Magic Tower\nDeveloped by:"
-        android:textSize="75sp" />
+        android:id="@+id/tvWindow"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:textSize="60sp"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:text="Magic Tower" />
 
-    <TextView
-        android:id="@+id/tvNick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvCreditsTitle"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="15dp"
-        android:text="Nick Monson"
-        android:textSize="50sp" />
-
-    <ImageView
-        android:id="@+id/ivNick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:paddingRight="25dp"
-        android:layout_alignTop="@+id/tvNick"
-        android:layout_toLeftOf="@+id/tvNick"
-        android:src="@drawable/credits_nick" />
-
-    <TextView
-        android:id="@+id/tvAnthony"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvNick"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="15dp"
-        android:text="Anthony Sager"
-        android:textSize="50sp" />
-
-    <ImageView
-        android:id="@+id/ivAnthony"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/tvAnthony"
-        android:layout_toLeftOf="@+id/tvAnthony"
-        android:paddingTop="15dp"
-        android:paddingRight="25dp"
-        android:src="@drawable/credits_anthony" />
-
-    <TextView
-        android:id="@+id/tvNik"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvAnthony"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="15dp"
-        android:text="Nik LaBelle"
-        android:textSize="50sp" />
-
-    <TextView
-        android:id="@+id/tvAlex"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvNik"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="15dp"
-        android:text="Alex Swanson"
-        android:textSize="50sp" />
-
-    <TextView
-        android:id="@+id/tvSummer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvAlex"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="15dp"
-        android:text="Xintong &quot;Summer&quot; Shi"
-        android:textSize="50sp" />
-
-</RelativeLayout>
+</LinearLayout>

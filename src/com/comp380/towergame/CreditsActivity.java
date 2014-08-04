@@ -1,14 +1,30 @@
 package com.comp380.towergame;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 
+// Credits activity can be launched from andy's death or from main menu.
+// Music and text color changes depending source. "Death" key set from the 
+// intent that started activity. The text of the credits loops on another
+// thread which uses a handler to update the main UI TextView
+
 public class CreditsActivity extends Activity {
+	MediaPlayer music;
+	TextView window;
+	Thread textThread;
+	public int cycle = 1;
+	Handler handler = null;
+	boolean andyDied = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -18,26 +34,130 @@ public class CreditsActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
+
 		setContentView(R.layout.activity_credits);
+		window = (TextView)findViewById(R.id.tvWindow);
+		
+		try {
+			andyDied = getIntent().getExtras().getBoolean("death");
+			if (andyDied){
+				music = MediaPlayer.create(this, R.raw.music_gameover);
+				window.setTextColor(Color.RED);
+				window.setText("GAME OVER");
+			}
+		} catch (Exception e) {
+			Log.v(this.getClass().toString(), "Getting death info from intent failed");
+			e.printStackTrace();
+		}
+		
+		if (!andyDied){
+			music = MediaPlayer.create(this, R.raw.music_credits);
+		}
+		
 		setFont();
+		handler = new Handler(){
+			@Override
+			public void handleMessage(Message msg) {
+				  Bundle b = msg.getData();
+				  window.setText(b.getString("data"));
+			     }
+			 };			
+		startTextSwap();		
+	}	
+	
+	public void startTextSwap(){
+		
+		textThread = new Thread() {			
+			public void run() {
+				while (!textThread.isInterrupted()) {					
+						try {
+							sleep(5000);
+						} catch (InterruptedException e) {
+							Log.v(this.getClass().toString(), "text swap messed up");
+							e.printStackTrace();
+							break;
+						}
+						try {
+							Message box = handler.obtainMessage();
+							Bundle b = new Bundle();
+							switch (cycle){
+								case 0: 
+									b.putString("data", "Magic Tower");
+							         box.setData(b);
+							         handler.sendMessage(box);
+									break;
+								case 1: 
+									b.putString("data", "Developed By:");
+							         box.setData(b);
+							         handler.sendMessage(box);
+									break;
+								case 2:
+									b.putString("data", "Nickolas Monson");
+							         box.setData(b);
+							         handler.sendMessage(box);
+									break;
+								case 3:
+									b.putString("data", "Alex Swanson");
+									box.setData(b);
+							     	handler.sendMessage(box);
+									break;
+								case 4:								
+									b.putString("data", "Anthony Sager");
+							         box.setData(b);
+							         handler.sendMessage(box);
+									break;
+								case 5:
+									b.putString("data", "Xintong \"Summer\" Shi");
+							         box.setData(b);
+							         handler.sendMessage(box);
+									break;
+								case 6:
+									b.putString("data", "Nik LaBelle");
+							         box.setData(b);
+							         handler.sendMessage(box);
+									break;
+								default:
+									cycle = 0;
+									break;
+							}
+						} catch (Exception e) {
+							Log.v(this.getClass().toString(), "Second thread handlers messed up");
+							e.printStackTrace();
+						}
+						cycle++;
+				}
+			}
+		};
+		textThread.setName("Text Rotation");
+		textThread.start();
 	}
 	
-    //Using a custom font (IsomothPro) from assets for display
+	//activity & MediaPlayer lifecycle controls
+    @Override
+	protected void onResume() {
+		super.onResume();
+		music.start(); //plays or resumes paused music
+	}
+
+	@Override
+	protected void onPause() {
+		music.pause();
+		textThread.interrupt();
+		super.onPause();
+	}
+
+	@Override
+	protected void onDestroy() {
+    	music.release();
+		super.onDestroy();
+	}
+
+
+
+	//Using a custom font (IsomothPro) from assets for display
     public void setFont(){
     	Typeface font = Typeface.createFromAsset(getAssets(), "font/IsomothPro.otf");
     	
-    	TextView title = (TextView) findViewById(R.id.tvCreditsTitle);
-    	TextView nick = (TextView) findViewById(R.id.tvNick);
-    	TextView anthony = (TextView) findViewById(R.id.tvAnthony);
-    	TextView nik = (TextView) findViewById(R.id.tvNik);
-    	TextView alex = (TextView) findViewById(R.id.tvAlex);
-    	TextView summer = (TextView) findViewById(R.id.tvSummer);
-    	
-    	title.setTypeface(font, Typeface.BOLD);
-    	nick.setTypeface(font);
-    	anthony.setTypeface(font);
-    	nik.setTypeface(font);
-    	alex.setTypeface(font);
-    	summer.setTypeface(font);
+    	window.setTypeface(font);
     }
 }
