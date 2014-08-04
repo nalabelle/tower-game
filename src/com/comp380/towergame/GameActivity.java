@@ -66,8 +66,15 @@ public class GameActivity extends Activity {
 		
 		//Add Buttons
 		LayoutInflater factory = LayoutInflater.from(this);
-		//View myView = factory.inflate(R.layout.activity_gameview, null);
-		View myView = factory.inflate(R.layout.defaultcontrols, null);
+		View myView = null;
+		
+		if(true){
+			myView = factory.inflate(R.layout.defaultcontrols, null);
+		}
+		else {
+			myView = factory.inflate(R.layout.activity_gameview, null);
+		}
+		
 		game.addView(myView);
 		
 		setContentView(game);
@@ -91,24 +98,55 @@ public class GameActivity extends Activity {
 		gameMusic = MediaPlayer.create(this, R.raw.music_level_1);
 		gameMusic.setLooping(true);
 		
-		//wireButtons();
-	    
+	    if(true) {
+	    	ImageButton left = (ImageButton) findViewById(R.id.leftButton);
+		    touchButton(left.getId(), com.comp380.towergame.entities.Andy.MoveDirection.LEFT);
+		    
+		    ImageButton right = (ImageButton) findViewById(R.id.rightButton);
+		    touchButton(right.getId(), com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
+		    
+		    ImageButton jump = (ImageButton) findViewById(R.id.jump);
+		    touchButton(jump.getId(), com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
+		    
+		    ImageButton spawn = (ImageButton) findViewById(R.id.spawn);
+		    spawnButton(spawn.getId());
+		    
+		    ImageButton fire = (ImageButton) findViewById(R.id.fire);
+		    spawnButton(fire.getId());
+	    }
+	    else {
+	    	ImageButton jump = (ImageButton) findViewById(R.id.jump);
+		    touchButton(jump.getId(), com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
+		    
+		    ImageButton upRight = (ImageButton) findViewById(R.id.upRight);
+		    touchButton(upRight.getId(), com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_UP_RIGHT);
+	    	
+		    ImageButton right = (ImageButton) findViewById(R.id.rightButton);
+		    touchButton(right.getId(), com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
+		    
+		    ImageButton downRight = (ImageButton) findViewById(R.id.downRight);
+		    touchButton(downRight.getId(), com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_DOWN_RIGHT);
+		    
+		    ImageButton down = (ImageButton) findViewById(R.id.down);
+		    touchButton(down.getId(), com.comp380.towergame.entities.Andy.MoveDirection.DOWN);
+		    
+		    ImageButton downLeft = (ImageButton) findViewById(R.id.downLeft);
+		    touchButton(downLeft.getId(), com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_DOWN_LEFT);
+		    
+		    ImageButton left = (ImageButton) findViewById(R.id.leftButton);
+		    touchButton(left.getId(), com.comp380.towergame.entities.Andy.MoveDirection.LEFT);
+		    
+		    ImageButton upLeft = (ImageButton) findViewById(R.id.upLeft);
+		    touchButton(upLeft.getId(), com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_UP_LEFT);
+		    
+		    ImageButton spawn = (ImageButton) findViewById(R.id.spawn);
+		    spawnButton(spawn.getId());
+		    
+		    ImageButton fire = (ImageButton) findViewById(R.id.fire);
+		    spawnButton(fire.getId());
+	    }
 		
-		 //* Not Ready quite yet, will do soon.
-		ImageButton left = (ImageButton) findViewById(R.id.leftButton);
-	    touchButton(left.getId(), com.comp380.towergame.entities.Andy.MoveDirection.LEFT);
-	    
-	    ImageButton right = (ImageButton) findViewById(R.id.rightButton);
-	    touchButton(right.getId(), com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
-	    
-	    ImageButton jump = (ImageButton) findViewById(R.id.jump);
-	    touchButton(jump.getId(), com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
-	    
-	    ImageButton spawn = (ImageButton) findViewById(R.id.spawn);
-	    touchButton(spawn.getId(), com.comp380.towergame.entities.Andy.MoveDirection.DOWN);
-	    
-	    ImageButton fire = (ImageButton) findViewById(R.id.fire);
-	    touchButton(fire.getId(), com.comp380.towergame.entities.Andy.MoveDirection.DOWN);
+		
 	}
 
 	public EntityManager getEntityManager() {
@@ -123,428 +161,6 @@ public class GameActivity extends Activity {
 		return this.collisionDetection;
 	}
 	
-	public void wireButtons() {
-		final int mv = 20;
-		final int sleep = 50;
-		
-		final ImageButton leftButton = (ImageButton) findViewById(R.id.leftButton);
-		leftButton.setOnTouchListener(new View.OnTouchListener() {
-			private Handler handlr;
-			@Override 
-			public boolean onTouch(View v, MotionEvent event) {
-				Rect rect = new Rect();
-				leftButton.getHitRect(rect);
-				float x = event.getX() + rect.left;
-	            float y = event.getY() + rect.top;
-	            
-				switch(event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					if (handlr != null) return true;
-					handlr = new Handler();
-					handlr.postDelayed(buttonAction, sleep);
-					Log.v(tag, "Left Down");
-					break;
-				case MotionEvent.ACTION_UP:
-					if (handlr == null) return true;
-					handlr.removeCallbacks(buttonAction);
-					handlr = null;
-					Log.v(tag, "Left UP");
-					break;
-				case MotionEvent.ACTION_MOVE:
-					if (handlr == null) return true;
-					if(!rect.contains((int) x, (int) y)) {
-						handlr.removeCallbacks(buttonAction);
-						handlr = null;
-						Log.v(tag, "Left Move");
-						break;
-					}
-				}
-				return false;
-			}
-			Runnable buttonAction = new Runnable() {
-				@Override 
-				public void run() {
-					if (entityManager.getAndy() == null ) return;
-					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.LEFT);
-					handlr.postDelayed(this, sleep);
-				}
-			};
-		});
-		
-		//Right Button 
-		final ImageButton rightButton = (ImageButton) findViewById(R.id.rightButton);
-		rightButton.setOnTouchListener(new View.OnTouchListener() {
-			private Handler handlr;
-			boolean canMove = false;
-			
-			@Override 
-			public boolean onTouch(View v, MotionEvent event) {
-				Rect rect = new Rect();
-				rightButton.getHitRect(rect);
-				float x = event.getX() + rect.left;
-	            float y = event.getY() + rect.top;
-	            
-				switch(event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					//canMove = false;
-					if (handlr != null) return true;
-					handlr = new Handler();
-					handlr.postDelayed(buttonAction, sleep);
-					break;
-				case MotionEvent.ACTION_UP:
-					getTileEngine().setSpeed(0);
-					//canMove = true;
-					if (handlr == null) return true;
-					handlr.removeCallbacks(buttonAction);
-					handlr = null;
-					break;
-				case MotionEvent.ACTION_MOVE:
-					getTileEngine().setSpeed(0);
-					//canMove = true;
-					if (handlr == null) return true;
-					if(!rect.contains((int) x, (int) y)) {
-						handlr.removeCallbacks(buttonAction);
-						handlr = null;
-						break;
-					}
-				}
-				return false;
-			}
-			Runnable buttonAction = new Runnable() {
-				@Override 
-				public void run() {
-					if (entityManager.getAndy() == null ) return;
-					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
-					handlr.postDelayed(this, sleep);
-				}
-			};
-		});
-		
-		final ImageButton jump = (ImageButton) findViewById(R.id.jump);
-		jump.setOnTouchListener(new View.OnTouchListener() {
-			private Handler handlr;
-			@Override 
-			public boolean onTouch(View v, MotionEvent event) {
-				Rect rect = new Rect();
-				jump.getHitRect(rect);
-				float x = event.getX() + rect.left;
-	            float y = event.getY() + rect.top;
-	            
-				switch(event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					if (handlr != null) return true;
-					handlr = new Handler();
-					handlr.postDelayed(buttonAction, sleep);
-					break;
-				case MotionEvent.ACTION_UP:
-					if (handlr == null) return true;
-					handlr.removeCallbacks(buttonAction);
-					handlr = null;
-					break;
-				case MotionEvent.ACTION_MOVE:
-					if (handlr == null) return true;
-					if(!rect.contains((int) x, (int) y)) {
-						handlr.removeCallbacks(buttonAction);
-						handlr = null;
-						break;
-					}
-				}
-				return false;
-			}
-			Runnable buttonAction = new Runnable() {
-				@Override 
-				public void run() {
-					if (entityManager.getAndy() == null ) return;
-					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
-					handlr.postDelayed(this, sleep);
-				}
-			};
-		});
-		
-		final ImageButton down = (ImageButton) findViewById(R.id.down);
-		down.setOnTouchListener(new View.OnTouchListener() {
-			private Handler handlr;
-			
-			@Override 
-			public boolean onTouch(View v, MotionEvent event) {
-				Rect rect = new Rect();
-				down.getHitRect(rect);
-				float x = event.getX() + rect.left;
-	            float y = event.getY() + rect.top;
-				switch(event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					if (handlr != null) return true;
-					handlr = new Handler();
-					handlr.postDelayed(buttonAction, sleep);
-					break;
-				case MotionEvent.ACTION_UP:
-					if (handlr == null) return true;
-					handlr.removeCallbacks(buttonAction);
-					handlr = null;
-					break;
-				case MotionEvent.ACTION_MOVE:
-					if (handlr == null) return true;
-					if(!rect.contains((int) x, (int) y)) {
-						handlr.removeCallbacks(buttonAction);
-						handlr = null;
-						break;
-					}
-				}
-				return false;
-			}
-			Runnable buttonAction = new Runnable() {
-				@Override 
-				public void run() {
-					if (entityManager.getAndy() == null ) return;
-					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.DOWN);
-					handlr.postDelayed(this, sleep);
-				}
-			};
-		});
-		
-		final ImageButton spawn = (ImageButton) findViewById(R.id.spawn);
-		spawn.setOnTouchListener(new View.OnTouchListener() {
-			private Handler handlr;
-			@Override 
-			public boolean onTouch(View v, MotionEvent event) {
-				Rect rect = new Rect();
-				spawn.getHitRect(rect);
-				float x = event.getX() + rect.left;
-	            float y = event.getY() + rect.top;
-				switch(event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					if (handlr != null) return true;
-					handlr = new Handler();
-					handlr.postDelayed(buttonAction, sleep*15);
-					break;
-				case MotionEvent.ACTION_UP:
-					if (handlr == null) return true;
-					handlr.removeCallbacks(buttonAction);
-					handlr = null;
-					break;
-				case MotionEvent.ACTION_MOVE:
-					if (handlr == null) return true;
-					if(!rect.contains((int) x, (int) y)) {
-						handlr.removeCallbacks(buttonAction);
-						handlr = null;
-						break;
-					}
-				}
-				return false;
-			}
-			Runnable buttonAction = new Runnable() {
-				@Override 
-				public void run() {
-					entityManager.getAll().add(new Goat(entityManager, BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
-					handlr.postDelayed(this, sleep*15);
-				}
-			};
-		});
-		
-		final ImageButton fire = (ImageButton) findViewById(R.id.fire);
-		fire.setOnTouchListener(new View.OnTouchListener() {
-			private Handler handlr;
-			@Override 
-			public boolean onTouch(View v, MotionEvent event) {
-				Rect rect = new Rect();
-				fire.getHitRect(rect);
-				float x = event.getX() + rect.left;
-	            float y = event.getY() + rect.top;
-				switch(event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					if (handlr != null) return true;
-					handlr = new Handler();
-					handlr.postDelayed(buttonAction, sleep*6);
-					break;
-				case MotionEvent.ACTION_UP:
-					if (handlr == null) return true;
-					handlr.removeCallbacks(buttonAction);
-					handlr = null;
-					break;
-				case MotionEvent.ACTION_MOVE:
-					if (handlr == null) return true;
-					if(!rect.contains((int) x, (int) y)) {
-						handlr.removeCallbacks(buttonAction);
-						handlr = null;
-						break;
-					}
-				}
-				return false;
-			}
-			Runnable buttonAction = new Runnable() {
-				@Override 
-				public void run() {
-					entityManager.getAll().add(new Flame(entityManager, 
-							BitmapFactory.decodeResource(getResources(), R.drawable.flame)));
-							soundEffects.play(SoundManager.fireballID, 1, 1, 1, 0, 1);
-					handlr.postDelayed(this, sleep*6);
-				}
-			};
-		});
-		
-		final ImageButton downRight = (ImageButton) findViewById(R.id.downRight);
-		downRight.setOnTouchListener(new View.OnTouchListener() {
-			private Handler handlr;
-			@Override 
-			public boolean onTouch(View v, MotionEvent event) {
-				Rect rect = new Rect();
-				downRight.getHitRect(rect);
-				float x = event.getX() + rect.left;
-	            float y = event.getY() + rect.top;
-				switch(event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					if (handlr != null) return true;
-					handlr = new Handler();
-					handlr.postDelayed(buttonAction, sleep);
-					break;
-				case MotionEvent.ACTION_UP:
-					if (handlr == null) return true;
-					handlr.removeCallbacks(buttonAction);
-					handlr = null;
-					break;
-				case MotionEvent.ACTION_MOVE:
-					if (handlr == null) return true;
-					if(!rect.contains((int) x, (int) y)) {
-						handlr.removeCallbacks(buttonAction);
-						handlr = null;
-						break;
-					}
-				}
-				return false;
-			}
-			Runnable buttonAction = new Runnable() {
-				@Override 
-				public void run() {
-					if (entityManager.getAndy() == null ) return;
-					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_DOWN_RIGHT);
-					handlr.postDelayed(this, sleep);
-				}
-			};
-		});
-		
-		final ImageButton downLeft = (ImageButton) findViewById(R.id.downLeft);
-		downLeft.setOnTouchListener(new View.OnTouchListener() {
-			private Handler handlr;
-			@Override 
-			public boolean onTouch(View v, MotionEvent event) {
-				Rect rect = new Rect();
-				downLeft.getHitRect(rect);
-				float x = event.getX() + rect.left;
-	            float y = event.getY() + rect.top;
-				switch(event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					if (handlr != null) return true;
-					handlr = new Handler();
-					handlr.postDelayed(buttonAction, sleep);
-					break;
-				case MotionEvent.ACTION_UP:
-					if (handlr == null) return true;
-					handlr.removeCallbacks(buttonAction);
-					handlr = null;
-					break;
-				case MotionEvent.ACTION_MOVE:
-					if (handlr == null) return true;
-					if(!rect.contains((int) x, (int) y)) {
-						handlr.removeCallbacks(buttonAction);
-						handlr = null;
-						break;
-					}
-				}
-				return false;
-			}
-			Runnable buttonAction = new Runnable() {
-				@Override 
-				public void run() {
-
-					if (entityManager.getAndy() == null ) return;
-					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_DOWN_LEFT);
-					handlr.postDelayed(this, sleep);
-				}
-			};
-		});
-		
-		final ImageButton upRight = (ImageButton) findViewById(R.id.upRight);
-		upRight.setOnTouchListener(new View.OnTouchListener() {
-			private Handler handlr;
-			@Override 
-			public boolean onTouch(View v, MotionEvent event) {
-				Rect rect = new Rect();
-				upRight.getHitRect(rect);
-				float x = event.getX() + rect.left;
-	            float y = event.getY() + rect.top;
-				switch(event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					if (handlr != null) return true;
-					handlr = new Handler();
-					handlr.postDelayed(buttonAction, sleep);
-					break;
-				case MotionEvent.ACTION_UP:
-					if (handlr == null) return true;
-					handlr.removeCallbacks(buttonAction);
-					handlr = null;
-					break;
-				case MotionEvent.ACTION_MOVE:
-					if (handlr == null) return true;
-					if(!rect.contains((int) x, (int) y)) {
-						handlr.removeCallbacks(buttonAction);
-						handlr = null;
-						break;
-					}
-				}
-				return false;
-			}
-			Runnable buttonAction = new Runnable() {
-				@Override 
-				public void run() {
-
-					if (entityManager.getAndy() == null ) return;
-					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_UP_RIGHT);
-					handlr.postDelayed(this, sleep);
-				}
-			};
-		});
-		
-		final ImageButton upLeft = (ImageButton) findViewById(R.id.upLeft);
-		upLeft.setOnTouchListener(new View.OnTouchListener() {
-			private Handler handlr;
-			@Override 
-			public boolean onTouch(View v, MotionEvent event) {
-				Rect rect = new Rect();
-				upLeft.getHitRect(rect);
-				float x = event.getX() + rect.left;
-	            float y = event.getY() + rect.top;
-				switch(event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					if (handlr != null) return true;
-					handlr = new Handler();
-					handlr.postDelayed(buttonAction, sleep);
-					break;
-				case MotionEvent.ACTION_UP:
-					if (handlr == null) return true;
-					handlr.removeCallbacks(buttonAction);
-					handlr = null;
-					break;
-				case MotionEvent.ACTION_MOVE:
-					if (handlr == null) return true;
-					if(!rect.contains((int) x, (int) y)) {
-						handlr.removeCallbacks(buttonAction);
-						handlr = null;
-						break;
-					}
-				}
-				return false;
-			}
-			Runnable buttonAction = new Runnable() {
-				@Override 
-				public void run() {
-
-					if (entityManager.getAndy() == null ) return;
-					entityManager.getAndy().onMoveEvent(com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_UP_LEFT);
-					handlr.postDelayed(this, sleep);
-				}
-			};
-		});
-	}
 
 	public void toggleGameThread(boolean b) {
 		this.gameThread = new GameThread(this);
@@ -664,27 +280,66 @@ public class GameActivity extends Activity {
                             		handlr.postDelayed(this, sleep*10);
                             		break;
                                 default: 
-                                	
-                                	if (id == R.id.fire){
-                                		entityManager.getAll().add(new Flame(entityManager, 
-                    							BitmapFactory.decodeResource(getResources(), R.drawable.flame)));
-                    					handlr.postDelayed(this, sleep*10);
-                    					break;
-                                	}
-                                	
-                                	if (id == R.id.spawn) {
-                                		entityManager.getAll().add(new Goat(entityManager, 
-                    							BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
-                    					handlr.postDelayed(this, sleep*10);
-                    					break;
-                                	}
-                                	else
-                                	{	
                                 		entityManager.getAndy().onMoveEvent(direction);
                                 		handlr.postDelayed(this, sleep);
                                 		break;
-                                	}
                                 }
+                        }
+                };
+        });
+	}
+	
+	private void spawnButton(final int id) {
+        Log.v(tag, "spawny");
+		final int sleep = 50;
+		final ImageButton left = (ImageButton) findViewById(id);
+        left.setOnTouchListener(new View.OnTouchListener() {
+                private Handler handlr;
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                        Rect rect = new Rect();
+                        left.getHitRect(rect);
+                        float x = event.getX() + rect.left;
+                        float y = event.getY() + rect.top;
+           
+                        switch(event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                                if (handlr != null) return true;
+                                handlr = new Handler();
+                                handlr.postDelayed(buttonAction, sleep*10);
+                                break;
+                        case MotionEvent.ACTION_UP:
+                                if (handlr == null) return true;
+                                handlr.removeCallbacks(buttonAction);
+                                handlr = null;
+                                break;
+                        case MotionEvent.ACTION_MOVE:
+                                if (handlr == null) return true;
+                                if(!rect.contains((int) x, (int) y)) {
+                                        handlr.removeCallbacks(buttonAction);
+                                        handlr = null;
+                                        break;
+                                }
+                        }
+                        return false;
+                }
+                Runnable buttonAction = new Runnable() {
+                        @Override
+                        public void run() {
+                                if (entityManager.getAndy() == null ) return;
+                                                               	
+                                if (id == R.id.fire){
+                                	entityManager.getAll().add(new Flame(entityManager, 
+                    						BitmapFactory.decodeResource(getResources(), R.drawable.flame)));
+                    				handlr.postDelayed(this, sleep*10);
+                    			
+                                	}
+                                	
+                               if (id == R.id.spawn) {
+                                	entityManager.getAll().add(new Goat(entityManager, 
+                    						BitmapFactory.decodeResource(getResources(), R.drawable.badguy)));
+                    				handlr.postDelayed(this, sleep*10);
+                               }
                         }
                 };
         });
