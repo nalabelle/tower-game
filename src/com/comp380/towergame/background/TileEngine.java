@@ -92,6 +92,37 @@ public class TileEngine
 		}
 	}
 	
+	public void check()
+	{
+		int scX1;
+		int scX2;
+		for(int i = 0; i < x; i++)
+		{
+			for(int j = 0; j < y; j++)
+			{
+				scX1 = tileArray[i][j].getTileOnScreenX();
+				if(scX1 < 90)//
+				{
+					continue;
+				}
+				
+				if(i == 0)
+				{
+					scX2 = tileArray[x-1][j].getTileOnScreenX();
+				}
+				else
+				{
+					scX2 = tileArray[i-1][j].getTileOnScreenX();
+				}	
+
+				scX1 -= scX1 - scX2 - 90;
+				//System.out.println("x size is: " + scX1);//
+				tileArray[i][j].setTileOnScreenX(scX1);
+			}
+		}
+	}
+	
+	
 	public int getInGamePos()
 	{
 		return tileArray[0][0].getTileInGX();
@@ -121,10 +152,20 @@ public class TileEngine
 					int inGY = tileArray[i][j].getTileInGY(); // store array location
 					scrX += 2700; //screen width in block dim (note how 2070 is multiple of 90)
 					
+
+					
+					
+					//inGX2 += 90;
+					//scrX -= inGX2 - scrX;
+					
 					if(inGX+screenC >= levelLength)//array out of bounds checking
 						break;
 					tileArray[i][j] = sourceArray[inGX+screenC][inGY]; //reading from array location
 
+					
+					//int inGX2 = tileArray[i-1][j].getTileOnScreenX();
+					//System.out.println("x size is: " + scrX);//
+					
 					tileArray[i][j].setTileOnScreenX(scrX); // adjust on screen location
 					tileArray[i][j].setTileOnScreenY(scrY);
 					
