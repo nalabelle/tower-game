@@ -95,18 +95,29 @@ public class BaseEntity {
 			if(!this.collisionFlag)
 				Log.v(this.getClass().getName(), " collided with " + firstCollided.getClass());
 			this.collisionFlag = true;
-			if(this instanceof Goat)
+			//Andy Collision
+			if(this instanceof Andy)
+				if(firstCollided instanceof Goat) {
+					firstCollided.setHealth(-100); //Kill Goat
+					this.manager.getAndy().setHealth(this.manager.getAndy().getHealth() - 20);
+					Log.v("atest", "Andy v Goat");
+				}
+			if(this instanceof Goat) {
 				this.health = -20;
 				if(firstCollided instanceof Andy)
 					firstCollided.setHealth(firstCollided.getHealth() -20);
-			if(this instanceof Flame)
-				this.health = -100;
+				Log.v("atest", "Goat v Andy");
+			}
+			if(this instanceof Flame) {
+				this.health = -100; //Collide and DIE!
 				if(firstCollided instanceof Goat) {
 					firstCollided.setHealth(-100);
 					this.manager.getAndy().setScore(this.manager.getAndy().getScore() + 1);
+					Log.v("atest", "Flame v Goat");
 					//getMediaPlayer();
 					//this.manager.getAll().remove(firstCollided);
 				}
+			}
 		}
 		
 		//Check entity->tile collisions

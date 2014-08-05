@@ -76,7 +76,6 @@ public class GameActivity extends Activity {
 		}
 		
 		game.addView(myView);
-		
 		setContentView(game);
 		Log.v(tag, "Waiting for Surface View");
 		Log.v(tag, "Starting Game Thread");
@@ -86,7 +85,7 @@ public class GameActivity extends Activity {
 		this.backgroundArray = new Background[6][3];
 		
 		
-		for(int i = 0; i < 6; i++) //init bg,, move to game thread when level manager is done
+		for(int i = 0; i < 6; i++) //init bg, move to game thread when level manager is done
 			for(int j = 0; j < 3; j++)
 				backgroundArray[i][j] = new Background(this,i*400,j*400,1);
 		
