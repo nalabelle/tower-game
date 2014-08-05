@@ -24,7 +24,7 @@ public class EntityManager {
 	private String tag = ""+ this.getClass();
 
 	public EntityManager(GameActivity gameActivity) {
-		this.setContext(gameActivity);
+		this.context = gameActivity;
 		this.entityStorage = new ArrayList<BaseEntity>();
 		
 		//temporary Andy creation
@@ -108,13 +108,10 @@ public class EntityManager {
 	public GameActivity getContext() {
 		return context;
 	}
-
-	public void setContext(GameActivity context) {
-		this.context = context;
-	}
 	
+	//woops. I renamed this.
 	public void shiftAllX(int direction) {
-		//TODO: finish
+		this.normalizeMovement(direction);
 	}
 
 	public void normalizeMovement(float f) {
@@ -125,6 +122,11 @@ public class EntityManager {
 				entity.velocityX = entity.velocityX - f;
 			}
 		}
+	}
+
+	public void spawn(Class<BaseEntity> entityType, int tileOnScreenX, int i) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
