@@ -120,6 +120,11 @@ public class BaseEntity {
 		
 		//Check entity->tile collisions
 		HashMap<PointMap, Tile> blocks = this.manager.checkEntityToTileCollisions(this, newPoint, this.velocityX, this.velocityY);
+		
+		//Flames ignore tile collisions
+		if(this instanceof Flame)
+			blocks = null;
+		
 		if(blocks != null) {
 			//FEET
 			if(blocks.get(PointMap.MIDDLE_BOTTOM_LEFT) == null && blocks.get(PointMap.MIDDLE_BOTTOM_RIGHT) == null) {
