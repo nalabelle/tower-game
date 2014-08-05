@@ -22,18 +22,14 @@ public class EntityManager {
 	private ArrayList<BaseEntity> entityStorage;
 	private GameActivity context;
 	private String tag = ""+ this.getClass();
+	
+	public enum entityTypes {
+		ANDY, GOAT, FLAME;
+	}
 
 	public EntityManager(GameActivity gameActivity) {
 		this.context = gameActivity;
 		this.entityStorage = new ArrayList<BaseEntity>();
-		
-		//temporary Andy creation
-		BaseEntity andy = new Andy(this, BitmapFactory.decodeResource(gameActivity.getResources(), R.drawable.player_jump));
-		this.entityStorage.add(andy);
-		
-		//temporary Baddie creation
-		BaseEntity badguy = new Goat(this, BitmapFactory.decodeResource(gameActivity.getResources(), R.drawable.badguy));
-		this.entityStorage.add(badguy);
 	}
 	
 	//temporary
@@ -117,16 +113,24 @@ public class EntityManager {
 	public void normalizeMovement(float f) {
 		ArrayList<BaseEntity> safeIter = new ArrayList<BaseEntity>(this.entityStorage);
 		for(BaseEntity entity : safeIter){
-			entity.update();
+			if(entity instanceof Andy)
+				continue;
 			if(entity.getHealth() < 0) {				
-				entity.velocityX = entity.velocityX - f;
+				entity.velocityX = entity.velocityX + f;
 			}
 		}
 	}
 
-	public void spawn(Class<BaseEntity> entityType, int tileOnScreenX, int i) {
-		// TODO Auto-generated method stub
+	public void spawn(EntityManager.entityTypes entityType, int tileOnScreenX, int tileOnScreenY) {
+		if(entityType == EntityManager.entityTypes.ANDY) {
+			BaseEntity andy = new Andy(this, BitmapFactory.decodeResource(this.context.getResources(), R.drawable.player_jump));
+			this.entityStorage.add(andy);
+		}
 		
+		if(entityType == EntityManager.entityTypes.GOAT) {
+			BaseEntity badguy = new Goat(this, BitmapFactory.decodeResource(this.context.getResources(), R.drawable.badguy), tileOnScreenX, tileOnScreenY);
+			this.entityStorage.add(badguy);
+		}
 	}
 
 }

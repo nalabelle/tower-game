@@ -73,7 +73,7 @@ public class Andy extends BaseEntity {
 		super.moveUpdate();
 		if(this.getX() >= 700) {
 			this.manager.getContext().getTileEngine().setSpeed((int) (this.velocityX * -1));
-			this.manager.normalizeMovement(this.velocityX * -1);
+			this.manager.normalizeMovement(this.velocityX);
 			this.point.x = oldPoint.x;
 		} else {
 			this.manager.getContext().getTileEngine().setSpeed(0);

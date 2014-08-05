@@ -34,7 +34,7 @@ public class BaseEntity {
 	
 	protected int health;
 	
-	private final int SPAWN_DISTANCE = 8;
+	private final int SPAWN_DISTANCE = 300;
 	
 	public BaseEntity(EntityManager manager, Bitmap texture, int x, int y) {
 		this.point = new Point(x, y);

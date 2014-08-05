@@ -12,12 +12,17 @@ public class Goat extends BaseEntity {
 	private int attackDirection;
 
 	public Goat(EntityManager manager, Bitmap bitmap) {
-		super(manager, bitmap, 
+		this(manager, bitmap, 
 				(int) (Math.random()*GameActivity.GAME_MAX_WIDTH),
 				(int) (Math.random()*GameActivity.GAME_MAX_HEIGHT));
 		this.facingRight = false;
 	}
 	
+	public Goat(EntityManager manager, Bitmap bitmap, int tileOnScreenX, int tileOnScreenY) {
+		super(manager, bitmap, tileOnScreenX, tileOnScreenY);
+		this.facingRight = false;
+	}
+
 	private void attackPlayer() {
 		if(this.attacking < 1)
 			this.manager.getContext().getSoundEffects().play(SoundManager.bleetID, 1, 1, 1, 0, 1);
