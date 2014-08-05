@@ -12,6 +12,6 @@ public class Speed {
 	public static final float JUMPING = -50;
 	
 	//Friction
-	public static final float GROUND_FRICTION = 2;
+	public static final float GROUND_FRICTION = 1;
 	public static final float AIR_FRICTION = 0.5f;
 }
