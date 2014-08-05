@@ -90,35 +90,43 @@ public class BaseEntity {
 		
 		//Check entity collisions
 		BaseEntity firstCollided = this.manager.checkEntityToEntityCollisions(this, newPoint);
-		//Catch null pointers
+		
+		//Catch null pointers, Issue? null collision not with nonentity
+		//O yes, andy wont move if 1stCollision == null
 		if(firstCollided != null) {
 			if(!this.collisionFlag)
 				Log.v(this.getClass().getName(), " collided with " + firstCollided.getClass());
 			this.collisionFlag = true;
+			
 			//Andy Collision
-			if(this instanceof Andy)
-				if(firstCollided instanceof Goat) {
+			if(this instanceof Andy) {
+				if(firstCollided instanceof Goat) { 
 					firstCollided.setHealth(-100); //Kill Goat
-					this.manager.getAndy().setHealth(this.manager.getAndy().getHealth() - 20);
+					this.manager.getAndy().setHealth(this.manager.getAndy().getHealth() - 20); //Hurt Andy
 					Log.v("atest", "Andy v Goat");
 				}
-			if(this instanceof Goat) {
-				this.health = -20;
+			}
+			//Goat Collision
+			else if(this instanceof Goat) {
+				//this.health = -100; //Kill Goat
 				if(firstCollided instanceof Andy)
-					firstCollided.setHealth(firstCollided.getHealth() -20);
+					firstCollided.setHealth(firstCollided.getHealth() -20); //Hurt Andy
+				//Bump Andy away?
+				this.manager.getAndy().moveUpdate();
 				Log.v("atest", "Goat v Andy");
 			}
-			if(this instanceof Flame) {
+			//Flame Collision
+			else if(this instanceof Flame) {
 				this.health = -100; //Collide and DIE!
 				if(firstCollided instanceof Goat) {
-					firstCollided.setHealth(-100);
+					firstCollided.setHealth(-100); //Kill Goat
 					this.manager.getAndy().setScore(this.manager.getAndy().getScore() + 1);
 					Log.v("atest", "Flame v Goat");
 					//getMediaPlayer();
 					//this.manager.getAll().remove(firstCollided);
 				}
 			}
-		}
+		} //End Entity 
 		
 		//Check entity->tile collisions
 		HashMap<PointMap, Tile> blocks = this.manager.checkEntityToTileCollisions(this, newPoint, this.velocityX, this.velocityY);

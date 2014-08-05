@@ -41,11 +41,13 @@ public class OptionsActivity extends Activity {
         
         setContentView(R.layout.activity_options);
         CheckBox defaultButt = (CheckBox) findViewById(R.id.checkbox_defaultButt);
-        defaultButt.setChecked(true);
-        setFont();      
+    	CheckBox musicOn = (CheckBox) findViewById(R.id.checkbox_musicPlay);
+        //defaultButt.setChecked(true);
+    	//musicOn.setChecked(true);
+        //setFont();      
     }
 
-
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -64,6 +66,7 @@ public class OptionsActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+    */
     
     public void launchGame(View view) {
         Intent intent = new Intent(this, GameActivity.class);
@@ -77,40 +80,40 @@ public class OptionsActivity extends Activity {
     	
     	CheckBox defaultButt = (CheckBox) findViewById(R.id.checkbox_defaultButt);
     	CheckBox oldButt = (CheckBox) findViewById(R.id.checkbox_old);
+    	CheckBox musicOn = (CheckBox) findViewById(R.id.checkbox_musicPlay);
+    	CheckBox musicOff = (CheckBox) findViewById(R.id.checkbox_musicStop);
+    	//Button playButt = (Button) findViewById(R.id.button_playGame);
     	TextView version = (TextView) findViewById(R.id.tvVersion);
-    	Button start = (Button) findViewById(R.id.bStart);
-    	Button credits = (Button) findViewById(R.id.bCredits);
-    	Button options = (Button) findViewById(R.id.bOptions);
     	
     	defaultButt.setTypeface(font);
     	oldButt.setTypeface(font);
     	version.setTypeface(font);
-    	start.setTypeface(font);
-    	credits.setTypeface(font);
-    	options.setTypeface(font);
+    	musicOn.setTypeface(font);
+    	musicOff.setTypeface(font);
     }
     
     public void onCheckboxClicked(View view) {
         // Is the view now checked?
+    	//CheckBox clickedBox = (CheckBox) findViewById(view.getId());
         boolean checked = ((CheckBox) view).isChecked();
         
         // Check which checkbox was clicked
         switch(view.getId()) {
             case R.id.checkbox_defaultButt:
                 if (checked) {
-                	//Load defaultButtsg
+                	//clickedBox.setChecked(false);
                 }
                 else
                 {
-                    // Remove the meat
+                	//clickedBox.setChecked(true);
                 }
                 break;
             case R.id.checkbox_old:
                 if (checked) {
-                    //Load 
+                	//clickedBox.setChecked(false); 
                 }
                 else {
-                    // I'm lactose intolerant
+                	//clickedBox.setChecked(true);
                 }
                 break;
             // TODO: Veggie sandwich

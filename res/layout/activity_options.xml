@@ -23,13 +23,31 @@
         android:textColor="#907D50"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="400dp"
-        android:onClick="onCheckboxClicked"/>    
+        android:onClick="onCheckboxClicked"/>
+    
+    <CheckBox android:id="@+id/checkbox_musicPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/musicOn"
+        android:textColor="#907D50"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="400dp"
+        android:onClick="onCheckboxClicked"/>
+    
+    <CheckBox android:id="@+id/checkbox_musicStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/musicOff"
+        android:textColor="#907D50"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="400dp"
+        android:onClick="onCheckboxClicked"/> 
     
     <TextView
         android:id="@+id/tvVersion"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="right"        
+        android:gravity="right"      
         android:paddingBottom="10dp"
         android:paddingRight="10dp"
         android:text="@string/version"

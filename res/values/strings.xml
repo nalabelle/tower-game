@@ -10,5 +10,7 @@
     <string name="title">MAGIC TOWER</string>
     <string name="defaultButt">Default Buttons</string>
     <string name="oldButt">Old Buttons</string>
+    <string name="musicOn">Play all sounds</string>
+    <string name="musicOff">Mute all sounds</string>
 
 </resources>
