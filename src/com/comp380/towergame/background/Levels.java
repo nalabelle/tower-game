@@ -175,7 +175,7 @@ public class Levels
 						{
 							level[i][j] = new Tile(this.context,0, 0, i, j, false, blackTile);
 						}
-						else if(j == 5 && i == 198)
+						else if(j == 5 && i == 198)//
 							level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
 						
 						
