@@ -76,6 +76,7 @@ public class Andy extends BaseEntity {
 		System.out.println("inGame pos: " + this.manager.getContext().getTileEngine().getInGamePos());
 		if(this.getX() >= 700 && this.manager.getContext().getTileEngine().getInGamePos() < 177) {
 			this.manager.getContext().getTileEngine().setSpeed((int) (this.velocityX * -1));
+			this.manager.normalizeMovement(this.velocityX);
 			this.point.x = oldPoint.x;
 		} 
 		else {

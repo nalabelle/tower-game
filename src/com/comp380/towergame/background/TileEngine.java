@@ -56,6 +56,10 @@ public class TileEngine
 			{
 				if(tileArray[i][j] == null)
 					continue;
+				if(tileArray[i][j] instanceof EntityTile) {
+					tileArray[i][j].draw(canvas);
+					continue;
+				}
 				canvas.drawBitmap(tileArray[i][j].getTileBitmap(), tileArray[i][j].getTileOnScreenX(),tileArray[i][j].getTileOnScreenY(), null);
 				
 				//debug bounding drawing.
