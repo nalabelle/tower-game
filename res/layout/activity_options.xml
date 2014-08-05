@@ -1,4 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
@@ -6,7 +7,7 @@
     android:background="@drawable/main_background"
     android:orientation="vertical"
     tools:context="com.comp380.towergame.OptionsActivity" >
-    
+     
     <CheckBox android:id="@+id/checkbox_defaultButt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,6 +15,7 @@
         android:textColor="#907D50"
         android:layout_marginTop="160dp"
         android:layout_marginLeft="400dp"
+        android:textSize="40sp"
         android:onClick="onCheckboxClicked"/>
     
     <CheckBox android:id="@+id/checkbox_old"
@@ -23,6 +25,7 @@
         android:textColor="#907D50"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="400dp"
+        android:textSize="40sp"
         android:onClick="onCheckboxClicked"/>
     
     <CheckBox android:id="@+id/checkbox_musicPlay"
@@ -32,6 +35,7 @@
         android:textColor="#907D50"
         android:layout_marginTop="60dp"
         android:layout_marginLeft="400dp"
+        android:textSize="40sp"
         android:onClick="onCheckboxClicked"/>
     
     <CheckBox android:id="@+id/checkbox_musicStop"
@@ -41,7 +45,19 @@
         android:textColor="#907D50"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="400dp"
+        android:textSize="40sp"
         android:onClick="onCheckboxClicked"/> 
+        
+    <Button
+        android:id="@+id/button_playGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PLAY"
+        android:textColor="#907D50"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="400dp"
+        android:textSize="40sp"
+        android:onClick="launchGame"/>
     
     <TextView
         android:id="@+id/tvVersion"

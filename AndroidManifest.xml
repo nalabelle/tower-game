@@ -36,6 +36,11 @@
             android:label="Credits"
             android:screenOrientation="landscape" >
         </activity>
+          <activity
+            android:name=".OptionsActivity"
+            android:label="Options"
+            android:screenOrientation="landscape" >
+        </activity>
     </application>
 
 </manifest>

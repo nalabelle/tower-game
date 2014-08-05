@@ -66,7 +66,7 @@ public class MainActivity extends Activity {
     public void launchOptions(View view){
     	//Toast.makeText(this, "To be implemented...", Toast.LENGTH_LONG).show();
     	endMusic();
-    	Intent intent = new Intent(this, OptionsActivity.class);
+    	Intent intent = new Intent(this, OptionsActivity.class); //OptionsActivity
     	startActivity(intent);
     }
     

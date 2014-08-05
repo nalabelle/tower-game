@@ -1,7 +1,6 @@
 package com.comp380.towergame;
 
 import java.util.ArrayList;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -18,18 +17,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * @author Group5: Nik
- * 
- * The main activity launches the game's title screen
- * Start, Load, Options, Quit  (HighScore? in options?)
- * 
- * Question: Do we ever return here? 
- * 		Quit from Gameplay? 
- * 		return from interrupt (home button, call, etc.)?
- */
-
 public class OptionsActivity extends Activity {
+	private Intent intent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +31,12 @@ public class OptionsActivity extends Activity {
         setContentView(R.layout.activity_options);
         CheckBox defaultButt = (CheckBox) findViewById(R.id.checkbox_defaultButt);
     	CheckBox musicOn = (CheckBox) findViewById(R.id.checkbox_musicPlay);
-        //defaultButt.setChecked(true);
-    	//musicOn.setChecked(true);
-        //setFont();      
+        defaultButt.setChecked(true);
+    	musicOn.setChecked(true);
+        setFont();      
     }
 
-    /*
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -66,13 +55,7 @@ public class OptionsActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-    */
     
-    public void launchGame(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
-        startActivity(intent);
-        //finish();
-    }
     
     //Using a custom font (IsomothPro) from assets for display
     public void setFont(){
@@ -82,7 +65,7 @@ public class OptionsActivity extends Activity {
     	CheckBox oldButt = (CheckBox) findViewById(R.id.checkbox_old);
     	CheckBox musicOn = (CheckBox) findViewById(R.id.checkbox_musicPlay);
     	CheckBox musicOff = (CheckBox) findViewById(R.id.checkbox_musicStop);
-    	//Button playButt = (Button) findViewById(R.id.button_playGame);
+    	Button playButt = (Button) findViewById(R.id.button_playGame);
     	TextView version = (TextView) findViewById(R.id.tvVersion);
     	
     	defaultButt.setTypeface(font);
@@ -91,6 +74,7 @@ public class OptionsActivity extends Activity {
     	musicOn.setTypeface(font);
     	musicOff.setTypeface(font);
     }
+    
     
     public void onCheckboxClicked(View view) {
         // Is the view now checked?
@@ -101,22 +85,55 @@ public class OptionsActivity extends Activity {
         switch(view.getId()) {
             case R.id.checkbox_defaultButt:
                 if (checked) {
-                	//clickedBox.setChecked(false);
+                	CheckBox oldButt = (CheckBox) findViewById(R.id.checkbox_old);
+                	oldButt.setChecked(false);
                 }
                 else
                 {
-                	//clickedBox.setChecked(true);
+                	CheckBox oldButt = (CheckBox) findViewById(R.id.checkbox_old);
+                	oldButt.setChecked(true);
                 }
                 break;
             case R.id.checkbox_old:
                 if (checked) {
-                	//clickedBox.setChecked(false); 
+                	CheckBox defaultButt = (CheckBox) findViewById(R.id.checkbox_defaultButt);
+                	defaultButt.setChecked(false);
                 }
                 else {
-                	//clickedBox.setChecked(true);
+                	CheckBox defaultButt = (CheckBox) findViewById(R.id.checkbox_defaultButt);
+                	defaultButt.setChecked(true);
                 }
                 break;
+            case R.id.checkbox_musicPlay:
+                if (checked) {
+                	CheckBox musicStop = (CheckBox) findViewById(R.id.checkbox_musicStop);
+                	musicStop.setChecked(false);
+                }
+                else {
+                	CheckBox musicStop = (CheckBox) findViewById(R.id.checkbox_musicStop);
+                	musicStop.setChecked(true);
+                }
+                break;
+            case R.id.checkbox_musicStop:
+                if (checked) {
+                	CheckBox musicPlay = (CheckBox) findViewById(R.id.checkbox_musicPlay);
+                	musicPlay.setChecked(false);
+                }
+                else {
+                	CheckBox musicPlay = (CheckBox) findViewById(R.id.checkbox_musicPlay);
+                	musicPlay.setChecked(true);
+                }
+                break;
+            
+            
             // TODO: Veggie sandwich
         }
+    }//end check logic
+    
+    public void launchGame(View view) {
+        Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
+        //finish();
     }
+    
 }
