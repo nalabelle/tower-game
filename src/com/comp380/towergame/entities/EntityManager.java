@@ -117,4 +117,14 @@ public class EntityManager {
 		//TODO: finish
 	}
 
+	public void normalizeMovement(float f) {
+		ArrayList<BaseEntity> safeIter = new ArrayList<BaseEntity>(this.entityStorage);
+		for(BaseEntity entity : safeIter){
+			entity.update();
+			if(entity.getHealth() < 0) {				
+				entity.velocityX = entity.velocityX - f;
+			}
+		}
+	}
+
 }
