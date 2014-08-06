@@ -18,7 +18,6 @@ public class BaseEntity {
 	protected EntityManager manager;
 	protected Bitmap texture;
 	protected Bitmap originalTexture;
-	private float scale;
 	private long lastUpdate;
 	
 	protected Point point;
@@ -35,15 +34,14 @@ public class BaseEntity {
 	
 	protected int health;
 	
+	private final int SPAWN_DISTANCE = 300;
+	
 	public BaseEntity(EntityManager manager, Bitmap texture, int x, int y) {
 		this.point = new Point(x, y);
 		this.texture = texture;
 		this.originalTexture = texture;
 		this.manager = manager;
 		this.lastUpdate = 0;
-		
-		//scaling due to DPI changes.
-		this.scale = this.manager.getContext().scalingFactor();
 	}
 	
 	private Point updatePosition() {
@@ -118,6 +116,16 @@ public class BaseEntity {
 			//Flame Collision
 			else if(this instanceof Flame) {
 				this.health = -100; //Collide and DIE!
+			//Goat hits
+			if(this instanceof Goat) {
+				this.health = -20;
+				if(firstCollided instanceof Andy)
+					firstCollided.setHealth(firstCollided.getHealth() -20);
+			}
+			
+			//Flame hits
+			if(this instanceof Flame) {
+				this.health = -100;					
 				if(firstCollided instanceof Goat) {
 					firstCollided.setHealth(-100); //Kill Goat
 					this.manager.getAndy().setScore(this.manager.getAndy().getScore() + 1);
@@ -127,9 +135,22 @@ public class BaseEntity {
 				}
 			}
 		} //End Entity 
+			
+			//Andy hits
+			if(this instanceof Andy) {
+				if(firstCollided instanceof Flame) {
+					firstCollided.health = -100;
+				}
+			}
+		}
 		
 		//Check entity->tile collisions
 		HashMap<PointMap, Tile> blocks = this.manager.checkEntityToTileCollisions(this, newPoint, this.velocityX, this.velocityY);
+		
+		//Flames ignore tile collisions
+		if(this instanceof Flame)
+			blocks = null;
+		
 		if(blocks != null) {
 			//FEET
 			if(blocks.get(PointMap.MIDDLE_BOTTOM_LEFT) == null && blocks.get(PointMap.MIDDLE_BOTTOM_RIGHT) == null) {
@@ -197,9 +218,9 @@ public class BaseEntity {
 		this.moveUpdate();
 		
 		//Kill them at the edges.
-		if(this.point.x > GameActivity.GAME_MAX_WIDTH ||
+		if(this.point.x > GameActivity.GAME_MAX_WIDTH + this.SPAWN_DISTANCE ||
 			this.point.y > GameActivity.GAME_MAX_HEIGHT ||
-			(this.point.x + this.getBounds().width()) < 0 ) {
+			(this.point.x + this.getBounds().width() + this.SPAWN_DISTANCE) < 0 ) {
 				this.health = -100;
 		}
 		this.lastUpdate = System.currentTimeMillis();

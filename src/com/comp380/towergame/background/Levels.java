@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 
 import com.comp380.towergame.R;
 import com.comp380.towergame.background.Tile;
+import com.comp380.towergame.entities.Andy;
+import com.comp380.towergame.entities.EntityManager;
 
 public class Levels
 {
@@ -90,6 +92,14 @@ public class Levels
 								level[i][j] = new Tile(this.context,0,0,i,j,false,roofTile);
 							else if(i >= 136 && i < 168)
 								level[i][j] = new Tile(this.context,0, 0, i, j, false, roofTile);
+						}
+						else if(j == 5)
+						{
+							if(i == 5)
+								level[i][j] = new EntityTile(this.context, 0, 0, i ,j, EntityManager.entityTypes.ANDY);
+							
+							if(i == 15 || i == 25 || i == 35 || i == 45 || i == 55)
+								level[i][j] = new EntityTile(this.context, 0, 0, i, j, EntityManager.entityTypes.GOAT);
 						}
 						else if(j == 6)
 						{
