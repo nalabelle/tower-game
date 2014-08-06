@@ -18,7 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class OptionsActivity extends Activity {
-	private Intent intent = null;
+	private int music = 0;
+	private int buttons = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,51 +78,57 @@ public class OptionsActivity extends Activity {
     
     
     public void onCheckboxClicked(View view) {
-        // Is the view now checked?
-    	//CheckBox clickedBox = (CheckBox) findViewById(view.getId());
+       //Was it checked?
         boolean checked = ((CheckBox) view).isChecked();
         
-        // Check which checkbox was clicked
         switch(view.getId()) {
             case R.id.checkbox_defaultButt:
                 if (checked) {
                 	CheckBox oldButt = (CheckBox) findViewById(R.id.checkbox_old);
                 	oldButt.setChecked(false);
+                	buttons = 0;
                 }
                 else
                 {
                 	CheckBox oldButt = (CheckBox) findViewById(R.id.checkbox_old);
                 	oldButt.setChecked(true);
+                	buttons = 1;
                 }
                 break;
             case R.id.checkbox_old:
                 if (checked) {
                 	CheckBox defaultButt = (CheckBox) findViewById(R.id.checkbox_defaultButt);
                 	defaultButt.setChecked(false);
+                	buttons = 1;
                 }
                 else {
                 	CheckBox defaultButt = (CheckBox) findViewById(R.id.checkbox_defaultButt);
                 	defaultButt.setChecked(true);
+                	buttons = 0;
                 }
                 break;
             case R.id.checkbox_musicPlay:
                 if (checked) {
                 	CheckBox musicStop = (CheckBox) findViewById(R.id.checkbox_musicStop);
                 	musicStop.setChecked(false);
+                	music = 0;
                 }
                 else {
                 	CheckBox musicStop = (CheckBox) findViewById(R.id.checkbox_musicStop);
                 	musicStop.setChecked(true);
+                	music = 1;
                 }
                 break;
             case R.id.checkbox_musicStop:
                 if (checked) {
                 	CheckBox musicPlay = (CheckBox) findViewById(R.id.checkbox_musicPlay);
                 	musicPlay.setChecked(false);
+                	music = 1;
                 }
                 else {
                 	CheckBox musicPlay = (CheckBox) findViewById(R.id.checkbox_musicPlay);
                 	musicPlay.setChecked(true);
+                	music = 0;
                 }
                 break;
             
@@ -132,6 +139,8 @@ public class OptionsActivity extends Activity {
     
     public void launchGame(View view) {
         Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("music", music);
+        intent.putExtra("buttons", buttons);
         startActivity(intent);
         //finish();
     }
