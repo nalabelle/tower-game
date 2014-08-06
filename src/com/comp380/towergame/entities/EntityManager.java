@@ -115,7 +115,7 @@ public class EntityManager {
 		for(BaseEntity entity : safeIter){
 			if(entity instanceof Andy)
 				continue;
-			if(entity.getHealth() < 0) {				
+			if(entity.getHealth() > 0) {				
 				entity.velocityX = entity.velocityX + f;
 			}
 		}
