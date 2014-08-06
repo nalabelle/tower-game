@@ -34,7 +34,7 @@ public class BaseEntity {
 	
 	protected int health;
 	
-	private final int SPAWN_DISTANCE = 300;
+	private final int SPAWN_DISTANCE = 90*8; //px width of tile * offscreen render distance
 	
 	public BaseEntity(EntityManager manager, Bitmap texture, int x, int y) {
 		this.point = new Point(x, y);
