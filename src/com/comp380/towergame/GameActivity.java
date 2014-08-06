@@ -58,10 +58,10 @@ public class GameActivity extends Activity {
 		FrameLayout game = new FrameLayout(this);
 		
 		Intent intent = getIntent();
-		int music = 0;
-		int buttons = 0;
-		intent.getIntExtra("music", music);
-		intent.getIntExtra("buttons", buttons);
+		//int music = 0;
+		//int buttons = 0;
+		int buttons = intent.getIntExtra("buttons", 0);
+		int music = intent.getIntExtra("music", 0);
 		
 		//Loads the graphic box
 		Log.v(tag, "Opening Surface View");

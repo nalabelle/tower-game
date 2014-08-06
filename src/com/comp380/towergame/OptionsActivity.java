@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +21,8 @@ import android.widget.Toast;
 public class OptionsActivity extends Activity {
 	private int music = 0;
 	private int buttons = 0;
-
+	private Intent intent;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //remove title bar from activity, must before setContentView
@@ -87,12 +89,14 @@ public class OptionsActivity extends Activity {
                 	CheckBox oldButt = (CheckBox) findViewById(R.id.checkbox_old);
                 	oldButt.setChecked(false);
                 	buttons = 0;
+                	Log.v("ALEX", "switching to new butts");
                 }
                 else
                 {
                 	CheckBox oldButt = (CheckBox) findViewById(R.id.checkbox_old);
                 	oldButt.setChecked(true);
                 	buttons = 1;
+                	Log.v("ALEX", "switching to old butts");
                 }
                 break;
             case R.id.checkbox_old:
@@ -100,11 +104,13 @@ public class OptionsActivity extends Activity {
                 	CheckBox defaultButt = (CheckBox) findViewById(R.id.checkbox_defaultButt);
                 	defaultButt.setChecked(false);
                 	buttons = 1;
+                	Log.v("ALEX", "switching to old butts");
                 }
                 else {
                 	CheckBox defaultButt = (CheckBox) findViewById(R.id.checkbox_defaultButt);
                 	defaultButt.setChecked(true);
                 	buttons = 0;
+                	Log.v("ALEX", "switching to new butts");
                 }
                 break;
             case R.id.checkbox_musicPlay:
@@ -135,12 +141,12 @@ public class OptionsActivity extends Activity {
             
             // TODO: Veggie sandwich
         }
+        intent = new Intent(this, GameActivity.class);
+        intent.putExtra("music", music);
+        intent.putExtra("buttons", buttons);
     }//end check logic
     
     public void launchGame(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("music", music);
-        intent.putExtra("buttons", buttons);
         startActivity(intent);
         //finish();
     }
