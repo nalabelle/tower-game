@@ -1,6 +1,7 @@
 package com.comp380.towergame;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -56,6 +57,12 @@ public class GameActivity extends Activity {
 		//Save Layout
 		FrameLayout game = new FrameLayout(this);
 		
+		Intent intent = getIntent();
+		int music = 0;
+		int buttons = 0;
+		intent.getIntExtra("music", music);
+		intent.getIntExtra("buttons", buttons);
+		
 		//Loads the graphic box
 		Log.v(tag, "Opening Surface View");
 		this.gameSurfaceView = new GameSurfaceView(this);
@@ -68,7 +75,9 @@ public class GameActivity extends Activity {
 		LayoutInflater factory = LayoutInflater.from(this);
 		View myView = null;
 		
-		if(true){
+		Log.v("ALEX", ""+buttons);
+		
+		if(buttons == 0){
 			myView = factory.inflate(R.layout.defaultcontrols, null);
 		}
 		else {
@@ -97,7 +106,7 @@ public class GameActivity extends Activity {
 		gameMusic = MediaPlayer.create(this, R.raw.music_level_1);
 		gameMusic.setLooping(true);
 		
-	    if(true) {
+	    if(buttons == 0) {
 	    	ImageButton left = (ImageButton) findViewById(R.id.leftButton);
 		    touchButton(left.getId(), com.comp380.towergame.entities.Andy.MoveDirection.LEFT);
 		    
