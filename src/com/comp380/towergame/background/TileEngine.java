@@ -16,6 +16,7 @@ public class TileEngine
 	private Tile tileArray[][];
 	private Tile sourceArray[][];
 	private int speed;
+	private int inGame;
 	
 	Context context;
 	
@@ -25,6 +26,7 @@ public class TileEngine
 		tileArray = new Tile[x][y];
 		sourceArray = source.clone();
 		levelLength = l;
+		inGame = 0;
 		//initiate tile array
 		for(int i = 0; i < x; i++)
 		{
@@ -72,6 +74,10 @@ public class TileEngine
 		}
 	}
 	
+	public int getLevelLength()
+	{
+		return levelLength;
+	}
 	
 	public void setSpeed(int speed)
 	{
@@ -129,7 +135,7 @@ public class TileEngine
 	
 	public int getInGamePos()
 	{
-		return tileArray[0][0].getTileInGX();
+		return inGame;
 	}
 	
 	public void updateTiles()
@@ -161,7 +167,8 @@ public class TileEngine
 					
 					//inGX2 += 90;
 					//scrX -= inGX2 - scrX;
-					
+					if(j == 0)
+						inGame = inGX;
 					if(inGX+screenC >= levelLength)//array out of bounds checking
 						break;
 					tileArray[i][j] = sourceArray[inGX+screenC][inGY]; //reading from array location

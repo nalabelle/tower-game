@@ -107,7 +107,7 @@ public class Levels
 								level[i][j] = new Tile(this.context,0, 0, i, j, true, floorTile);
 							else if(i == 84)
 								level[i][j] = new Tile(this.context,0, 0, i, j, true, cornerRightTile);
-							else if(i == 199)
+							else if(i == 198)
 								level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
 						}
 						else if(j == 7)
@@ -175,7 +175,7 @@ public class Levels
 						{
 							level[i][j] = new Tile(this.context,0, 0, i, j, false, blackTile);
 						}
-						else if(j == 5 && i == 199)
+						else if(j == 5 && i == 198)//
 							level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
 						
 						

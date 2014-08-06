@@ -263,15 +263,7 @@ public class GameActivity extends Activity {
                                 
                                 switch (direction) {
                                 case RIGHT:
-                                	if((entityManager.getAndy().getX() >= 700) && (tileEngine.getInGamePos() <= 180) && (tileEngine.getSpeed() != -8))
-                                	{
-                        					tileEngine.setSpeed(-8);
-                                	}
-                                	else
-                                	{
-                                		tileEngine.setSpeed(0);
-                                		entityManager.getAndy().onMoveEvent(direction);
-                                	}
+                                	entityManager.getAndy().onMoveEvent(direction);
                                 	handlr.postDelayed(this, sleep);
                                 	break;
                                 case JUMP:
