@@ -95,6 +95,8 @@ public class Levels
 						}
 						else if(j == 5)
 						{
+							if(i == 198)
+								level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
 							if(i == 5)
 								level[i][j] = new EntityTile(this.context, 0, 0, i ,j, EntityManager.entityTypes.ANDY);
 							
@@ -175,8 +177,7 @@ public class Levels
 						{
 							level[i][j] = new Tile(this.context,0, 0, i, j, false, blackTile);
 						}
-						else if(j == 5 && i == 198)//
-							level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
+
 						
 						
 						/*
