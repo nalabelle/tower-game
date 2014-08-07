@@ -27,7 +27,7 @@ public class Levels
 	
 	public void loadBitmap(int l)
 	{
-		if(l < 4) //load world one tiles if in range
+		if(l < 4) //load world one tiles if in range 
 		{
 			transTile = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile_trans);
 			spikeTile = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile_spike);
