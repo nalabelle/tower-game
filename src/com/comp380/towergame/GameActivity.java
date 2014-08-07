@@ -58,8 +58,6 @@ public class GameActivity extends Activity {
 		FrameLayout game = new FrameLayout(this);
 		
 		Intent intent = getIntent();
-		//int music = 0;
-		//int buttons = 0;
 		int buttons = intent.getIntExtra("buttons", 0);
 		int music = intent.getIntExtra("music", 0);
 		
@@ -101,10 +99,11 @@ public class GameActivity extends Activity {
 		
 		levels = new Levels(this, 1);
 		this.tileEngine = new TileEngine(this, levels.getLevel(),levels.getlevelLength());
-		
 		soundEffects = new SoundManager(this, 1);
 		gameMusic = MediaPlayer.create(this, R.raw.music_level_1);
-		gameMusic.setLooping(true);
+		if(music == 0) {
+			gameMusic.setLooping(true);
+		}
 		
 	    if(buttons == 0) {
 	    	ImageButton left = (ImageButton) findViewById(R.id.leftButton);
@@ -201,8 +200,13 @@ public class GameActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		this.toggleGameThread(true);
-		soundEffects.autoResume();
-		gameMusic.start();		
+		Intent intent = getIntent();
+		int music = intent.getIntExtra("music", 0);
+		
+		if (music == 0) {
+			soundEffects.autoResume();
+			gameMusic.start();	
+		}
 	}
 
 	@Override

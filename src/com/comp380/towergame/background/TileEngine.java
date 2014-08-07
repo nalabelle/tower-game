@@ -194,12 +194,7 @@ public class TileEngine
 					continue;
 				if(!tileArray[i][j].isSolid())
 					continue;
-				if(tileArray[i][j].getTileOnScreenX() > 0 &&
-					tileArray[i][j].getTileOnScreenX() < GameActivity.GAME_MAX_WIDTH &&
-					tileArray[i][j].getTileOnScreenY() > 0 &&
-					tileArray[i][j].getTileOnScreenY() < GameActivity.GAME_MAX_HEIGHT) {
-					newArray.add(tileArray[i][j]);
-				}
+				newArray.add(tileArray[i][j]);
 			}
 		}
 		return newArray;

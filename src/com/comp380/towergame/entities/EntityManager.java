@@ -22,6 +22,7 @@ public class EntityManager {
 	private ArrayList<BaseEntity> entityStorage;
 	private GameActivity context;
 	private String tag = ""+ this.getClass();
+	private int soundChoice = 0;
 	
 	public enum entityTypes {
 		ANDY, GOAT, FLAME;
@@ -30,6 +31,8 @@ public class EntityManager {
 	public EntityManager(GameActivity gameActivity) {
 		this.context = gameActivity;
 		this.entityStorage = new ArrayList<BaseEntity>();
+		Intent intent = this.context.getIntent();
+		soundChoice = intent.getIntExtra("music", 0);
 	}
 	
 	//temporary
@@ -60,7 +63,10 @@ public class EntityManager {
 			if(removing instanceof Andy) {
 				//Andy Died
 				Log.v(tag, "Adny died, Hp =" +removing.getHealth());
-				this.context.getSoundEffects().play(SoundManager.screamID, 1, 1, 1, 0, 1);
+				//Andy Scream
+				if(soundChoice == 0) {
+					this.context.getSoundEffects().play(SoundManager.screamID, 1, 1, 1, 0, 1);
+				}
 				Intent intent = new Intent(this.context, CreditsActivity.class);
 				intent.putExtra("death", true);
 		    	this.context.startActivity(intent);
@@ -71,7 +77,9 @@ public class EntityManager {
 			}
 			if(removing instanceof Goat) {
 				//Goat Died poor goat.  NO SCREW THE GOAT, IT HAD IT COMING!!!
-				this.context.getSoundEffects().play(SoundManager.goatHowlID, 1, 1, 1, 0, 1);
+				if(soundChoice == 0) {
+					this.context.getSoundEffects().play(SoundManager.goatHowlID, 1, 1, 1, 0, 1);
+				}
 		    	break;
 			}
 		}
@@ -105,19 +113,12 @@ public class EntityManager {
 		return context;
 	}
 	
-	//woops. I renamed this.
-	public void shiftAllX(int direction) {
-		this.normalizeMovement(direction);
-	}
-
 	public void normalizeMovement(float f) {
 		ArrayList<BaseEntity> safeIter = new ArrayList<BaseEntity>(this.entityStorage);
 		for(BaseEntity entity : safeIter){
 			if(entity instanceof Andy)
-				continue;
-			if(entity.getHealth() > 0) {				
-				entity.velocityX = entity.velocityX + f;
-			}
+				continue;				
+			entity.point.x = (int) (entity.point.x + f);
 		}
 	}
 
