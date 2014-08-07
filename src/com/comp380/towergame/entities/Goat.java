@@ -33,9 +33,9 @@ public class Goat extends BaseEntity {
 		if(this.attacking < 1)
 			if (soundChoice == 0) {
 				this.manager.getContext().getSoundEffects().play(SoundManager.bleetID, 1, 1, 1, 0, 1);
+				this.attackDirection = (int) Math.signum(this.manager.getAndy().getX() - this.point.x);
+				this.attacking = 1;
 			}
-			this.attackDirection = (int) Math.signum(this.manager.getAndy().getX() - this.point.x);
-		this.attacking = 1;
 		//this.isWalking = true;
 
 		this.velocityX =  this.attackDirection * Speed.CHARGING;
