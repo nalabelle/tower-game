@@ -141,6 +141,7 @@ public class OptionsActivity extends Activity {
             
             // TODO: Veggie sandwich
         }
+        
         intent = new Intent(this, GameActivity.class);
         intent.putExtra("music", music);
         intent.putExtra("buttons", buttons);
