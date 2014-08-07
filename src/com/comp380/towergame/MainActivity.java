@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,13 +13,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
     MediaPlayer music = null;
     private int musicOption = 0;
-	private int buttons = 0;
+	private int buttonOption = 0;
 	private Intent intent;
 
     @Override
@@ -31,11 +31,16 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         setFont();    
         Intent intent = getIntent();
-		musicOption = intent.getIntExtra("music", 0);
+        musicOption = intent.getIntExtra("music", 0);
+		buttonOption = intent.getIntExtra("buttons", 0);
+		Log.v("ALEX Main", ""+musicOption+buttonOption);
+		
 		if (musicOption == 0) {
 			playMusic();
 		}
+		
         intent.putExtra("music", musicOption);
+        intent.putExtra("buttons", buttonOption);
 	}
 
 
@@ -59,24 +64,30 @@ public class MainActivity extends Activity {
     }
     
     public void launchGame(View view) {
-    	endMusic();
+    	if (musicOption == 0) { endMusic(); }
         intent = new Intent(this, GameActivity.class);
         intent.putExtra("music", musicOption);
+        intent.putExtra("buttons", buttonOption);
         startActivity(intent);
         //finish();
     }
     
     public void launchCredits(View view){
-    	endMusic();
+    	if (musicOption == 0) { endMusic(); }
     	intent = new Intent(this, CreditsActivity.class);
+    	intent.putExtra("music", musicOption);
+        intent.putExtra("buttons", buttonOption);
     	startActivity(intent);
     }
     
     public void launchOptions(View view){
     	//Toast.makeText(this, "To be implemented...", Toast.LENGTH_LONG).show();
-    	endMusic();
+    	if (musicOption == 0) { endMusic(); }
     	intent = new Intent(this, OptionsActivity.class); //OptionsActivity
-    	startActivity(intent);
+    	intent.putExtra("music", musicOption);
+        intent.putExtra("buttons", buttonOption);
+        Log.v("ALEX", ""+musicOption+buttonOption);
+        startActivity(intent);
     }
     
     public void endMusic(){
@@ -92,7 +103,11 @@ public class MainActivity extends Activity {
 			music.start();
 		}
     }
-        ///    @Override///	protected void onResume() {///		super.onResume();///    	music.start();///	}//////	@Override///	protected void onPause() {///		music.pause();///		super.onPause();///	}
+            @Override	protected void onResume() {		super.onResume();
+		Intent intent = getIntent();
+        musicOption = intent.getIntExtra("music", 0);
+		buttonOption = intent.getIntExtra("buttons", 0);
+		Log.v("ALEX -- Resumed", ""+musicOption+buttonOption);	}//////	@Override///	protected void onPause() {///		music.pause();///		super.onPause();///	}
 
 	
     

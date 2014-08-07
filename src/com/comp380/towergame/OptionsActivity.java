@@ -34,9 +34,28 @@ public class OptionsActivity extends Activity {
         setContentView(R.layout.activity_options);
         CheckBox defaultButt = (CheckBox) findViewById(R.id.checkbox_defaultButt);
     	CheckBox musicOn = (CheckBox) findViewById(R.id.checkbox_musicPlay);
-        defaultButt.setChecked(true);
-    	musicOn.setChecked(true);
-        setFont();      
+    	
+    	Intent intent = getIntent();
+    	int musicOption = intent.getIntExtra("music", 0);
+    	int buttons = intent.getIntExtra("buttons", 0);
+    	
+    	if(musicOption == 0) {
+    		defaultButt.setChecked(true);
+    	}
+    	else {
+    		defaultButt.setChecked(false);
+    		musicOption = 1;
+    	}
+    	if (buttons == 0) {
+    		musicOn.setChecked(true);
+    	}
+    	else {
+    		defaultButt.setChecked(false);
+    		musicOption = 1;
+    	}
+        setFont();     
+        intent.putExtra("music", musicOption);
+        intent.putExtra("buttons", buttons);
     }
 
     
@@ -145,11 +164,23 @@ public class OptionsActivity extends Activity {
         intent = new Intent(this, GameActivity.class);
         intent.putExtra("music", music);
         intent.putExtra("buttons", buttons);
+        Log.v("ALEX -- options", ""+music+buttons);
     }//end check logic
     
     public void launchGame(View view) {
+    	intent.putExtra("music", music);
+        intent.putExtra("buttons", buttons);
         startActivity(intent);
         //finish();
+    }
+    
+    @Override
+    public void onBackPressed() {
+    	Intent intent = new Intent();
+    	intent.putExtra("music", music);
+    	intent.putExtra("buttons", buttons);
+    	setResult(RESULT_OK, intent);
+    	super.onBackPressed();
     }
     
 }
