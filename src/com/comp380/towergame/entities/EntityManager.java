@@ -105,11 +105,6 @@ public class EntityManager {
 		return context;
 	}
 	
-	//woops. I renamed this.
-	public void shiftAllX(int direction) {
-		this.normalizeMovement(direction);
-	}
-
 	public void normalizeMovement(float f) {
 		ArrayList<BaseEntity> safeIter = new ArrayList<BaseEntity>(this.entityStorage);
 		for(BaseEntity entity : safeIter){
