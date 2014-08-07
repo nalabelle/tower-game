@@ -2,6 +2,7 @@ package com.comp380.towergame;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -136,7 +137,11 @@ public class CreditsActivity extends Activity {
     @Override
 	protected void onResume() {
 		super.onResume();
-		music.start(); //plays or resumes paused music
+		Intent intent = getIntent();
+		int musicOption = intent.getIntExtra("music", 0);
+		if (musicOption ==0) {
+			music.start(); //plays or resumes paused music
+		}
 	}
 
 	@Override

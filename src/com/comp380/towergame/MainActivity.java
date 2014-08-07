@@ -17,6 +17,9 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
     MediaPlayer music = null;
+    private int musicOption = 0;
+	private int buttons = 0;
+	private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +29,13 @@ public class MainActivity extends Activity {
         
         super.onCreate(savedInstanceState);        
         setContentView(R.layout.activity_main);
-        setFont();        
-        playMusic();
+        setFont();    
+        Intent intent = getIntent();
+		musicOption = intent.getIntExtra("music", 0);
+		if (musicOption == 0) {
+			playMusic();
+		}
+        intent.putExtra("music", musicOption);
 	}
 
 
@@ -52,21 +60,22 @@ public class MainActivity extends Activity {
     
     public void launchGame(View view) {
     	endMusic();
-        Intent intent = new Intent(this, GameActivity.class);
+        intent = new Intent(this, GameActivity.class);
+        intent.putExtra("music", musicOption);
         startActivity(intent);
         //finish();
     }
     
     public void launchCredits(View view){
     	endMusic();
-    	Intent intent = new Intent(this, CreditsActivity.class);
+    	intent = new Intent(this, CreditsActivity.class);
     	startActivity(intent);
     }
     
     public void launchOptions(View view){
     	//Toast.makeText(this, "To be implemented...", Toast.LENGTH_LONG).show();
     	endMusic();
-    	Intent intent = new Intent(this, OptionsActivity.class); //OptionsActivity
+    	intent = new Intent(this, OptionsActivity.class); //OptionsActivity
     	startActivity(intent);
     }
     
@@ -79,7 +88,9 @@ public class MainActivity extends Activity {
     public void playMusic(){
     	//music.setAudioStreamType(AudioManager))
 		music = MediaPlayer.create(this, R.raw.music_main);
-		music.start();
+		if (musicOption == 0) {
+			music.start();
+		}
     }
         ///    @Override///	protected void onResume() {///		super.onResume();///    	music.start();///	}//////	@Override///	protected void onPause() {///		music.pause();///		super.onPause();///	}
 

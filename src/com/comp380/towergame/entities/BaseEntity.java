@@ -115,17 +115,7 @@ public class BaseEntity {
 			}
 			//Flame Collision
 			else if(this instanceof Flame) {
-				this.health = -100; //Collide and DIE!
-			//Goat hits
-			if(this instanceof Goat) {
-				this.health = -20;
-				if(firstCollided instanceof Andy)
-					firstCollided.setHealth(firstCollided.getHealth() -20);
-			}
-			
-			//Flame hits
-			if(this instanceof Flame) {
-				this.health = -100;					
+				this.health = -100; //Collide and DIE				
 				if(firstCollided instanceof Goat) {
 					firstCollided.setHealth(-100); //Kill Goat
 					this.manager.getAndy().setScore(this.manager.getAndy().getScore() + 1);
@@ -135,14 +125,6 @@ public class BaseEntity {
 				}
 			}
 		} //End Entity 
-			
-			//Andy hits
-			if(this instanceof Andy) {
-				if(firstCollided instanceof Flame) {
-					firstCollided.health = -100;
-				}
-			}
-		}
 		
 		//Check entity->tile collisions
 		HashMap<PointMap, Tile> blocks = this.manager.checkEntityToTileCollisions(this, newPoint, this.velocityX, this.velocityY);
