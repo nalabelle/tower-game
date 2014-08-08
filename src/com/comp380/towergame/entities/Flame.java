@@ -1,11 +1,15 @@
 package com.comp380.towergame.entities;
 
+import com.comp380.towergame.SoundManager;
 import com.comp380.towergame.physics.Speed;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
 public class Flame extends BaseEntity {
 	private float speed = Speed.PROJECTILE;
+	private boolean soundOption;
+	public static final String PREFS_NAME = "gameConfig";
 
 	public Flame(EntityManager manager, Bitmap bitmap) {
 		super(manager, bitmap, 
@@ -18,5 +22,12 @@ public class Flame extends BaseEntity {
 		this.velocityX = Math.signum(manager.getAndy().getFacing())*this.speed;
 		
 		this.isFlying = true;
+		
+		SharedPreferences settings = this.manager.getContext().getSharedPreferences(PREFS_NAME, 0);
+    	soundOption = settings.getBoolean("soundOption", true);
+		
+		if (soundOption) {
+			this.manager.getContext().getSoundEffects().play(SoundManager.fireballID, 1, 1, 1, 0, 1);
+		}
 	}
 }

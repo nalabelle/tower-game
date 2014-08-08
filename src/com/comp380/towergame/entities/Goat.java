@@ -5,37 +5,39 @@ import com.comp380.towergame.SoundManager;
 import com.comp380.towergame.physics.Speed;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
 public class Goat extends BaseEntity {
 	private int lurking = 50;
 	private int attacking = 0;
 	private int attackDirection;
-	private int soundChoice = 0;
+	private boolean soundOption;
+	public static final String PREFS_NAME = "gameConfig";
 
 	public Goat(EntityManager manager, Bitmap bitmap) {
 		this(manager, bitmap, 
 				(int) (Math.random()*GameActivity.GAME_MAX_WIDTH),
 				(int) (Math.random()*GameActivity.GAME_MAX_HEIGHT));
 		this.facingRight = false;
-		Intent intent = this.manager.getContext().getIntent();
-		soundChoice = intent.getIntExtra("music", 0);
+		SharedPreferences settings = this.manager.getContext().getSharedPreferences(PREFS_NAME, 0);
+    	soundOption = settings.getBoolean("soundOption", true);
 	}
 	
 	public Goat(EntityManager manager, Bitmap bitmap, int tileOnScreenX, int tileOnScreenY) {
 		super(manager, bitmap, tileOnScreenX, tileOnScreenY);
 		this.facingRight = false;
-		Intent intent = this.manager.getContext().getIntent();
-		soundChoice = intent.getIntExtra("music", 0);
+		SharedPreferences settings = this.manager.getContext().getSharedPreferences(PREFS_NAME, 0);
+    	soundOption = settings.getBoolean("soundOption", true);
 	}
 
 	private void attackPlayer() {
 		if(this.attacking < 1)
-			if (soundChoice == 0) {
+			if (soundOption) {
 				this.manager.getContext().getSoundEffects().play(SoundManager.bleetID, 1, 1, 1, 0, 1);
-				this.attackDirection = (int) Math.signum(this.manager.getAndy().getX() - this.point.x);
-				this.attacking = 1;
 			}
+			this.attackDirection = (int) Math.signum(this.manager.getAndy().getX() - this.point.x);
+			this.attacking = 1;
 		//this.isWalking = true;
 
 		this.velocityX =  this.attackDirection * Speed.CHARGING;
