@@ -100,10 +100,11 @@ public class BaseEntity {
 			if(this instanceof Andy) {
 				if(firstCollided instanceof Goat) { 
 					firstCollided.setHealth(-100); //Kill Goat
-					this.manager.getAndy().setHealth(this.manager.getAndy().getHealth() - Damage.GOAT_TO_ANDY); //Hurt Andy
+					this.manager.getAndy().setHealth(this.manager.getAndy().getHealth() - Damage.GOAT_TO_ANDY);
 					Log.v("atest", "Andy v Goat");
 				}
 			}
+			/*
 			//Goat Collision
 			else if(this instanceof Goat) {
 				//this.health = -100; //Kill Goat
@@ -113,6 +114,7 @@ public class BaseEntity {
 				this.manager.getAndy().moveUpdate();
 				Log.v("atest", "Goat v Andy");
 			}
+			*/
 			//Flame Collision
 			else if(this instanceof Flame) {
 				this.health = -100; //Collide and DIE				
