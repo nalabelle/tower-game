@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,9 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class OptionsActivity extends Activity {
-	private int music = 0;
-	private int buttons = 0;
-	private Intent intent;
+	public static final String PREFS_NAME = "gameConfig";
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,27 +34,23 @@ public class OptionsActivity extends Activity {
         CheckBox defaultButt = (CheckBox) findViewById(R.id.checkbox_defaultButt);
     	CheckBox musicOn = (CheckBox) findViewById(R.id.checkbox_musicPlay);
     	
-    	Intent intent = getIntent();
-    	int musicOption = intent.getIntExtra("music", 0);
-    	int buttons = intent.getIntExtra("buttons", 0);
+    	SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+    	boolean musicOption = settings.getBoolean("musicOption", true);
+    	boolean buttonOption = settings.getBoolean("buttonOption", true);
     	
-    	if(musicOption == 0) {
+    	if(musicOption) {
     		defaultButt.setChecked(true);
     	}
     	else {
     		defaultButt.setChecked(false);
-    		musicOption = 1;
     	}
-    	if (buttons == 0) {
+    	if (buttonOption) {
     		musicOn.setChecked(true);
     	}
     	else {
     		defaultButt.setChecked(false);
-    		musicOption = 1;
     	}
         setFont();     
-        intent.putExtra("music", musicOption);
-        intent.putExtra("buttons", buttons);
     }
 
     
@@ -101,59 +96,58 @@ public class OptionsActivity extends Activity {
     public void onCheckboxClicked(View view) {
        //Was it checked?
         boolean checked = ((CheckBox) view).isChecked();
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
         
         switch(view.getId()) {
             case R.id.checkbox_defaultButt:
                 if (checked) {
                 	CheckBox oldButt = (CheckBox) findViewById(R.id.checkbox_old);
                 	oldButt.setChecked(false);
-                	buttons = 0;
-                	Log.v("ALEX", "switching to new butts");
+                    editor.putBoolean("buttonOption", true);
                 }
                 else
                 {
                 	CheckBox oldButt = (CheckBox) findViewById(R.id.checkbox_old);
                 	oldButt.setChecked(true);
-                	buttons = 1;
-                	Log.v("ALEX", "switching to old butts");
+                	editor.putBoolean("buttonOption", false);
                 }
                 break;
             case R.id.checkbox_old:
                 if (checked) {
                 	CheckBox defaultButt = (CheckBox) findViewById(R.id.checkbox_defaultButt);
                 	defaultButt.setChecked(false);
-                	buttons = 1;
-                	Log.v("ALEX", "switching to old butts");
+                	editor.putBoolean("buttonOption", false);
                 }
                 else {
                 	CheckBox defaultButt = (CheckBox) findViewById(R.id.checkbox_defaultButt);
                 	defaultButt.setChecked(true);
-                	buttons = 0;
-                	Log.v("ALEX", "switching to new butts");
+                	editor.putBoolean("buttonOption", true);
                 }
                 break;
             case R.id.checkbox_musicPlay:
                 if (checked) {
                 	CheckBox musicStop = (CheckBox) findViewById(R.id.checkbox_musicStop);
                 	musicStop.setChecked(false);
-                	music = 0;
+                	editor.putBoolean("soundOption", true);
                 }
                 else {
                 	CheckBox musicStop = (CheckBox) findViewById(R.id.checkbox_musicStop);
                 	musicStop.setChecked(true);
-                	music = 1;
+                	editor.putBoolean("soundOption", false);
                 }
                 break;
             case R.id.checkbox_musicStop:
                 if (checked) {
                 	CheckBox musicPlay = (CheckBox) findViewById(R.id.checkbox_musicPlay);
                 	musicPlay.setChecked(false);
-                	music = 1;
+                	editor.putBoolean("soundOption", false);
+                	Log.v("ALEX -- Options", "soundOption == false?");
                 }
                 else {
                 	CheckBox musicPlay = (CheckBox) findViewById(R.id.checkbox_musicPlay);
                 	musicPlay.setChecked(true);
-                	music = 0;
+                	editor.putBoolean("soundOption", true);
                 }
                 break;
             
@@ -161,26 +155,16 @@ public class OptionsActivity extends Activity {
             // TODO: Veggie sandwich
         }
         
-        intent = new Intent(this, GameActivity.class);
-        intent.putExtra("music", music);
-        intent.putExtra("buttons", buttons);
-        Log.v("ALEX -- options", ""+music+buttons);
+        editor.commit();
+        boolean musicOption = settings.getBoolean("soundOption", true);
+		boolean buttonOption = settings.getBoolean("buttonOption", true);
+        Log.v("ALEX -- Options", "passing: "+musicOption+buttonOption);
     }//end check logic
     
     public void launchGame(View view) {
-    	intent.putExtra("music", music);
-        intent.putExtra("buttons", buttons);
+    	Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
         //finish();
-    }
-    
-    @Override
-    public void onBackPressed() {
-    	Intent intent = new Intent();
-    	intent.putExtra("music", music);
-    	intent.putExtra("buttons", buttons);
-    	setResult(RESULT_OK, intent);
-    	super.onBackPressed();
     }
     
 }

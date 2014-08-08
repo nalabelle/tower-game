@@ -2,6 +2,7 @@ package com.comp380.towergame;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -16,10 +17,10 @@ import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
+	public static final String PREFS_NAME = "gameConfig";
+	private boolean buttonOption;
+	private boolean soundOption;
     MediaPlayer music = null;
-    private int musicOption = 0;
-	private int buttonOption = 0;
-	private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +31,15 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);        
         setContentView(R.layout.activity_main);
         setFont();    
-        Intent intent = getIntent();
-        musicOption = intent.getIntExtra("music", 0);
-		buttonOption = intent.getIntExtra("buttons", 0);
-		Log.v("ALEX Main", ""+musicOption+buttonOption);
-		
-		if (musicOption == 0) {
-			playMusic();
-		}
-		
-        intent.putExtra("music", musicOption);
-        intent.putExtra("buttons", buttonOption);
+        
+        //Much better way?
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        soundOption = true;
+        buttonOption = true;
+        editor.putBoolean("soundOption", true);
+        editor.putBoolean("buttonOption", true);
+        editor.commit();  
 	}
 
 
@@ -64,29 +63,23 @@ public class MainActivity extends Activity {
     }
     
     public void launchGame(View view) {
-    	if (musicOption == 0) { endMusic(); }
-        intent = new Intent(this, GameActivity.class);
-        intent.putExtra("music", musicOption);
-        intent.putExtra("buttons", buttonOption);
+    	if (soundOption) { endMusic(); }
+        Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
         //finish();
     }
     
     public void launchCredits(View view){
-    	if (musicOption == 0) { endMusic(); }
-    	intent = new Intent(this, CreditsActivity.class);
-    	intent.putExtra("music", musicOption);
-        intent.putExtra("buttons", buttonOption);
+    	if (soundOption) { endMusic(); }
+    	Intent intent = new Intent(this, CreditsActivity.class);
     	startActivity(intent);
     }
     
     public void launchOptions(View view){
     	//Toast.makeText(this, "To be implemented...", Toast.LENGTH_LONG).show();
-    	if (musicOption == 0) { endMusic(); }
-    	intent = new Intent(this, OptionsActivity.class); //OptionsActivity
-    	intent.putExtra("music", musicOption);
-        intent.putExtra("buttons", buttonOption);
-        Log.v("ALEX", ""+musicOption+buttonOption);
+    	if (soundOption) { endMusic(); }
+    	Intent intent = new Intent(this, OptionsActivity.class); //OptionsActivity
+        Log.v("ALEX", ""+soundOption+buttonOption);
         startActivity(intent);
     }
     
@@ -99,15 +92,18 @@ public class MainActivity extends Activity {
     public void playMusic(){
     	//music.setAudioStreamType(AudioManager))
 		music = MediaPlayer.create(this, R.raw.music_main);
-		if (musicOption == 0) {
+		if (soundOption) {
 			music.start();
+			Log.v("ALEX -- Main ", "starting music");
 		}
     }
             @Override	protected void onResume() {		super.onResume();
-		Intent intent = getIntent();
-        musicOption = intent.getIntExtra("music", 0);
-		buttonOption = intent.getIntExtra("buttons", 0);
-		Log.v("ALEX -- Resumed", ""+musicOption+buttonOption);	}//////	@Override///	protected void onPause() {///		music.pause();///		super.onPause();///	}
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		soundOption = settings.getBoolean("soundOption", true);
+		buttonOption = settings.getBoolean("buttonOption", true);
+		Log.v("ALEX -- Main ", "resumed, playMusic()"+soundOption+buttonOption);
+		playMusic();	}	@Override    protected void onPause() {
+		if (soundOption) {endMusic();}		super.onPause();	}
 
 	
     
