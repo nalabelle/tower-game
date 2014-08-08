@@ -161,6 +161,7 @@ public class OptionsActivity extends Activity {
             // TODO: Veggie sandwich
         }
         
+        editor.putBoolean("devOption", true);
         editor.commit();
         boolean musicOption = settings.getBoolean("soundOption", true);
 		boolean buttonOption = settings.getBoolean("buttonOption", true);

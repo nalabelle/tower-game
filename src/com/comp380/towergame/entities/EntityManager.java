@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -22,7 +23,9 @@ public class EntityManager {
 	private ArrayList<BaseEntity> entityStorage;
 	private GameActivity context;
 	private String tag = ""+ this.getClass();
-	private int soundChoice = 0;
+	private boolean soundOption;
+	private boolean devOption;
+	public static final String PREFS_NAME = "gameConfig";
 	
 	public enum entityTypes {
 		ANDY, GOAT, FLAME;
@@ -31,8 +34,9 @@ public class EntityManager {
 	public EntityManager(GameActivity gameActivity) {
 		this.context = gameActivity;
 		this.entityStorage = new ArrayList<BaseEntity>();
-		Intent intent = this.context.getIntent();
-		soundChoice = intent.getIntExtra("music", 0);
+		SharedPreferences settings = this.getContext().getSharedPreferences(PREFS_NAME, 0);
+    	soundOption = settings.getBoolean("soundOption", true);
+    	devOption = settings.getBoolean("devOption", false);
 	}
 	
 	//temporary
@@ -64,7 +68,8 @@ public class EntityManager {
 				//Andy Died
 				Log.v(tag, "Adny died, Hp =" +removing.getHealth());
 				//Andy Scream
-				if(soundChoice == 0) {
+				if(soundOption) {
+					Log.v("ALEX -- EM, remove andy", "Scream");
 					this.context.getSoundEffects().play(SoundManager.screamID, 1, 1, 1, 0, 1);
 				}
 				Intent intent = new Intent(this.context, CreditsActivity.class);
@@ -77,7 +82,7 @@ public class EntityManager {
 			}
 			if(removing instanceof Goat) {
 				//Goat Died poor goat.  NO SCREW THE GOAT, IT HAD IT COMING!!!
-				if(soundChoice == 0) {
+				if(soundOption) {
 					this.context.getSoundEffects().play(SoundManager.goatHowlID, 1, 1, 1, 0, 1);
 				}
 		    	break;
@@ -95,7 +100,7 @@ public class EntityManager {
 		
 		for(BaseEntity entity : safeIter){
 			entity.draw(canvas);
-			if(this.getContext().DEV_MODE)
+			if(devOption)
 				canvas.drawRect(entity.getBounds(), myPaint);
 		}
 	}
