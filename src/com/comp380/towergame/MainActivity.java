@@ -102,11 +102,10 @@ public class MainActivity extends Activity {
 		soundOption = settings.getBoolean("soundOption", true);
 		buttonOption = settings.getBoolean("buttonOption", true);
 		Log.v("ALEX -- Main ", "resumed, playMusic()"+soundOption+buttonOption);
-		playMusic();	}	@Override    protected void onPause() {
+		playMusic();	}
+    	@Override    protected void onPause() {
 		if (soundOption) {endMusic();}		super.onPause();	}
 
-	
-    
     //Using a custom font (IsomothPro) from assets for display
     public void setFont(){
     	Typeface font = Typeface.createFromAsset(getAssets(), "font/IsomothPro.otf");

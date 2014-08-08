@@ -3,6 +3,7 @@ package com.comp380.towergame;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -26,6 +27,9 @@ public class CreditsActivity extends Activity {
 	public int cycle = 1;
 	Handler handler = null;
 	boolean andyDied = false;
+	public static final String PREFS_NAME = "gameConfig";
+	private boolean buttonOption;
+	private boolean soundOption;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +43,13 @@ public class CreditsActivity extends Activity {
 		setContentView(R.layout.activity_credits);
 		window = (TextView)findViewById(R.id.tvWindow);
 		
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+    	soundOption = settings.getBoolean("soundOption", true);
+		
 		try {
 			andyDied = getIntent().getExtras().getBoolean("death");
 			if (andyDied){
-				music = MediaPlayer.create(this, R.raw.music_gameover);
+				if (soundOption) {music = MediaPlayer.create(this, R.raw.music_gameover);}
 				window.setTextColor(Color.RED);
 				window.setText("GAME OVER");
 			}
@@ -52,7 +59,7 @@ public class CreditsActivity extends Activity {
 		}
 		
 		if (!andyDied){
-			music = MediaPlayer.create(this, R.raw.music_credits);
+			if (soundOption) {music = MediaPlayer.create(this, R.raw.music_credits);}
 		}
 		
 		setFont();
@@ -137,23 +144,19 @@ public class CreditsActivity extends Activity {
     @Override
 	protected void onResume() {
 		super.onResume();
-		Intent intent = getIntent();
-		int musicOption = intent.getIntExtra("music", 0);
-		if (musicOption ==0) {
-			music.start(); //plays or resumes paused music
-		}
+		if (soundOption) {music.start(); }
 	}
 
 	@Override
 	protected void onPause() {
-		music.pause();
+		if (soundOption) {music.pause(); }
 		textThread.interrupt();
 		super.onPause();
 	}
 
 	@Override
 	protected void onDestroy() {
-    	music.release();
+		if (soundOption) {music.release(); }
 		super.onDestroy();
 	}
 

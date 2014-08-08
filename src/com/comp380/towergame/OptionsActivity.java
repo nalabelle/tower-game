@@ -32,23 +32,29 @@ public class OptionsActivity extends Activity {
         
         setContentView(R.layout.activity_options);
         CheckBox defaultButt = (CheckBox) findViewById(R.id.checkbox_defaultButt);
+        CheckBox oldButt = (CheckBox) findViewById(R.id.checkbox_old);
     	CheckBox musicOn = (CheckBox) findViewById(R.id.checkbox_musicPlay);
+    	CheckBox musicOff = (CheckBox) findViewById(R.id.checkbox_musicStop);
     	
     	SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-    	boolean musicOption = settings.getBoolean("musicOption", true);
+    	boolean soundOption = settings.getBoolean("soundOption", true);
     	boolean buttonOption = settings.getBoolean("buttonOption", true);
     	
-    	if(musicOption) {
+    	if(buttonOption) {
     		defaultButt.setChecked(true);
+    		oldButt.setChecked(false);
     	}
     	else {
     		defaultButt.setChecked(false);
+    		oldButt.setChecked(true);
     	}
-    	if (buttonOption) {
+    	if (soundOption) {
     		musicOn.setChecked(true);
+    		musicOff.setChecked(false);
     	}
     	else {
-    		defaultButt.setChecked(false);
+    		musicOn.setChecked(false);
+    		musicOff.setChecked(true);
     	}
         setFont();     
     }

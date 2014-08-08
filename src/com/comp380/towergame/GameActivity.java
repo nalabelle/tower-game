@@ -2,6 +2,7 @@ package com.comp380.towergame;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -33,7 +34,9 @@ public class GameActivity extends Activity {
 	protected 	GameThread 		gameThread = null;
 	protected	CollisionDetection	collisionDetection = null;
 	protected Background[][] backgroundArray = null;
-	
+	public static final String PREFS_NAME = "gameConfig";
+	private boolean buttonOption;
+	private boolean soundOption;
 	public final boolean DEV_MODE = true;
 	//temp
 	protected TileEngine tileEngine;
@@ -57,9 +60,9 @@ public class GameActivity extends Activity {
 		//Save Layout
 		FrameLayout game = new FrameLayout(this);
 		
-		Intent intent = getIntent();
-		int buttons = intent.getIntExtra("buttons", 0);
-		int music = intent.getIntExtra("music", 0);
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+    	soundOption = settings.getBoolean("soundOption", true);
+    	buttonOption = settings.getBoolean("buttonOption", true);
 		
 		//Loads the graphic box
 		Log.v(tag, "Opening Surface View");
@@ -73,9 +76,7 @@ public class GameActivity extends Activity {
 		LayoutInflater factory = LayoutInflater.from(this);
 		View myView = null;
 		
-		Log.v("ALEX", ""+buttons);
-		
-		if(buttons == 0){
+		if(buttonOption){
 			myView = factory.inflate(R.layout.defaultcontrols, null);
 		}
 		else {
@@ -101,11 +102,11 @@ public class GameActivity extends Activity {
 		this.tileEngine = new TileEngine(this, levels.getLevel(),levels.getlevelLength());
 		soundEffects = new SoundManager(this, 1);
 		gameMusic = MediaPlayer.create(this, R.raw.music_level_1);
-		if(music == 0) {
+		if(soundOption) {
 			gameMusic.setLooping(true);
 		}
 		
-	    if(buttons == 0) {
+	    if(buttonOption) {
 	    	ImageButton left = (ImageButton) findViewById(R.id.leftButton);
 		    touchButton(left.getId(), com.comp380.towergame.entities.Andy.MoveDirection.LEFT);
 		    
@@ -200,10 +201,8 @@ public class GameActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		this.toggleGameThread(true);
-		Intent intent = getIntent();
-		int music = intent.getIntExtra("music", 0);
 		
-		if (music == 0) {
+		if (soundOption) {
 			soundEffects.autoResume();
 			gameMusic.start();	
 		}
