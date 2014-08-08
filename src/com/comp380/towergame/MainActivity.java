@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
         buttonOption = true;
         editor.putBoolean("soundOption", true);
         editor.putBoolean("buttonOption", true);
+        editor.putBoolean("devOption", false);
         editor.commit();  
 	}
 

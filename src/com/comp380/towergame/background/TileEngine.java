@@ -3,6 +3,7 @@ package com.comp380.towergame.background;
 import java.util.ArrayList;
 import com.comp380.towergame.GameActivity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,6 +18,8 @@ public class TileEngine
 	private Tile sourceArray[][];
 	private int speed;
 	private int inGame;
+	private boolean devOption;
+	public static final String PREFS_NAME = "gameConfig";
 	
 	Context context;
 	
@@ -45,6 +48,8 @@ public class TileEngine
 		}
 		
 		this.context = context;
+		SharedPreferences settings = this.context.getSharedPreferences(PREFS_NAME, 0);
+    	devOption = settings.getBoolean("devOption", true);
 		
 	}
 	
@@ -63,7 +68,7 @@ public class TileEngine
 				canvas.drawBitmap(tileArray[i][j].getTileBitmap(), tileArray[i][j].getTileOnScreenX(),tileArray[i][j].getTileOnScreenY(), null);
 				
 				//debug bounding drawing.
-				if(((GameActivity) this.context).DEV_MODE && tileArray[i][j].isSolid()) {
+				if(devOption && tileArray[i][j].isSolid()) {
 					Paint myPaint = new Paint();
 					myPaint.setStyle(Paint.Style.STROKE);
 					myPaint.setColor(Color.BLUE);
