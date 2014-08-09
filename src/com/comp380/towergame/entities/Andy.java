@@ -21,7 +21,7 @@ public class Andy extends BaseEntity {
 		this.health = 100;
 		this.score = 0;
 		
-		this.textureDrawDifference = ensmallenFactor/2;
+		this.textureDrawDifference = ensmallenFactor/2 + ensmallenFactor/4;
 	}
 	
 	public static Bitmap ensmallen(Bitmap bitmap) {
