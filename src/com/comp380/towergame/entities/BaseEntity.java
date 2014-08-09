@@ -202,6 +202,15 @@ public class BaseEntity {
 		this.moveUpdate();
 		
 		//Kill them at the edges.
+		
+		//Fireballs should die offscreen always.
+		if((this instanceof Flame)  && 
+				(this.point.x > GameActivity.GAME_MAX_WIDTH + this.SPAWN_DISTANCE ||
+						this.point.x + this.getBounds().width() + 300 < 0)) {
+			this.health = -100;
+		}
+		
+				
 		/*if(this.point.x > GameActivity.GAME_MAX_WIDTH + this.SPAWN_DISTANCE ||
 			this.point.y > GameActivity.GAME_MAX_HEIGHT ||
 			(this.point.x + this.getBounds().width() + this.SPAWN_DISTANCE) < 0 ) {*/

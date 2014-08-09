@@ -3,16 +3,29 @@ package com.comp380.towergame.entities;
 import com.comp380.towergame.physics.Speed;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Point;
 
 public class Andy extends BaseEntity {
 	int score;
+	
+	//Bitmap boundingTexture; this is the main texture in the parent class
+	Bitmap actualTexture;
+	static int ensmallenFactor = 50;
+	int textureDrawDifference;
 
 	public Andy(EntityManager manager, Bitmap bitmap) {
-		super(manager, bitmap, 25, 25);
+		super(manager, ensmallen(bitmap), 25, 25);
+		this.actualTexture = bitmap;
 		this.speed = Speed.PLAYER;
 		this.health = 100;
 		this.score = 0;
+		
+		this.textureDrawDifference = ensmallenFactor/2;
+	}
+	
+	public static Bitmap ensmallen(Bitmap bitmap) {
+		return Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() - ensmallenFactor, bitmap.getHeight(), false);
 	}
 	
 	public int getX() {
@@ -91,4 +104,9 @@ public class Andy extends BaseEntity {
 		}
 		
 	}
+	
+	public void draw(Canvas canvas) {
+		canvas.drawBitmap(this.actualTexture, this.point.x - this.textureDrawDifference, this.point.y, null);
+	}
+
 }
