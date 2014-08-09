@@ -201,13 +201,16 @@ public class BaseEntity {
 	public void update() {
 		this.moveUpdate();
 		
+		//this specific number is used so we don't play sounds for things that die offscreen.
+		int deathNumber = -143;
+		
 		//Kill them at the edges.
 		
 		//Fireballs should die offscreen always.
 		if((this instanceof Flame)  && 
 				(this.point.x > GameActivity.GAME_MAX_WIDTH + this.SPAWN_DISTANCE ||
 						this.point.x + this.getBounds().width() + 300 < 0)) {
-			this.health = -100;
+			this.health = deathNumber;
 		}
 		
 				
@@ -215,7 +218,7 @@ public class BaseEntity {
 			this.point.y > GameActivity.GAME_MAX_HEIGHT ||
 			(this.point.x + this.getBounds().width() + this.SPAWN_DISTANCE) < 0 ) {*/
 		if(this.point.x + this.getBounds().width() + 300 < 0) {
-				this.health = -100;
+				this.health = deathNumber;
 		}
 		this.lastUpdate = System.currentTimeMillis();
 	}

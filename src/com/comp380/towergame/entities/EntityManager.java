@@ -61,6 +61,10 @@ public class EntityManager {
 				toRemove.add(entity);
 			}
 		}
+		//this specific number is used so we don't play sounds for things that die offscreen.
+		//this number needs to match the number we kill them with in BaseEntity
+		int deathNumber = -143;
+		
 		for(BaseEntity removing : toRemove) {
 			this.entityStorage.remove(removing);
 
@@ -82,7 +86,7 @@ public class EntityManager {
 			}
 			if(removing instanceof Goat) {
 				//Goat Died poor goat.  NO SCREW THE GOAT, IT HAD IT COMING!!!
-				if(soundOption) {
+				if(soundOption && removing.getHealth() != deathNumber) {
 					this.context.getSoundEffects().play(SoundManager.goatHowlID, 1, 1, 1, 0, 1);
 				}
 		    	break;

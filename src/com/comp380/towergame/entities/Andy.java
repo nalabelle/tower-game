@@ -4,6 +4,7 @@ import com.comp380.towergame.physics.Speed;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Point;
 
 public class Andy extends BaseEntity {
@@ -13,15 +14,19 @@ public class Andy extends BaseEntity {
 	Bitmap actualTexture;
 	static int ensmallenFactor = 50;
 	int textureDrawDifference;
+	int textureDrawOffset;
 
 	public Andy(EntityManager manager, Bitmap bitmap) {
 		super(manager, ensmallen(bitmap), 25, 25);
 		this.actualTexture = bitmap;
+		this.originalTexture = bitmap;
 		this.speed = Speed.PLAYER;
 		this.health = 100;
 		this.score = 0;
 		
-		this.textureDrawDifference = ensmallenFactor/2 + ensmallenFactor/4;
+		//this makes the hitbox position itself properly.
+		this.textureDrawOffset = ensmallenFactor/4;
+		this.textureDrawDifference = ensmallenFactor/2 + this.textureDrawOffset;
 	}
 	
 	public static Bitmap ensmallen(Bitmap bitmap) {
@@ -103,6 +108,24 @@ public class Andy extends BaseEntity {
 			this.point.x = oldPoint.x;
 		}
 		
+	}
+	
+	//Andy's hitbox is slightly different, so we have to tweak this a bit.
+	protected void reverseBitmap() {
+		if(this.actualTexture != this.originalTexture) {
+			this.actualTexture = this.originalTexture;
+			
+			//position the hitbox back to the original
+			this.textureDrawDifference = ensmallenFactor/2 + this.textureDrawOffset;
+		} else {
+			Matrix matrix = new Matrix();
+			matrix.setScale(-1, 1);
+			matrix.postTranslate(actualTexture.getWidth(), 0);
+			this.actualTexture = Bitmap.createBitmap(this.actualTexture, 0, 0, this.actualTexture.getWidth(), this.actualTexture.getHeight(), matrix, true);
+			
+			//big ol hat aww dang
+			this.textureDrawDifference = ensmallenFactor/2 - this.textureDrawOffset;
+		}
 	}
 	
 	public void draw(Canvas canvas) {
