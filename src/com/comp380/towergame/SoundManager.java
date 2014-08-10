@@ -20,26 +20,9 @@ public class SoundManager extends SoundPool {
 		super(20, AudioManager.STREAM_MUSIC, 0);
 		this.context = context;
 		this.level = level;
-		
-		//if (loadFinished()){
-			loadMusic(level);
-		//}
-	
+		loadMusic(level);
 	}
-	
-	//maybe necessary
-//	public boolean loadFinished(){		
-//		this.setOnLoadCompleteListener(new OnLoadCompleteListener() {
-//			
-//			@Override
-//			public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-//				loaded = true;
-//				Log.v(this.getClass().toString(), "Sound: finished loading");
-//				
-//			}
-//		}); 
-//		return loaded;
-//	}
+
 	
 	//add files to pool
 	public void loadMusic(int level){

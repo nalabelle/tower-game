@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 public class CreditsActivity extends Activity {
 	MediaPlayer music;
+	MediaPlayer deathScream;
 	TextView window;
 	Thread textThread;
 	public int cycle = 1;
@@ -49,7 +50,11 @@ public class CreditsActivity extends Activity {
 		try {
 			andyDied = getIntent().getExtras().getBoolean("death");
 			if (andyDied){
-				if (soundOption) {music = MediaPlayer.create(this, R.raw.music_gameover);}
+				if (soundOption) {
+					music = MediaPlayer.create(this, R.raw.music_gameover);
+					deathScream = MediaPlayer.create(this, R.raw.andy_death_scream);
+					deathScream.start();
+				}
 				window.setTextColor(Color.RED);
 				window.setText("GAME OVER");
 			}
@@ -156,7 +161,10 @@ public class CreditsActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
-		if (soundOption) {music.release(); }
+		if (soundOption) {
+			music.release();
+			deathScream.release();
+		}
 		super.onDestroy();
 	}
 

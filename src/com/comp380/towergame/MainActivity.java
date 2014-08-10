@@ -67,7 +67,6 @@ public class MainActivity extends Activity {
     	if (soundOption) { endMusic(); }
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
-        //finish();
     }
     
     public void launchCredits(View view){
