@@ -96,7 +96,7 @@ public class Levels
 						else if(j == 5)
 						{
 							if(i == 198)
-								level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
+								level[i][j] = new Tile(this.context,0, 0, i, j, false, blackTile);
 							if(i == 5)
 								level[i][j] = new EntityTile(this.context, 0, 0, i ,j, EntityManager.entityTypes.ANDY);
 							
@@ -110,7 +110,7 @@ public class Levels
 							else if(i == 84)
 								level[i][j] = new Tile(this.context,0, 0, i, j, true, cornerRightTile);
 							else if(i == 198)
-								level[i][j] = new Tile(this.context,0, 0, i, j, true, blackTile);
+								level[i][j] = new Tile(this.context,0, 0, i, j, false, blackTile);
 						}
 						else if(j == 7)
 						{
@@ -188,8 +188,7 @@ public class Levels
 							*/
 						if(level[i][j] == null) 
 							level[i][j] = new Tile(this.context,0, 0, i, j, false, transTile); //on screen
-							
-							
+								
 					}
 				break;
 			//case 2:
