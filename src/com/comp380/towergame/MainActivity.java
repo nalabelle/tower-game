@@ -71,7 +71,7 @@ public class MainActivity extends Activity {
     
     public void launchCredits(View view){
     	if (soundOption) { endMusic(); }
-    	Intent intent = new Intent(this, CreditsActivity.class);
+    	Intent intent = new Intent(this, VictoryActivity.class);
     	startActivity(intent);
     }
     
