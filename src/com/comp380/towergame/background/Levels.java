@@ -100,7 +100,7 @@ public class Levels
 							if(i == 5)
 								level[i][j] = new EntityTile(this.context, 0, 0, i ,j, EntityManager.entityTypes.ANDY);
 							
-							if(i == 15 || i == 25 || i == 35 || i == 45 || i == 55)
+							if(i >= 15 && i <= 195 && i % 10 == 5)
 								level[i][j] = new EntityTile(this.context, 0, 0, i, j, EntityManager.entityTypes.GOAT);
 						}
 						else if(j == 6)
