@@ -333,7 +333,7 @@ public class GameActivity extends Activity {
                                                                	
                                 if (id == R.id.fire){
                                 	entityManager.getAll().add(new Flame(entityManager, 
-                    						BitmapFactory.decodeResource(getResources(), R.drawable.flame)));
+                    						BitmapFactory.decodeResource(getResources(), R.drawable.fireball_1)));
                     				handlr.postDelayed(this, sleep*10);
                     			
                                 	}
