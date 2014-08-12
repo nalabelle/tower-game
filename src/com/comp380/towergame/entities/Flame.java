@@ -27,13 +27,15 @@ public class Flame extends BaseEntity {
 						(-1 * bitmap.getWidth() + manager.getAndy().getBounds().left -1) : 
 							(manager.getAndy().getBounds().width() + manager.getAndy().getBounds().left + 1),
 				manager.getAndy().getY());
-		this.fireballFrame1 = this.texture;
+		this.fireballFrame1 = bitmap;
 		this.fireballFrame2 = BitmapFactory.decodeResource(this.manager.getContext().getResources(), R.drawable.fireball_2);
 		if(manager.getAndy().getFacing() < 0) {
 			this.facingRight = false;
 			this.fireballFrame1 = this.reverseBitmap(this.fireballFrame1);
 			this.fireballFrame2 = this.reverseBitmap(this.fireballFrame2);
 		}
+		this.texture = this.fireballFrame1;
+		
 		this.velocityX = Math.signum(manager.getAndy().getFacing())*this.speed;
 		
 		this.animationCounter = 0;

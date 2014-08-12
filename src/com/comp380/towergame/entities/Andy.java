@@ -109,6 +109,13 @@ public class Andy extends BaseEntity {
 		return (int) this.velocityX;
 	}
 	
+	public void update() {
+		if(this.onGround && this.velocityX < 1) {
+			this.currentTexture = this.standing;
+		}
+		super.update();
+	}
+	
 	protected void moveUpdate() {
 		Point oldPoint = this.point;
 		super.moveUpdate();
@@ -130,15 +137,11 @@ public class Andy extends BaseEntity {
 			this.velocityX = 0;
 			this.point.x = oldPoint.x;
 		}
-		
-		if(this.onGround && this.velocityX == 0) {
-			this.currentTexture = this.standing;
-		}
-		
 	}
 	
 	//Andy's hitbox is slightly different, so we have to tweak this a bit.
 	protected void reverseBitmap() {
+		super.reverseBitmap();
 		this.currentTexture = this.reverseBitmap(this.currentTexture);
 		if(this.facingRight) {
 			//position the hitbox back to the original

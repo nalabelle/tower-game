@@ -24,7 +24,7 @@ public class BaseEntity {
 	protected boolean facingRight = true;
 	protected boolean onGround = false;
 	protected boolean isFlying = false;
-	protected boolean isJumping = false;
+	//protected boolean isJumping = false;
 	protected boolean isWalking = false;
 	protected boolean collisionFlag = false;
 	
@@ -70,7 +70,7 @@ public class BaseEntity {
 	
 	protected void moveJump() {
 		this.onGround = false;
-		this.isJumping = true;
+		//this.isJumping = true;
 		this.velocityY = Speed.JUMPING;
 	}
 	
