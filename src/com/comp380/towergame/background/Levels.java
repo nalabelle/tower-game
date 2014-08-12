@@ -15,7 +15,7 @@ public class Levels
 	Context context;
 	Tile[][] level;
 	
-	Bitmap transTile,spikeTile,floorTile,blackTile,brickTile,cornerRightTile, cornerLeftTile,graniteTile,postTile,roofTile,wallLeftTile,wallRightTile;
+	Bitmap bgTile, transTile,spikeTile,floorTile,blackTile,brickTile,cornerRightTile, cornerLeftTile,graniteTile,postTile,roofTile,wallLeftTile,wallRightTile;
 
 	public Levels(Context context, int levelNum) //where xInG is x position in game
 	{
@@ -41,6 +41,7 @@ public class Levels
 			roofTile = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile_roof_1);
 			wallRightTile = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile_wall_right_1);
 			wallLeftTile = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile_wall_left_1);
+			bgTile = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile_bg);
 		}
 		//TODO write other "world" bitmaps
 	}
@@ -187,7 +188,7 @@ public class Levels
 							level[i][j] = new Tile(this.context,0, 0, i, j, false, roofTile); //on screen
 							*/
 						if(level[i][j] == null) 
-							level[i][j] = new Tile(this.context,0, 0, i, j, false, transTile); //on screen
+							level[i][j] = new Tile(this.context,0, 0, i, j, false, transTile); //bgTile
 								
 					}
 				break;
