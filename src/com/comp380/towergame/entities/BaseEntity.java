@@ -81,8 +81,8 @@ public class BaseEntity {
 	
 	protected void moveUpdate() {
 		Point newPoint = this.updatePosition();
-		if(!this.point.equals(newPoint))
-			Log.v(this.getClass().getName(), "New " + this.point.toString() + "Velocity: ("+this.velocityX+","+this.velocityY+")");
+		//if(!this.point.equals(newPoint))
+			//Log.v(this.getClass().getName(), "New " + this.point.toString() + "Velocity: ("+this.velocityX+","+this.velocityY+")");
 		
 		//Check entity collisions
 		BaseEntity firstCollided = this.manager.checkEntityToEntityCollisions(this, newPoint);

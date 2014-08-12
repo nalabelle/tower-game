@@ -29,6 +29,8 @@ public class Andy extends BaseEntity {
 	//Bitmap boundingTexture; this is the main texture in the parent class
 	Bitmap reverseTexture; //for reversals
 	Bitmap currentTexture;
+	
+	private boolean updateTexture = false;
 
 	public Andy(EntityManager manager, Bitmap bitmap) {
 		super(manager, ensmallen(bitmap), 25, 25);
@@ -110,7 +112,7 @@ public class Andy extends BaseEntity {
 	}
 	
 	public void update() {
-		if(this.onGround && this.velocityX < 1) {
+		if(this.onGround && (this.currentTexture == this.jumping || this.currentTexture == this.reverseBitmap(this.jumping))) {
 			this.currentTexture = this.standing;
 		}
 		super.update();
@@ -121,7 +123,7 @@ public class Andy extends BaseEntity {
 		super.moveUpdate();
 		
 		
-		System.out.println("inGame pos: " + this.manager.getContext().getTileEngine().getInGamePos());
+		//System.out.println("inGame pos: " + this.manager.getContext().getTileEngine().getInGamePos());
 		if(this.getX() >= 700 && this.manager.getContext().getTileEngine().getInGamePos() < 177) {
 			this.manager.getContext().getTileEngine().setSpeed((int) (this.velocityX * -1));
 			this.manager.normalizeMovement(-1*this.velocityX);
@@ -131,8 +133,6 @@ public class Andy extends BaseEntity {
 			this.manager.getContext().getTileEngine().setSpeed(0);
 		}
 		
-		//this.manager.getContext().getTileEngine().setSpeed(0);
-		
 		if(this.getX() < 0 && this.velocityX < 0) {
 			this.velocityX = 0;
 			this.point.x = oldPoint.x;
@@ -141,7 +141,7 @@ public class Andy extends BaseEntity {
 	
 	//Andy's hitbox is slightly different, so we have to tweak this a bit.
 	protected void reverseBitmap() {
-		super.reverseBitmap();
+		//super.reverseBitmap();
 		this.currentTexture = this.reverseBitmap(this.currentTexture);
 		if(this.facingRight) {
 			//position the hitbox back to the original

@@ -4,7 +4,6 @@ import com.comp380.towergame.GameActivity;
 import com.comp380.towergame.SoundManager;
 import com.comp380.towergame.physics.Speed;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
