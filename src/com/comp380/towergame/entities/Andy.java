@@ -1,8 +1,10 @@
 package com.comp380.towergame.entities;
 
+import com.comp380.towergame.R;
 import com.comp380.towergame.physics.Speed;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -10,20 +12,39 @@ import android.graphics.Point;
 public class Andy extends BaseEntity {
 	int score;
 	
-	//Bitmap boundingTexture; this is the main texture in the parent class
-	Bitmap actualTexture;
 	static int ensmallenFactor = 50;
 	int textureDrawDifference;
 	int textureDrawOffset;
+	
+	//Textures
+	Bitmap running1;
+	Bitmap running2;
+	Bitmap running3;
+	Bitmap running4;
+	
+	Bitmap standing;
+	
+	Bitmap jumping;
+	
+	//Bitmap boundingTexture; this is the main texture in the parent class
+	Bitmap reverseTexture; //for reversals
+	Bitmap currentTexture;
 
 	public Andy(EntityManager manager, Bitmap bitmap) {
 		super(manager, ensmallen(bitmap), 25, 25);
-		this.actualTexture = bitmap;
-		this.originalTexture = bitmap;
+		this.currentTexture = bitmap;
 		this.speed = Speed.PLAYER;
 		this.health = 100;
 		this.score = 0;
 		
+		this.running1 = BitmapFactory.decodeResource(this.manager.getContext().getResources(), R.drawable.player_run1);
+		this.running2 = BitmapFactory.decodeResource(this.manager.getContext().getResources(), R.drawable.player_run2);
+		this.running3 = BitmapFactory.decodeResource(this.manager.getContext().getResources(), R.drawable.player_run3);
+		this.running4 = BitmapFactory.decodeResource(this.manager.getContext().getResources(), R.drawable.player_run4);
+		
+		this.standing = BitmapFactory.decodeResource(this.manager.getContext().getResources(), R.drawable.player_stand);
+		this.jumping = bitmap;
+
 		//this makes the hitbox position itself properly.
 		this.textureDrawOffset = ensmallenFactor/4;
 		this.textureDrawDifference = ensmallenFactor/2 + this.textureDrawOffset;
@@ -59,8 +80,10 @@ public class Andy extends BaseEntity {
 		switch(direction) {
 		case UP:
 		case JUMP:
-			if(this.onGround)
+			if(this.onGround) {
+				this.currentTexture = this.jumping;
 				super.moveJump();
+			}
 			break;
 		case DOWN:
 			break;
@@ -108,28 +131,26 @@ public class Andy extends BaseEntity {
 			this.point.x = oldPoint.x;
 		}
 		
+		if(this.onGround && this.velocityX == 0) {
+			this.currentTexture = this.standing;
+		}
+		
 	}
 	
 	//Andy's hitbox is slightly different, so we have to tweak this a bit.
 	protected void reverseBitmap() {
-		if(this.actualTexture != this.originalTexture) {
-			this.actualTexture = this.originalTexture;
-			
+		this.currentTexture = this.reverseBitmap(this.currentTexture);
+		if(this.facingRight) {
 			//position the hitbox back to the original
 			this.textureDrawDifference = ensmallenFactor/2 + this.textureDrawOffset;
 		} else {
-			Matrix matrix = new Matrix();
-			matrix.setScale(-1, 1);
-			matrix.postTranslate(actualTexture.getWidth(), 0);
-			this.actualTexture = Bitmap.createBitmap(this.actualTexture, 0, 0, this.actualTexture.getWidth(), this.actualTexture.getHeight(), matrix, true);
-			
 			//big ol hat aww dang
 			this.textureDrawDifference = ensmallenFactor/2 - this.textureDrawOffset;
 		}
 	}
 	
 	public void draw(Canvas canvas) {
-		canvas.drawBitmap(this.actualTexture, this.point.x - this.textureDrawDifference, this.point.y, null);
+		canvas.drawBitmap(this.currentTexture, this.point.x - this.textureDrawDifference, this.point.y, null);
 	}
 
 }

@@ -17,7 +17,6 @@ import android.util.Log;
 public class BaseEntity {
 	protected EntityManager manager;
 	protected Bitmap texture;
-	protected Bitmap originalTexture;
 	private long lastUpdate;
 	
 	protected Point point;
@@ -39,7 +38,6 @@ public class BaseEntity {
 	public BaseEntity(EntityManager manager, Bitmap texture, int x, int y) {
 		this.point = new Point(x, y);
 		this.texture = texture;
-		this.originalTexture = texture;
 		this.manager = manager;
 		this.lastUpdate = 0;
 	}
@@ -242,14 +240,16 @@ public class BaseEntity {
 	}
 	
 	protected void reverseBitmap() {
-		if(this.texture != this.originalTexture) {
-			this.texture = this.originalTexture;
-		} else {
+		this.texture = this.reverseBitmap(this.texture);
+	}
+	
+	//Utility version for animation
+	protected Bitmap reverseBitmap(Bitmap bitmap) {
 			Matrix matrix = new Matrix();
 			matrix.setScale(-1, 1);
 			matrix.postTranslate(texture.getWidth(), 0);
-			this.texture = Bitmap.createBitmap(this.texture, 0, 0, this.texture.getWidth(), this.texture.getHeight(), matrix, true);
-		}
+			bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+			return bitmap;
 	}
 
 }
