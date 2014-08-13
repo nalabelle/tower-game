@@ -8,8 +8,8 @@
     <string name="title_activity_game">GameActivity</string>
     <string name="main_screen_text_color">#907D50</string>
     <string name="title">MAGIC TOWER</string>
-    <string name="defaultButt">Default Buttons</string>
-    <string name="oldButt">Old Buttons</string>
+    <string name="defaultButt">Normal Buttons</string>
+    <string name="bigButt">Big Buttons</string>
     <string name="musicOn">Play all sounds</string>
     <string name="musicOff">Mute all sounds</string>
 

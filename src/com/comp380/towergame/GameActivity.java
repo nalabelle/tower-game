@@ -77,10 +77,10 @@ public class GameActivity extends Activity {
 		View myView = null;
 		
 		if(buttonOption){
-			myView = factory.inflate(R.layout.defaultcontrols, null);
+			myView = factory.inflate(R.layout.littlecontrols, null);
 		}
 		else {
-			myView = factory.inflate(R.layout.activity_gameview, null);
+			myView = factory.inflate(R.layout.bigcontrols, null);
 		}
 		
 		game.addView(myView);
@@ -106,55 +106,20 @@ public class GameActivity extends Activity {
 			gameMusic.setLooping(true);
 		}
 		
-	    if(buttonOption) {
-	    	ImageButton left = (ImageButton) findViewById(R.id.leftButton);
-		    touchButton(left.getId(), com.comp380.towergame.entities.Andy.MoveDirection.LEFT);
+	    ImageButton left = (ImageButton) findViewById(R.id.leftButton);
+		touchButton(left.getId(), com.comp380.towergame.entities.Andy.MoveDirection.LEFT);
 		    
-		    ImageButton right = (ImageButton) findViewById(R.id.rightButton);
-		    touchButton(right.getId(), com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
+		ImageButton right = (ImageButton) findViewById(R.id.rightButton);
+		touchButton(right.getId(), com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
 		    
-		    ImageButton jump = (ImageButton) findViewById(R.id.jump);
-		    touchButton(jump.getId(), com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
+		ImageButton jump = (ImageButton) findViewById(R.id.jump);
+		touchButton(jump.getId(), com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
 		    
-		    ImageButton spawn = (ImageButton) findViewById(R.id.spawn);
-		    spawnButton(spawn.getId());
+		ImageButton spawn = (ImageButton) findViewById(R.id.spawn);
+		spawnButton(spawn.getId());
 		    
-		    ImageButton fire = (ImageButton) findViewById(R.id.fire);
-		    spawnButton(fire.getId());
-	    }
-	    else {
-	    	ImageButton jump = (ImageButton) findViewById(R.id.jump);
-		    touchButton(jump.getId(), com.comp380.towergame.entities.Andy.MoveDirection.JUMP);
-		    
-		    ImageButton upRight = (ImageButton) findViewById(R.id.upRight);
-		    touchButton(upRight.getId(), com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_UP_RIGHT);
-	    	
-		    ImageButton right = (ImageButton) findViewById(R.id.rightButton);
-		    touchButton(right.getId(), com.comp380.towergame.entities.Andy.MoveDirection.RIGHT);
-		    
-		    ImageButton downRight = (ImageButton) findViewById(R.id.downRight);
-		    touchButton(downRight.getId(), com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_DOWN_RIGHT);
-		    
-		    ImageButton down = (ImageButton) findViewById(R.id.down);
-		    touchButton(down.getId(), com.comp380.towergame.entities.Andy.MoveDirection.DOWN);
-		    
-		    ImageButton downLeft = (ImageButton) findViewById(R.id.downLeft);
-		    touchButton(downLeft.getId(), com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_DOWN_LEFT);
-		    
-		    ImageButton left = (ImageButton) findViewById(R.id.leftButton);
-		    touchButton(left.getId(), com.comp380.towergame.entities.Andy.MoveDirection.LEFT);
-		    
-		    ImageButton upLeft = (ImageButton) findViewById(R.id.upLeft);
-		    touchButton(upLeft.getId(), com.comp380.towergame.entities.Andy.MoveDirection.DIAGONAL_UP_LEFT);
-		    
-		    ImageButton spawn = (ImageButton) findViewById(R.id.spawn);
-		    spawnButton(spawn.getId());
-		    
-		    ImageButton fire = (ImageButton) findViewById(R.id.fire);
-		    spawnButton(fire.getId());
-	    }
-		
-		
+		ImageButton fire = (ImageButton) findViewById(R.id.fire);
+		spawnButton(fire.getId());		
 	}
 
 	public EntityManager getEntityManager() {
@@ -169,7 +134,6 @@ public class GameActivity extends Activity {
 		return this.collisionDetection;
 	}
 	
-
 	public void toggleGameThread(boolean b) {
 		this.gameThread = new GameThread(this);
 		gameThread.setName("Game Thread");
@@ -248,9 +212,6 @@ public class GameActivity extends Activity {
                         case MotionEvent.ACTION_DOWN:
                                 if (handlr != null) return true;
                                 handlr = new Handler();
-                                if(id == R.id.fire || id == R.id.spawn) {
-                                	handlr.postDelayed(buttonAction, sleep*10);
-                                }
                                 handlr.postDelayed(buttonAction, sleep);
                                 break;
                         case MotionEvent.ACTION_UP:
@@ -309,7 +270,7 @@ public class GameActivity extends Activity {
                         case MotionEvent.ACTION_DOWN:
                                 if (handlr != null) return true;
                                 handlr = new Handler();
-                                handlr.postDelayed(buttonAction, sleep*10);
+                                handlr.postDelayed(buttonAction, sleep);
                                 break;
                         case MotionEvent.ACTION_UP:
                                 if (handlr == null) return true;
