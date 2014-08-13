@@ -1,5 +1,6 @@
 package com.comp380.towergame.entities;
 
+import com.comp380.towergame.GameActivity;
 import com.comp380.towergame.R;
 import com.comp380.towergame.physics.Speed;
 
@@ -198,8 +199,9 @@ public class Andy extends BaseEntity {
 		} 
 		else {
 			this.manager.getContext().getTileEngine().setSpeed(0);
+			this.manager.getContext();
 			//90 for tile width?
-			if(this.point.x >= this.manager.getContext().GAME_MAX_WIDTH - 90) {
+			if(this.point.x >= GameActivity.GAME_MAX_WIDTH - 180) {
 				this.manager.getContext().doVictory();
 			}
 		}
