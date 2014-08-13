@@ -10,6 +10,7 @@
     <string name="title">MAGIC TOWER</string>
     <string name="defaultButt">Normal Buttons</string>
     <string name="bigButt">Big Buttons</string>
+    <string name="devMode">DEV MODE</string>
     <string name="musicOn">Play all sounds</string>
     <string name="musicOff">Mute all sounds</string>
 

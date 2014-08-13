@@ -88,6 +88,7 @@ public class OptionsActivity extends Activity {
     	CheckBox oldButt = (CheckBox) findViewById(R.id.checkbox_old);
     	CheckBox musicOn = (CheckBox) findViewById(R.id.checkbox_musicPlay);
     	CheckBox musicOff = (CheckBox) findViewById(R.id.checkbox_musicStop);
+    	CheckBox devButt = (CheckBox) findViewById(R.id.checkbox_devButt);
     	Button playButt = (Button) findViewById(R.id.button_playGame);
     	TextView version = (TextView) findViewById(R.id.tvVersion);
     	
@@ -156,12 +157,23 @@ public class OptionsActivity extends Activity {
                 	editor.putBoolean("soundOption", true);
                 }
                 break;
+            case R.id.checkbox_devButt:
+            	if (checked) {
+            		CheckBox devButt = (CheckBox) findViewById(R.id.checkbox_devButt);
+            		devButt.setChecked(true);
+            		editor.putBoolean("devOption", true);
+            	}
+            	else {
+            		CheckBox devButt = (CheckBox) findViewById(R.id.checkbox_devButt);
+            		devButt.setChecked(false);
+            		editor.putBoolean("devOption", false);
+            	}
             
             
             // TODO: Veggie sandwich
         }
         
-        editor.putBoolean("devOption", true);
+        //editor.putBoolean("devOption", true);
         editor.commit();
         boolean musicOption = settings.getBoolean("soundOption", true);
 		boolean buttonOption = settings.getBoolean("buttonOption", true);

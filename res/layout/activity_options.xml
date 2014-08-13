@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="@string/defaultButt"
         android:textColor="#907D50"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="80dp"
         android:layout_marginLeft="400dp"
         android:textSize="40sp"
         android:onClick="onCheckboxClicked"/>
@@ -42,6 +42,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/musicOff"
+        android:textColor="#907D50"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="400dp"
+        android:textSize="40sp"
+        android:onClick="onCheckboxClicked"/>
+    
+    <CheckBox android:id="@+id/checkbox_devButt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/devMode"
         android:textColor="#907D50"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="400dp"
