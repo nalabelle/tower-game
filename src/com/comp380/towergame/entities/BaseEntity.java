@@ -187,6 +187,10 @@ public class BaseEntity {
 			this.onGround = false;
 		}
 		
+		if(Math.abs(this.velocityX) <= 1) {
+			this.isWalking = false;
+		}
+		
 		//revert somewhere before here if you need to back up from a collision.
 		this.point = newPoint;
 	}
