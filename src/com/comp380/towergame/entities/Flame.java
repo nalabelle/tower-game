@@ -26,7 +26,7 @@ public class Flame extends BaseEntity {
 				(manager.getAndy().getFacing() < 0) ? 
 						(-1 * bitmap.getWidth() + manager.getAndy().getBounds().left -1) : 
 							(manager.getAndy().getBounds().width() + manager.getAndy().getBounds().left + 1),
-				manager.getAndy().getY());
+				manager.getAndy().getY()+45);
 		this.fireballFrame1 = bitmap;
 		this.fireballFrame2 = BitmapFactory.decodeResource(this.manager.getContext().getResources(), R.drawable.fireball_2);
 		if(manager.getAndy().getFacing() < 0) {
