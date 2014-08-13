@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
-import android.util.Log;
 
 public class Andy extends BaseEntity {
 	int score;
@@ -132,7 +131,6 @@ public class Andy extends BaseEntity {
 	
 	public void update() {
 		super.update();
-		Log.v(this.getClass().getName(), "New " + this.point.toString() + "Velocity: ("+this.velocityX+","+this.velocityY+") "+this.walkUpdate/this.runRate);
 
 		if(this.onGround && (this.currentTexture == this.jumping || this.currentTexture == this.jumpingReverse)) {
 			this.currentTexture = this.standing;
@@ -200,6 +198,10 @@ public class Andy extends BaseEntity {
 		} 
 		else {
 			this.manager.getContext().getTileEngine().setSpeed(0);
+			//90 for tile width?
+			if(this.point.x >= this.manager.getContext().GAME_MAX_WIDTH - 90) {
+				this.manager.getContext().doVictory();
+			}
 		}
 		
 		if(this.getX() < 0 && this.velocityX < 0) {

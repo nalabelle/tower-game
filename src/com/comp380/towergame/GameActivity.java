@@ -347,5 +347,14 @@ public class GameActivity extends Activity {
                 };
         });
 	}
+
+	public void doVictory() {
+		Intent intent = new Intent(this, VictoryActivity.class);
+		intent.putExtra("death", true);
+    	this.startActivity(intent);
+    	this.onPause();
+    	this.finish();
+    	this.toggleGameThread(false);
+	}
 	
 }
