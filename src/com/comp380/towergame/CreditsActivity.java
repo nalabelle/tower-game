@@ -2,7 +2,6 @@ package com.comp380.towergame;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -29,9 +28,11 @@ public class CreditsActivity extends Activity {
 	Handler handler = null;
 	boolean andyDied = false;
 	public static final String PREFS_NAME = "gameConfig";
-	private boolean buttonOption;
 	private boolean soundOption;
 	
+	// Handler messages are short and queued once every 5 seconds,
+	// therefore leaking warning should not be an issue
+	@SuppressLint("HandlerLeak")  
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,6 +48,10 @@ public class CreditsActivity extends Activity {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
     	soundOption = settings.getBoolean("soundOption", true);
 		
+    	// Andy dead - text is red, display starts with "Gameover," 
+    	//		       plays blood curdling scream and creeping music.
+    	// Otherwise - textcolor is white and displays "Magic Tower,"
+    	// 		       music is chill. 
 		try {
 			andyDied = getIntent().getExtras().getBoolean("death");
 			if (andyDied){
@@ -68,6 +73,10 @@ public class CreditsActivity extends Activity {
 		}
 		
 		setFont();
+		
+		// Handler allows the text cycle thread to communicate with the UI thread.
+		// Whenever a message is sent from the text Thread, the UI updates the 
+		// widget on screen.
 		handler = new Handler(){
 			@Override
 			public void handleMessage(Message msg) {
@@ -78,19 +87,22 @@ public class CreditsActivity extends Activity {
 		startTextSwap();		
 	}	
 	
+	// Separate thread to loop changes to textview 
 	public void startTextSwap(){
 		
 		textThread = new Thread() {			
 			public void run() {
 				while (!textThread.isInterrupted()) {					
 						try {
-							sleep(5000);
+							sleep(5000); //pause length between swaps
 						} catch (InterruptedException e) {
 							Log.v(this.getClass().toString(), "text swap messed up");
 							e.printStackTrace();
 							break;
 						}
 						try {
+							// Handler sends a message in the form of a bundle
+							// to UI thread
 							Message box = handler.obtainMessage();
 							Bundle b = new Bundle();
 							switch (cycle){
@@ -141,7 +153,7 @@ public class CreditsActivity extends Activity {
 				}
 			}
 		};
-		textThread.setName("Text Rotation");
+		textThread.setName("Text Rotation"); // For thread observation
 		textThread.start();
 	}
 	
@@ -163,12 +175,10 @@ public class CreditsActivity extends Activity {
 	protected void onDestroy() {
 		if (soundOption) {
 			music.release();
-			deathScream.release();
+			if (andyDied){ deathScream.release(); }
 		}
 		super.onDestroy();
 	}
-
-
 
 	//Using a custom font (IsomothPro) from assets for display
     public void setFont(){

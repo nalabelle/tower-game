@@ -15,6 +15,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+// Main Activity launches other activities and serves as a central start
+// and exit screen. When another activity is launched, the main activity
+// still exists but is stopped. Once the second activity finishes, the
+// main activity restarts.
 
 public class MainActivity extends Activity {
 	public static final String PREFS_NAME = "gameConfig";
@@ -37,12 +41,13 @@ public class MainActivity extends Activity {
         SharedPreferences.Editor editor = settings.edit();
         soundOption = true;
         buttonOption = true;
+        
+        //Default settings
         editor.putBoolean("soundOption", true);
         editor.putBoolean("buttonOption", true);
         editor.putBoolean("devOption", false);
         editor.commit();  
 	}
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -76,7 +81,6 @@ public class MainActivity extends Activity {
     }
     
     public void launchOptions(View view){
-    	//Toast.makeText(this, "To be implemented...", Toast.LENGTH_LONG).show();
     	if (soundOption) { endMusic(); }
     	Intent intent = new Intent(this, OptionsActivity.class); //OptionsActivity
         Log.v("ALEX", ""+soundOption+buttonOption);
@@ -90,7 +94,6 @@ public class MainActivity extends Activity {
     }
     
     public void playMusic(){
-    	//music.setAudioStreamType(AudioManager))
 		music = MediaPlayer.create(this, R.raw.music_main);
 		if (soundOption) {
 			music.start();

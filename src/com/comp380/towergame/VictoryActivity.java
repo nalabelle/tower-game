@@ -20,6 +20,10 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+// When player reaches end of game, launches this activity. A TextView is 
+// floated up from the bottom of the screen, location of which is controlled
+// by a second thread. Activity ends with back button press.
+
 public class VictoryActivity extends Activity {
 	TextView window;
 	MediaPlayer music = null;
@@ -27,7 +31,6 @@ public class VictoryActivity extends Activity {
 	Handler handler;
 	Thread textThread;
 	public static final String PREFS_NAME = "gameConfig";
-	private boolean buttonOption;
 	private boolean soundOption;
 
 	@Override
@@ -51,27 +54,30 @@ public class VictoryActivity extends Activity {
 			e.printStackTrace();
 		}
 
-		// obtain screen resolution
+		// Obtains screen resolution which controls the text size and the 
+		// positioning of the TextView (should start at bottom of screen
+		// regardless of device). However, since this is pixel dependent,
+		// the are some display issues on various devices.
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		height = dm.heightPixels;
 		setContentView(R.layout.activity_victory);
 
-		// setup textview attributes
+		// TextView attributes in java
 		LinearLayout ll = (LinearLayout) findViewById(R.id.llVictory);
 		window = new TextView(VictoryActivity.this);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		window.setGravity(Gravity.CENTER_HORIZONTAL);
 		window.setText("VICTORY!\n\n\n You emerge from the Magic Tower victorious.\n After a long battle to gain your freedom,\nyou look forward to further adventures... ");
-		window.setTextColor(0xFFFFFFFF);
+		window.setTextColor(0xFFFFFFFF); //white
 		window.setShadowLayer(15, 15, 15, Color.BLACK);
 		setFont();
-		window.setTextSize(height / 12);
+		window.setTextSize(height / 12); //some issues with size
 		window.setLayoutParams(params);
 		ViewGroup.MarginLayoutParams par = (ViewGroup.MarginLayoutParams) window
 				.getLayoutParams();
-		par.setMargins(0, height, 0, 0);
+		par.setMargins(0, height, 0, 0); //initial top margin is screen height
 		window.setLayoutParams(par);
 		ll.addView(window);
 
@@ -83,7 +89,7 @@ public class VictoryActivity extends Activity {
 				height = b.getInt("heightKey");
 				ViewGroup.MarginLayoutParams par = (ViewGroup.MarginLayoutParams) window
 						.getLayoutParams();
-				par.setMargins(0, height, 0, 0);
+				par.setMargins(0, height, 0, 0);  //margin slowly decrements
 				window.setLayoutParams(par);
 			}
 		};
@@ -96,16 +102,16 @@ public class VictoryActivity extends Activity {
 		textThread = new Thread() {
 			int h = intialHeight;
 			int endHeight = intialHeight * -1; // end thread after text passes
-												// through the top of screen
+											   // through the top of screen
 
 			// Thread slowly decreases the height of the text so it appears to
 			// scroll upwards
 			public void run() {
 				while (!textThread.isInterrupted() && h > endHeight) {
-					// unimplemented: launch another activity when reaching
-					// endHeight, credits for example
+					// UNIMPLEMENTED: launch another activity when reaching
+					// endHeight, for example, credits 
 					try {
-						sleep(125);
+						sleep(125); //controls speed of height updates
 					} catch (InterruptedException e) {
 						Log.v(this.getClass().toString(), "sleep failed");
 						e.printStackTrace();
@@ -114,7 +120,7 @@ public class VictoryActivity extends Activity {
 					try {
 						Message box = handler.obtainMessage();
 						Bundle b = new Bundle();
-						h = h - 6;
+						h = h - 6; //controls how much the height changes
 						b.putInt("heightKey", h);
 						box.setData(b);
 						handler.sendMessage(box);
@@ -122,14 +128,14 @@ public class VictoryActivity extends Activity {
 						Log.v(this.getClass().getName(),
 								"height not transferring");
 					}
-
 				}
 			}
 		};
-		textThread.setName("Victory text");
+		textThread.setName("Victory text"); // Thread tag for management
 		textThread.start();
 	}
 
+	//Lifecycle stuff
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -174,7 +180,6 @@ public class VictoryActivity extends Activity {
 	public void setFont() {
 		Typeface font = Typeface.createFromAsset(getAssets(),
 				"font/IsomothPro.otf");
-
 		window.setTypeface(font);
 	}
 }

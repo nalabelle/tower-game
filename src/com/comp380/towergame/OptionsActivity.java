@@ -1,9 +1,6 @@
 package com.comp380.towergame;
 
-import java.util.ArrayList;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -17,7 +14,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class OptionsActivity extends Activity {
 	public static final String PREFS_NAME = "gameConfig";
@@ -77,8 +73,7 @@ public class OptionsActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-    
+    }    
     
     //Using a custom font (IsomothPro) from assets for display
     public void setFont(){
@@ -93,12 +88,13 @@ public class OptionsActivity extends Activity {
     	TextView version = (TextView) findViewById(R.id.tvVersion);
     	
     	defaultButt.setTypeface(font);
+    	devButt.setTypeface(font);
     	oldButt.setTypeface(font);
     	version.setTypeface(font);
     	musicOn.setTypeface(font);
     	musicOff.setTypeface(font);
-    }
-    
+    	playButt.setTypeface(font);
+    }    
     
     public void onCheckboxClicked(View view) {
        //Was it checked?
