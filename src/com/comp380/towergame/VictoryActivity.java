@@ -69,7 +69,9 @@ public class VictoryActivity extends Activity {
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		window.setGravity(Gravity.CENTER_HORIZONTAL);
-		window.setText("VICTORY!\n\n\n You emerge from the Magic Tower victorious.\n After a long battle to gain your freedom,\nyou look forward to further adventures... ");
+		window.setText("VICTORY!\n\n\n You emerge from the Magic Tower victorious.\n After a long battle to gain " +
+				"	your freedom,\nyou look forward to further adventures...\n\nSPECIAL THANKS TO:\n" +
+				"	Valerie Kinman --Testing\nCaden Swanson --Testing\nJessica Sager --Testing and Chaffuer" );
 		window.setTextColor(0xFFFFFFFF); //white
 		window.setShadowLayer(15, 15, 15, Color.BLACK);
 		setFont();
