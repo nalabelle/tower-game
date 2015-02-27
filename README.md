@@ -1,5 +1,4 @@
-# == CSUN Comp 380 Tower Game == #
+## Magic Tower
+Your adventure begins...
 
-Information about our project goes in here.
-
-This file should be formatted with markdown syntax.
+Magic Tower is a prototype of a 2d Android action scrolling game made for a school project.
